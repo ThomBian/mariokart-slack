@@ -1,96 +1,133 @@
 require 'sinatra'
 require 'pry'
 require 'slack-ruby-client'
+require 'json'
 
 get '/' do
   'Hello world!'
 end
 
 post '/' do
-  return unless params[:token] == ENV['SLACK_TOKEN']
   command = params[:text]
+  puts "trying to parse your command #{command}"
+  return unless params[:token] == ENV['SLACK_TOKEN']
+
   puts "token: #{ENV['SLACK_API_TOKEN']}"
   client = Slack::Web::Client.new(token: ENV['SLACK_API_TOKEN'])
+  client.auth_test
   if command == 'new'
-    client.views_open(token: client.token,
+    client.views_open(
+      token: client.token,
       trigger_id: params[:trigger_id],
       view: {
-          "type": "modal",
-          "callback_id": "new_game_modal",
-          "title": {
-            "type": "plain_text",
-            "text": "Mariokart game",
-            "emoji": true
+        "type": "modal",
+        "callback_id": "modal-with-inputs",
+        "title": {
+          "type": "plain_text",
+          "text": "Modal with inputs"
+        },
+        "blocks": [
+          {
+            "type": "input",
+            "block_id": "section_1",
+            "label": {
+              "type": "plain_text",
+              "text": "Enter your value"
+            },
+            "element": {
+              "type": "users_select",
+              "action_id": "action_1"
+            }
           },
-          "submit": {
-            "type": "plain_text",
-            "text": "Submit",
-            "emoji": true
+          {
+            "type": "input",
+            "block_id": "section_11",
+            "label": {
+              "type": "plain_text",
+              "text": "Enter your value"
+            },
+            "element": {
+              "type": "plain_text_input",
+              "action_id": "action_11"
+            }
           },
-          "close": {
-            "type": "plain_text",
-            "text": "Cancel",
-            "emoji": true
+          {
+            "type": "input",
+            "block_id": "section_2",
+            "label": {
+              "type": "plain_text",
+              "text": "Enter your value"
+            },
+            "element": {
+              "type": "users_select",
+              "action_id": "action_2"
+            }
           },
-          "blocks": [
-                    {
-                      "type": "section",
-                      "text": {
-                        "type": "plain_text",
-                        "text": "Entrer the result of the game",
-                        "emoji": true
-                      }
-                    },
-                    {
-                      "type": "input",
-                      "block_id": "first_player",
-                      "element": {
-                        "type": "plain_text_input"
-                      },
-                      "label": {
-                        "type": "plain_text",
-                        "text": "🥇",
-                        "emoji": true
-                      }
-                    },
-                    {
-                      "type": "input",
-                      "block_id": "second_player",
-                      "element": {
-                        "type": "plain_text_input"
-                      },
-                      "label": {
-                        "type": "plain_text",
-                        "text": "🥈",
-                        "emoji": true
-                      }
-                    },
-                    {
-                      "type": "input",
-                      "block_id": "third_player",
-                      "element": {
-                        "type": "plain_text_input"
-                      },
-                      "label": {
-                        "type": "plain_text",
-                        "text": "🥉",
-                        "emoji": true
-                      }
-                    },
-                    {
-                      "type": "input",
-                      "block_id": "fourth_player",
-                      "element": {
-                        "type": "plain_text_input"
-                      },
-                      "label": {
-                        "type": "plain_text",
-                        "text": "🇧🇪",
-                        "emoji": true
-                      }
-                    }
-                  ]
-
+          {
+            "type": "input",
+            "block_id": "section_21",
+            "label": {
+              "type": "plain_text",
+              "text": "Enter your value"
+            },
+            "element": {
+              "type": "plain_text_input",
+              "action_id": "action_21"
+            }
+          },
+          {
+            "type": "input",
+            "block_id": "section_3",
+            "label": {
+              "type": "plain_text",
+              "text": "Enter your value"
+            },
+            "element": {
+              "type": "users_select",
+              "action_id": "action_3"
+            }
+          },
+          {
+            "type": "input",
+            "block_id": "section_31",
+            "label": {
+              "type": "plain_text",
+              "text": "Enter your value"
+            },
+            "element": {
+              "type": "plain_text_input",
+              "action_id": "action_31"
+            }
+          },
+          {
+            "type": "input",
+            "block_id": "section_4",
+            "label": {
+              "type": "plain_text",
+              "text": "Enter your value"
+            },
+            "element": {
+              "type": "users_select",
+              "action_id": "action_4"
+            }
+          },
+          {
+            "type": "input",
+            "block_id": "section_41",
+            "label": {
+              "type": "plain_text",
+              "text": "Enter your value"
+            },
+            "element": {
+              "type": "plain_text_input",
+              "action_id": "action_41"
+            }
+          },
+        ],
+        "submit": {
+          "type": "plain_text",
+          "text": "Submit"
+        }
       }
     )
   end
@@ -99,5 +136,8 @@ rescue Slack::Web::Api::Errors::SlackError => e
 end
 
 post '/actions' do
-  puts params
+  params['payload'] = JSON.parse(params['payload']).except('token').to_json
+  values = JSON.parse(params['payload'])["view"]['state']
+  puts values
+  status :ok
 end
