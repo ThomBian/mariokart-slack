@@ -2,9 +2,9 @@ require 'sinatra'
 require 'pry'
 require 'slack-ruby-client'
 require 'json'
+require 'require_all'
 
-require_relative 'command/factory'
-require_relative 'slack/client'
+require_all 'app'
 
 get '/' do
   'Hello world!'
