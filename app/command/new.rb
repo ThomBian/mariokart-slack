@@ -1,5 +1,7 @@
 module Command
   class New
+    MODAL_ID = 'score_view'
+
     def initialize(params:)
       @params = params
     end
@@ -24,7 +26,7 @@ module Command
     def view_content
       {
         "type": "modal",
-        "callback_id": "modal-with-inputs",
+        "callback_id": "score_view",
         "title": {
           "type": "plain_text",
           "text": "Modal with inputs"
@@ -75,7 +77,7 @@ module Command
                     },
                     "element": {
                       "type": "plain_text_input",
-                      "action_id": "score_input_value_2"
+                      "action_id": "score_value_2"
                     }
                   },
                   {
@@ -99,7 +101,7 @@ module Command
                     },
                     "element": {
                       "type": "plain_text_input",
-                      "action_id": "score_input_value_3"
+                      "action_id": "score_value_3"
                     }
                   },
                   {
@@ -123,7 +125,7 @@ module Command
                     },
                     "element": {
                       "type": "plain_text_input",
-                      "action_id": "score_input_value_4"
+                      "action_id": "score_value_4"
                     }
                   },
                 ],
