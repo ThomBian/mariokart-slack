@@ -1,31 +1,32 @@
-require 'sinatra'
-require 'pry'
-require 'slack-ruby-client'
-require 'json'
-require 'require_all'
+require 'bundler'
+Bundler.require(:default, ENV.fetch('RACK_ENV', 'development'))
 
-require_all 'app/concern'
-require_all 'app/serializer'
-require_all 'app'
+class App < Sinatra::Base
+  register Sinatra::ActiveRecordExtension
 
-get '/' do
-  'Hello world!'
-end
+  set :root, File.dirname(__FILE__)
 
-post '/' do
-  return unless params[:token] == ENV['SLACK_TOKEN']
+  get '/' do
+    'Hello world!'
+  end
 
-  command = Factory::Command.new(params: params).build
-  command.process if command.present?
+  post '/' do
+    return unless params[:token] == ENV['SLACK_TOKEN']
 
-  ''
-rescue Slack::Web::Api::Errors::SlackError => e
-  puts e.response.body
-end
+    command = Factory::Command.new(params: params).build
+    command.process if command.present?
+
+    ''
+  rescue Slack::Web::Api::Errors::SlackError => e
+    puts e.response.body
+  end
 
 
-post '/actions' do
-  action = Factory::Action.new(params).build
-  action.process
-  ''
+  post '/actions' do
+    action = Factory::Action.new(params).build
+    action.process
+    ''
+  end
+
+  require File.join(root, '/config/initializers/autoloader.rb')
 end
