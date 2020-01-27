@@ -5,6 +5,7 @@ require 'json'
 require 'require_all'
 
 require_all 'app/concern'
+require_all 'app/serializer'
 require_all 'app'
 
 get '/' do
