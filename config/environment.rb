@@ -2,7 +2,8 @@ require 'dotenv'
 Dotenv.load
 
 require 'bundler'
-Bundler.require(:default, ENV.fetch('RACK_ENV', 'development'))
-if ENV['development']
+Bundler.require(:default, ENV['RACK_ENV'])
+
+if ENV['RACK_ENV'] == 'development'
   require 'pry'
 end
