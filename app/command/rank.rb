@@ -32,11 +32,9 @@ module Command
     end
 
     def ranking_text
-      ordered_players_by_elo.map(&:to_s).join('\n')
-    end
-
-    def ordered_players_by_elo
-      @players = Player.order(elo: :desc)
+      Player.with_rank.ordered_by_elo.map do |player|
+         "#{player.rank_value}. #{player.slack_username} (#{player.elo})"
+      end.join('\n')
     end
   end
 end

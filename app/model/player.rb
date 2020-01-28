@@ -1,8 +1,7 @@
 class Player < ActiveRecord::Base
 
-  def to_s
-    "#{slack_username} (#{elo})"
-  end
+  scope :ordered_by_elo, -> { order(elo: :desc) }
+  scope :with_rank, -> { select('*, RANK() OVER (ORDER BY elo DESC) rank_value') }
 
   def slack_username
     "<@#{username}>"
