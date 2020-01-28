@@ -8,7 +8,7 @@ module Command
 
     def process
       raise 'Command new needs a trigger_id param' unless @params[:trigger_id]
-      @client = Slack::Client.new
+      @client = Slack::Client.new(ENV['SLACK_API_TOKEN'])
       response = @client.views_open(view_payload)
       response['ok']
     end

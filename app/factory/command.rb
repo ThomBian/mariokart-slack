@@ -8,6 +8,8 @@ module Factory
       case command
       when 'new'
         ::Command::New.new(params: @params)
+      when 'rank'
+        ::Command::Rank.new
       else
         raise "Unsupported command #{command}"
       end

@@ -3,10 +3,6 @@ class App < Sinatra::Base
 
   set :root, File.dirname(__FILE__)
 
-  get '/' do
-    'Hello world!'
-  end
-
   post '/' do
     return unless params[:token] == ENV['SLACK_TOKEN']
 
