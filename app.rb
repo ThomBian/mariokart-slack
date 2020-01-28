@@ -1,9 +1,3 @@
-require 'dotenv'
-Dotenv.load
-
-require 'bundler'
-Bundler.require(:default, ENV.fetch('RACK_ENV', 'development'))
-
 class App < Sinatra::Base
   register Sinatra::ActiveRecordExtension
 

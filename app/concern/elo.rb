@@ -5,13 +5,13 @@ module Concern
       new_elos = []
       game_results.each do |result|
         player_username = result[:username]
-        player_elo = player_elos[player_username]
+        player_elo = player_elos[player_username].elo
         new_elo = player_elo
 
         game_results.each do |other_player_result|
           next if player_username == other_player_result[:username]
 
-          other_player_elo = player_elos[other_player_result[:username]]
+          other_player_elo = player_elos[other_player_result[:username]].elo
           outcome = game_outcome(result[:score], other_player_result[:score])
           new_elo += OneVsOne.new(player_elo, other_player_elo, outcome).compute_diff
 
