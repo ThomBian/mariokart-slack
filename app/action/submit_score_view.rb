@@ -25,7 +25,7 @@ module Action
       save_new_elos(new_elos)
 
       # send a recap of the game
-      game.summary
+      post_game_summary(game)
     end
 
     private
@@ -50,6 +50,33 @@ module Action
 
     def player_elos_lookup(usernames)
       @elo ||= Player.where(username: usernames).select(:username, :elo).index_by(&:username)
+    end
+
+    def post_game_summary(game)
+      Slack::Client.post_message(
+        [
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": "A game has just been saved :mario-luigi-dance:"
+            }
+          },
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: game_summary_text(game)
+            }
+          }
+        ]
+      )
+    end
+
+    def game_summary_text(game)
+      game.summary.map do |result|
+        "#{result[:rank]}. <@#{result[:username]}>"
+      end.join("\n")
     end
   end
 end
