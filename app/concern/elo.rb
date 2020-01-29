@@ -1,6 +1,5 @@
 module Concern
   module Elo
-
     def compute_from(game_results, player_elos)
       new_elos = []
       game_results.each do |result|
@@ -14,8 +13,6 @@ module Concern
           other_player_elo = player_elos[other_player_result[:username]].elo
           outcome = game_outcome(result[:score], other_player_result[:score])
           new_elo += OneVsOne.new(player_elo, other_player_elo, outcome).compute_diff
-
-          puts "#{player_username}(#{player_elo}) vs #{other_player_result[:username]}(#{other_player_elo}) [#{outcome}]-> #{new_elo}"
         end
 
         new_elos << { username: player_username, value: round(new_elo) }

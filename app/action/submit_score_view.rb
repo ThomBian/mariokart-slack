@@ -11,16 +11,15 @@ module Action
     # change execution flow
     def process
       # format data from the form
-      game = Concern::Game.new(values)
+      game = Concern::Game.new(values, created_by)
       game_results = game.results
       players_usernames = usernames(game_results)
 
       create_new_players(new_players(players_usernames))
       # use data to compute new player elos
       player_elos = player_elos_lookup(players_usernames)
-      puts "current elos: #{player_elos}"
-
       new_elos = compute_from(game_results, player_elos)
+
       # save new elos
       save_new_elos(new_elos)
 
@@ -29,6 +28,10 @@ module Action
     end
 
     private
+
+    def created_by
+      @created_by ||= payload['user']['id']
+    end
 
     def values
       @values ||= payload["view"]['state']['values']
@@ -59,7 +62,7 @@ module Action
             "type": "section",
             "text": {
               "type": "mrkdwn",
-              "text": "A game has just been saved :mario-luigi-dance:"
+              "text": ":mario-luigi-dance: A game has just been saved by <@#{game.created_by}>"
             }
           },
           {

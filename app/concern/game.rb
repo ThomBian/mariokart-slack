@@ -2,8 +2,11 @@ module Concern
   class Game
     NB_PLAYERS = 4
 
-    def initialize(values)
+    attr_reader :created_by
+
+    def initialize(values, created_by)
       @values = values
+      @created_by = created_by
     end
 
     # @see Command::New#view_content to see form blocks definition
