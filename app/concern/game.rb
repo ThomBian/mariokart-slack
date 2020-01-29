@@ -14,7 +14,7 @@ module Concern
       @results ||= (1..NB_PLAYERS).map do |player_index|
         {
           username: @values["player_#{player_index}"]["username_#{player_index}"]['selected_user'],
-          score: @values["score_input_#{player_index}"]["score_value_#{player_index}"]['value']
+          score: @values["score_input_#{player_index}"]["score_value_#{player_index}"]['value'].to_i
         }
       end
     end

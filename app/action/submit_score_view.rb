@@ -78,8 +78,16 @@ module Action
 
     def game_summary_text(game)
       game.summary.map do |result|
-        "#{result[:rank]}. <@#{result[:username]}>"
+        emoji = Command::Rank::RANK_TO_EMOJI[result[:rank]]
+        "#{emoji} <@#{result[:username]}> #{emoji_from_score(result[:score])}"
       end.join("\n")
+    end
+
+    def emoji_from_score(score)
+      return ':star2:' if score == 60
+      return ':ligue1:' if score >= 35
+      return ':ligue2:' if score >= 30
+      ':unacceptable:'
     end
   end
 end
