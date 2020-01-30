@@ -7,6 +7,7 @@ gem 'rake'
 gem 'sinatra-activerecord', require: %w(sinatra/activerecord)
 gem 'dotenv'
 gem 'slack-ruby-client'
+gem 'require_all'
 group :development, :test do
   gem 'pry'
 end

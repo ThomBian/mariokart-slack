@@ -1,7 +1,14 @@
+require_all 'app/concern'
+require_all 'app/serializer'
+require_all 'app/slack'
+require_all 'app/factory'
+require_all 'app/model'
+require_all 'app/command'
+require_all 'app/action'
+
 class App < Sinatra::Base
   register Sinatra::ActiveRecordExtension
 
-  set :root, File.dirname(__FILE__)
   get '/' do
     'Hello world!'
   end
@@ -23,6 +30,4 @@ class App < Sinatra::Base
     action.process
     ''
   end
-
-  require File.join(root, '/config/initializers/autoloader.rb')
 end
