@@ -11,7 +11,7 @@ module Factory
       when 'rank'
         ::Command::Rank.new
       else
-        raise "Unsupported command #{command}"
+        ::Command::Help.new
       end
     end
 
