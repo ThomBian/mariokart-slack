@@ -1,5 +1,5 @@
 require_all 'app/concern'
-require_all 'app/serializer'
+require_all 'app/lib'
 require_all 'app/slack'
 require_all 'app/factory'
 require_all 'app/model'

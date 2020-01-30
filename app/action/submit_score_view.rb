@@ -1,8 +1,7 @@
 module Action
   class SubmitScoreView
     include Concern::HasPayload
-    include Concern::Elo
-    include Serializer::Elo
+    include Lib::Elo
 
     def initialize(params)
       @params = params
@@ -53,6 +52,13 @@ module Action
 
     def player_elos_lookup(usernames)
       @elo ||= Player.where(username: usernames).select(:username, :elo).index_by(&:username)
+    end
+
+    def save_new_elos(new_elos)
+      new_elos.each do |new_elo|
+        player = ::Player.find_by(username: new_elo[:username])
+        player.update! elo: new_elo[:value]
+      end
     end
 
     def post_game_summary(game)

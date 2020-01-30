@@ -1,4 +1,4 @@
-module Concern
+module Lib
   module Elo
     def compute_from(game_results, player_elos)
       new_elos = []
