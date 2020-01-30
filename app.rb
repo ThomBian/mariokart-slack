@@ -16,9 +16,12 @@ class App < Sinatra::Base
   post '/' do
     return unless params[:token] == ENV['SLACK_TOKEN']
 
-    command = Factory::Command.new(params: params).build
-    command.process if command.present?
-
+    if ENV['UNDER_DEV'] == 'true'
+      Slack::Client.post_message(text: ":robot_face: Someone is working on me! :robot_face:")
+    else
+      command = Factory::Command.new(params: params).build
+      command.process if command.present?
+    end
     ''
   rescue Slack::Web::Api::Errors::SlackError => e
     puts e.response.body

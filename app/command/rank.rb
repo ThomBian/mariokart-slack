@@ -8,7 +8,7 @@ module Command
     }
 
     def process
-      ::Slack::Client.post_message(blocks)
+      ::Slack::Client.post_message(blocks: blocks)
     end
 
     private

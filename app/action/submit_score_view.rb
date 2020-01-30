@@ -63,7 +63,7 @@ module Action
 
     def post_game_summary(game)
       Slack::Client.post_message(
-        [
+        blocks: [
           {
             "type": "section",
             "text": {

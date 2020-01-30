@@ -10,14 +10,29 @@ module Slack
       @api ||= Slack::Web::Client.new(token: @token)
     end
 
-    def self.post_message(blocks)
+    def self.post_message(text: nil, blocks: nil)
+      return false unless text.present? || blocks.present?
+      layout = blocks.present? ?  blocks : default_blocks(text)
+
       @client  = Slack::Client.new(ENV['BOT_ACCESS_TOKEN'])
       response = @client.chat_postMessage({
         token:   @client.token,
         channel: ENV['CHANNEL_ID'],
-        blocks: blocks
+        blocks: layout
       })
       response['ok']
+    end
+
+    private
+
+    def self.default_blocks(text)
+      [{
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: text
+        }
+      }]
     end
   end
 end
