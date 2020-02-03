@@ -7,12 +7,16 @@ module Command
       4 => ':sum:',
     }
 
-    def initialize(params:)
+    def initialize(params: nil)
       @params = params
     end
 
     def process
       ::Slack::Client.post_direct_message(blocks: blocks, users: user)
+    end
+
+    def rank_of_the_day
+      ::Slack::Client.post_message(blocks: blocks)
     end
 
     private
