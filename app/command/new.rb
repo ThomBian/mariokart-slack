@@ -29,7 +29,8 @@ module Command
         "callback_id": "score_view",
         "title": {
           "type": "plain_text",
-          "text": "Modal with inputs"
+          "text": "Save a new game!",
+          "emoji": true
         },
         "blocks": [
                   {
@@ -37,7 +38,8 @@ module Command
                     "block_id": "player_1",
                     "label": {
                       "type": "plain_text",
-                      "text": "Enter your value"
+                      "text": ":mario_luigi_dance: Select a player:",
+                      "emoji": true
                     },
                     "element": {
                       "type": "users_select",
@@ -49,7 +51,8 @@ module Command
                     "block_id": "score_input_1",
                     "label": {
                       "type": "plain_text",
-                      "text": "Enter your value"
+                      "text": ":point_right: Enter the number of points:",
+                      "emoji": true,
                     },
                     "element": {
                       "type": "plain_text_input",
@@ -61,7 +64,8 @@ module Command
                     "block_id": "player_2",
                     "label": {
                       "type": "plain_text",
-                      "text": "Enter your value"
+                      "text": ":mario_luigi_dance: Select a player:",
+                      "emoji": true
                     },
                     "element": {
                       "type": "users_select",
@@ -73,7 +77,8 @@ module Command
                     "block_id": "score_input_2",
                     "label": {
                       "type": "plain_text",
-                      "text": "Enter your value"
+                      "text": ":point_right: Enter the number of points:",
+                      "emoji": true,
                     },
                     "element": {
                       "type": "plain_text_input",
@@ -85,7 +90,8 @@ module Command
                     "block_id": "player_3",
                     "label": {
                       "type": "plain_text",
-                      "text": "Enter your value"
+                      "text": ":mario_luigi_dance: Select a player:",
+                      "emoji": true
                     },
                     "element": {
                       "type": "users_select",
@@ -97,7 +103,8 @@ module Command
                     "block_id": "score_input_3",
                     "label": {
                       "type": "plain_text",
-                      "text": "Enter your value"
+                      "text": ":point_right: Enter the number of points:",
+                      "emoji": true,
                     },
                     "element": {
                       "type": "plain_text_input",
@@ -109,7 +116,8 @@ module Command
                     "block_id": "player_4",
                     "label": {
                       "type": "plain_text",
-                      "text": "Enter your value"
+                      "text": ":mario_luigi_dance: Select a player:",
+                      "emoji": true
                     },
                     "element": {
                       "type": "users_select",
@@ -121,7 +129,8 @@ module Command
                     "block_id": "score_input_4",
                     "label": {
                       "type": "plain_text",
-                      "text": "Enter your value"
+                      "text": ":point_right: Enter the number of points:",
+                      "emoji": true,
                     },
                     "element": {
                       "type": "plain_text_input",
@@ -131,7 +140,7 @@ module Command
                 ],
         "submit": {
           "type": "plain_text",
-          "text": "Submit"
+          "text": "Save!"
         }
       }
     end
