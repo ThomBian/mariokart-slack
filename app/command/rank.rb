@@ -16,18 +16,18 @@ module Command
     end
 
     def rank_of_the_day
-      ::Slack::Client.post_message(blocks: blocks)
+      ::Slack::Client.post_message(blocks: blocks(false))
     end
 
     private
 
-    def blocks
+    def blocks(from_command = true)
       [
         {
           "type": "section",
           "text": {
             "type": "mrkdwn",
-            "text": ":fleur_de_lis: *RANKING* :fleur_de_lis:"
+            "text": from_command ? personal_ranking_title : today_ranking_title
           }
         },
         {
@@ -38,6 +38,14 @@ module Command
           }
         }
       ]
+    end
+
+    def personal_ranking_title
+      ":fleur_de_lis: *RANKING* :fleur_de_lis:"
+    end
+
+    def today_ranking_title
+      ":drum_with_drumsticks::drum_with_drumsticks::drum_with_drumsticks: *TODAY'S RANKING* :drum_with_drumsticks::drum_with_drumsticks::drum_with_drumsticks:"
     end
 
     def ranking_text
