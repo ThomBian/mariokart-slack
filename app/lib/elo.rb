@@ -1,23 +1,24 @@
 module Lib
   module Elo
-    def compute_from(game_results, player_elos)
-      new_elos = []
+    def new_elos_by_username(game_results, players)
+      players_by_username = players.index_by(&:username)
+      new_elos_by_username = {}
       game_results.each do |result|
         player_username = result[:username]
-        player_elo = player_elos[player_username].elo
+        player_elo = players_by_username[player_username].elo
         new_elo = player_elo
 
         game_results.each do |other_player_result|
           next if player_username == other_player_result[:username]
 
-          other_player_elo = player_elos[other_player_result[:username]].elo
+          other_player_elo = players_by_username[other_player_result[:username]].elo
           outcome = game_outcome(result[:score], other_player_result[:score])
           new_elo += OneVsOne.new(player_elo, other_player_elo, outcome).compute_diff
         end
 
-        new_elos << { username: player_username, value: round(new_elo) }
+        new_elos_by_username[player_username] = round(new_elo)
       end
-      new_elos
+      new_elos_by_username
     end
 
     private
