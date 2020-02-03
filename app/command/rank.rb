@@ -7,8 +7,12 @@ module Command
       4 => ':sum:',
     }
 
+    def initialize(params:)
+      @params = params
+    end
+
     def process
-      ::Slack::Client.post_message(blocks: blocks)
+      ::Slack::Client.post_direct_message(blocks: blocks, users: user)
     end
 
     private
@@ -37,6 +41,10 @@ module Command
         rank_value = player.rank_value <= 4 ? "#{RANK_TO_EMOJI[player.rank_value]}": "#{player.rank_value}.  "
          "#{rank_value} #{player.slack_username} (#{player.elo})"
       end.join("\n")
+    end
+
+    def user
+      @params['user_id']
     end
   end
 end

@@ -9,7 +9,7 @@ module Factory
       when 'new'
         ::Command::New.new(params: @params)
       when 'rank'
-        ::Command::Rank.new
+        ::Command::Rank.new(params: @params)
       else
         ::Command::Help.new
       end
