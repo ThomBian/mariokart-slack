@@ -36,7 +36,7 @@ module Action
 
     def save_new_elos(new_elos)
       players.each do |player|
-        player.update! elo: new_elos[player.username]
+        player.save_elo!(new_elos[player.username])
       end
     end
 

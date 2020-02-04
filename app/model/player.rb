@@ -6,4 +6,11 @@ class Player < ActiveRecord::Base
   def slack_username
     "<@#{username}>"
   end
+
+  def save_elo!(elo)
+    self.highest_elo = elo if elo > self.highest_elo
+    self.lowest_elo = elo if elo < self.lowest_elo
+    self.elo = elo
+    save!
+  end
 end

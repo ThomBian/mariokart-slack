@@ -7,6 +7,7 @@ task :run do
 end
 
 task :console do
+  require_all 'db/dml'
   Pry.start
 end
 
