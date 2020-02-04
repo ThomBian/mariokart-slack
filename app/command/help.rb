@@ -19,7 +19,7 @@ module Command
             "text": "Here is how I work.\n" +
                       "Type `/mariokart new` to save a new game \n" +
                       "Type `/mariokart rank` to see the actual ranking \n" +
-                      "Type `/mariokart my-stats`` to see your in game stats"
+                      "Type `/mariokart my-stats` to see your in game stats"
           }
         }
       ]
