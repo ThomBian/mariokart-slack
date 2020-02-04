@@ -1,5 +1,7 @@
 module Command
   class MyStats
+    STATS = [::Stat::Rank, ::Stat::HighestElo, ::Stat::LowestElo]
+
     def initialize(params:)
       @params = params
     end
@@ -26,7 +28,62 @@ module Command
 
     def post_stats_message
       ::Slack::Client.
-        post_direct_message(text: ":blueshell: Here you go: #{player.elo}", users: username)
+        post_direct_message(blocks: stats_blocks, users: username)
+    end
+
+    def stats_blocks
+      [
+        {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": ":mega: *YOUR STATS* :mega:"
+          }
+        },
+        {
+          "type": "context",
+          "elements": [
+                    {
+                      "text": "*#{Date.current}*",
+                      "type": "mrkdwn"
+                    }
+                  ]
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "section",
+          "fields": stat_fields
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "context",
+          "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "Keep going! You are doing great!!"
+                    }
+                  ]
+        }
+      ]
+    end
+
+    def stat_fields
+      stats.map do |stat|
+        {
+          "type": "mrkdwn",
+          "text": stat.markdown,
+        }
+      end
+    end
+
+    def stats
+      STATS.map do |klass|
+        klass.new(player)
+      end
     end
   end
 end
