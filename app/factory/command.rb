@@ -10,6 +10,8 @@ module Factory
         ::Command::New.new(params: @params)
       when 'rank'
         ::Command::Rank.new(params: @params)
+      when 'my-stats'
+        ::Command::MyStats.new(params: @params)
       else
         ::Command::Help.new(params: @params)
       end
