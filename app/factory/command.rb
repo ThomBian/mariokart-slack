@@ -11,7 +11,7 @@ module Factory
       when 'rank'
         ::Command::Rank.new(params: @params)
       else
-        ::Command::Help.new
+        ::Command::Help.new(params: @params)
       end
     end
 

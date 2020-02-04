@@ -1,7 +1,11 @@
 module Command
   class Help
+    def initialize(params:)
+      @params = params
+    end
+
     def process
-      ::Slack::Client.post_message(blocks: blocks)
+      ::Slack::Client.post_ephemeral_message(blocks: blocks, channel_id: channel_id, user: user)
     end
 
     private
@@ -16,6 +20,14 @@ module Command
           }
         }
       ]
+    end
+
+    def user
+      @params['user_id']
+    end
+
+    def channel_id
+      @params['channel_id']
     end
   end
 end
