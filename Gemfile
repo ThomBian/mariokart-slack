@@ -9,6 +9,7 @@ gem 'dotenv'
 gem 'slack-ruby-client'
 gem 'require_all'
 gem 'pry'
+gem 'logger'
 group :test do
   gem 'rack-test'
   gem 'rspec'
