@@ -8,8 +8,8 @@ class Player < ActiveRecord::Base
   end
 
   def save_elo!(elo)
-    self.highest_elo = elo if elo > self.highest_elo
-    self.lowest_elo = elo if elo < self.lowest_elo
+    self.highest_elo = elo if elo > (self.highest_elo || 0)
+    self.lowest_elo = elo if elo < (self.lowest_elo || Float::INFINITY)
     self.elo = elo
     save!
   end
