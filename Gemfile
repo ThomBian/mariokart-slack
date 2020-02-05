@@ -9,3 +9,8 @@ gem 'dotenv'
 gem 'slack-ruby-client'
 gem 'require_all'
 gem 'pry'
+group :test do
+  gem 'rack-test'
+  gem 'rspec'
+  gem 'database_cleaner'
+end

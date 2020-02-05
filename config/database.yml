@@ -7,6 +7,15 @@ development:
   host: localhost
   port: 5432
 
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: mariokart_test
+  username: Thomas
+  password:
+  host: localhost
+  port: 5432
+
 production:
   adapter: postgresql
   encoding: unicode
