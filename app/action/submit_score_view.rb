@@ -3,8 +3,6 @@ module Action
     include Concern::HasPayload
     include Lib::Elo
 
-    NB_PLAYERS = 4
-
     def initialize(params)
       @params = params
     end
@@ -22,12 +20,17 @@ module Action
     private
 
     def game_results
-      @results ||= (1..NB_PLAYERS).map do |player_index|
+      @results ||= (1..nb_players).map do |player_index|
         {
           username: values["player_#{player_index}"]["username_#{player_index}"]['selected_user'],
           score: values["score_input_#{player_index}"]["score_value_#{player_index}"]['value'].to_i
         }
       end
+    end
+
+    def nb_players
+      last_input_id = values.keys.last # ie "score_input_3" for a game with 3 players
+      last_input_id.last.to_i
     end
 
     def values

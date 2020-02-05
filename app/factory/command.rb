@@ -7,7 +7,7 @@ module Factory
     def build
       case command
       when 'new'
-        ::Command::New.new(params: @params)
+        ::Command::New.new(command_params: command_params, params: @params)
       when 'rank'
         ::Command::Rank.new(params: @params)
       when 'my-stats'
@@ -20,7 +20,11 @@ module Factory
     private
 
     def command
-      @command ||= @params['text']
+      @command ||= @params['text'].split(' ').first
+    end
+
+    def command_params
+      @command_params ||= @params['text'].split(' ').slice(1..-1)
     end
   end
 end
