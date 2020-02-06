@@ -5,7 +5,7 @@ module Stat
     end
 
     def markdown
-      "*#{self.title}:* #{self.value}"
+      "*#{self.title}* #{self.value}"
     end
 
     def title

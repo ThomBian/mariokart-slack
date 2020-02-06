@@ -1,7 +1,7 @@
 module Stat
   class Rank < Base
     def title
-      ':fleur_de_lis: Rank'
+      ':hash:'
     end
 
     def value

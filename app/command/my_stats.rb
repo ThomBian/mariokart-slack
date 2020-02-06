@@ -1,6 +1,14 @@
 module Command
   class MyStats
-    STATS = [::Stat::Rank, ::Stat::HighestElo, ::Stat::LowestElo]
+    STATS = [
+      ::Stat::Rank,
+      ::Stat::Elo::Highest,
+      ::Stat::Elo::Current,
+      ::Stat::Elo::Lowest,
+      ::Stat::Score::Avg,
+      ::Stat::Score::Performances,
+      ::Stat::GamePlayed
+    ]
 
     def initialize(params:)
       @params = params
