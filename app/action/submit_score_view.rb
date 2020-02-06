@@ -39,8 +39,7 @@ module Action
     end
 
     def nb_players
-      last_input_id = values.keys.last # ie "score_input_3" for a game with 3 players
-      last_input_id.last.to_i
+      @nb_players ||= values.keys.map {|x| x[-1]}.uniq.max.to_i
     end
 
     def values

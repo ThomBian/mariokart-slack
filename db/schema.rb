@@ -40,4 +40,12 @@ ActiveRecord::Schema.define(version: 2020_02_05_210142) do
     t.index ["username"], name: "index_players_on_username", unique: true
   end
 
+  create_table "players_games", force: :cascade do |t|
+    t.bigint "players_id"
+    t.bigint "games_id"
+    t.integer "score", null: false
+    t.index ["games_id"], name: "index_players_games_on_games_id"
+    t.index ["players_id"], name: "index_players_games_on_players_id"
+  end
+
 end
