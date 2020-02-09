@@ -21,6 +21,7 @@ class App < Sinatra::Base
       Slack::Client.post_message(text: ":robot_face: Someone is working on me! :robot_face:")
     else
       command = Factory::Command.new(params: params).build
+      puts "Command received: #{command.class} with #{params}"
       command.process if command.present?
     end
     ''
