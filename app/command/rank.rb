@@ -1,5 +1,7 @@
 module Command
   class Rank
+    include Concern::Date
+
     RANK_TO_EMOJI = {
       1 => ':first_place_medal:',
       2 => ':second_place_medal:',
@@ -16,6 +18,7 @@ module Command
     end
 
     def rank_of_the_day
+      return if weekend?
       ::Slack::Client.post_message(blocks: blocks(false))
     end
 
