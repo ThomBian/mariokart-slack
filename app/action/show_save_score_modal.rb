@@ -1,6 +1,3 @@
-# TODO
-#   - create an input to associate input <> user <> score
-#   - find a way to use the game id to easily retrieve it later on
 module Action
   class ShowSaveScoreModal
     include Concern::HasBlockAction
@@ -42,6 +39,7 @@ module Action
           "type": "modal",
           "callback_id": CALLBACK_ID,
           "private_metadata": game.id.to_s,
+          "notify_on_close": true,
           "title": {
               "type": "plain_text",
               "text": "Save the scores!",

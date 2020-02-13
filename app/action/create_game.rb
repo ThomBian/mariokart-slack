@@ -14,7 +14,7 @@ module Action
     end
 
     def process
-      # TODO set a draft status
+      return Slack::Client.post_message(text: "A game is already ongoing!") if Game.draft.count > 0
       game = Game.create!({
                               created_by: created_by,
                               games_players_attributes: games_players_attributes

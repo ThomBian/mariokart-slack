@@ -1,9 +1,15 @@
 class Game < ActiveRecord::Base
+  extend Enumerize
+
   belongs_to :created_by, class_name: '::Player'
   has_many :games_players, class_name: '::GamesPlayers'
   has_many :players, through: :games_players, class_name: '::Player'
 
+  scope :draft, -> { where(status: :draft) }
+
   accepts_nested_attributes_for :games_players
+
+  enumerize :status, in: [:draft, :saved]
 
   def post_summary
     Slack::Client.post_message(

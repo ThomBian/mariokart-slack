@@ -9,7 +9,7 @@ module Action
 
     def process
       save_new_elos(new_elos(game_results))
-      game.update! games_players_attributes: games_players_attributes
+      game.update! status: :saved, games_players_attributes: games_players_attributes
       game.post_summary
     end
 

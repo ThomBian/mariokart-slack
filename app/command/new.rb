@@ -1,5 +1,3 @@
-# TODO:
-#   - prevent someone to create a game while there is a draft game at the moment
 module Command
   class New
     CALLBACK_ID = 'create_game'
@@ -11,6 +9,7 @@ module Command
     end
 
     def process
+      return Slack::Client.post_message(text: "A game is already ongoing!") if Game.draft.count > 0
       raise 'Command new needs a trigger_id param' unless @params[:trigger_id]
 
       @client = Slack::Client.new(ENV['SLACK_API_TOKEN'])
