@@ -8,8 +8,10 @@ module Factory
 
     def build
       case view_callback_id
-      when ::Command::New::MODAL_ID
-        ::Action::SubmitScoreView.new(@params)
+      when ::Command::New::CALLBACK_ID
+        ::Action::CreateGame.new(@params)
+      when ::Action::ShowSaveScoreModal::CALLBACK_ID
+        ::Action::SaveScore.new(@params)
       else
         raise 'Unsupported modal id'
       end

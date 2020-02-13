@@ -1,24 +1,21 @@
 module Lib
   module Elo
-    def new_elos_by_username(game_results, players)
-      players_by_username = players.index_by(&:username)
-      new_elos_by_username = {}
-      game_results.each do |result|
-        player_username = result[:username]
-        player_elo = players_by_username[player_username].elo
-        new_elo = player_elo
 
-        game_results.each do |other_player_result|
-          next if player_username == other_player_result[:username]
+    # @param game_results Array<Hash> each hash should have a :player => the player who played and a :score the number
+    #   of points during the game
+    # @return [Array] a[0] is the player, a[1] is the new elo of the player
+    def new_elos(game_results)
+      game_results.map do |game_result|
+        diff = 0
+        game_results.each do |other_game_result|
+          next if game_result[:player].id == other_game_result[:player].id
 
-          other_player_elo = players_by_username[other_player_result[:username]].elo
-          outcome = game_outcome(result[:score], other_player_result[:score])
-          new_elo += OneVsOne.new(player_elo, other_player_elo, outcome).compute_diff
+          outcome = game_outcome(game_result[:score], other_game_result[:score])
+          diff += OneVsOne.new(game_result[:player].elo, other_game_result[:player].elo, outcome).compute_diff
         end
 
-        new_elos_by_username[player_username] = round(new_elo)
+        [game_result[:player], game_result[:player].elo + round(diff)]
       end
-      new_elos_by_username
     end
 
     private

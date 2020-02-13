@@ -1,6 +1,6 @@
 module Slack
   class Client
-    delegate :token, :views_open, :chat_postMessage, :conversations_open, :chat_postEphemeral, to: :api
+    delegate :token, :views_open, :chat_postMessage, :conversations_open, :chat_postEphemeral, :chat_delete, to: :api
 
     def initialize(token)
       @token = token
@@ -31,6 +31,14 @@ module Slack
         channel: channel_id || ENV['CHANNEL_ID'],
         blocks: layout
       })
+      response['ok']
+    end
+
+    def self.delete_message(ts: nil)
+      return false unless ts.present?
+
+      client  = Slack::Client.new(ENV['BOT_ACCESS_TOKEN'])
+      response = client.chat_delete(ts: ts, channel: ENV['CHANNEL_ID'])
       response['ok']
     end
 

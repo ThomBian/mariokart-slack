@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_05_210142) do
+ActiveRecord::Schema.define(version: 2020_02_11_235241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 2020_02_05_210142) do
   create_table "games_players", force: :cascade do |t|
     t.bigint "game_id"
     t.bigint "player_id"
-    t.integer "score", null: false
+    t.integer "score"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["game_id", "player_id"], name: "index_games_players_on_game_id_and_player_id", unique: true
@@ -38,14 +38,6 @@ ActiveRecord::Schema.define(version: 2020_02_05_210142) do
     t.integer "highest_elo"
     t.integer "lowest_elo"
     t.index ["username"], name: "index_players_on_username", unique: true
-  end
-
-  create_table "players_games", force: :cascade do |t|
-    t.bigint "players_id"
-    t.bigint "games_id"
-    t.integer "score", null: false
-    t.index ["games_id"], name: "index_players_games_on_games_id"
-    t.index ["players_id"], name: "index_players_games_on_players_id"
   end
 
 end

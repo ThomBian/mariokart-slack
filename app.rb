@@ -34,5 +34,7 @@ class App < Sinatra::Base
     action = Factory::Action.new(params).build
     action.process
     ''
+  rescue Slack::Web::Api::Errors::SlackError => e
+    puts e.response.body
   end
 end
