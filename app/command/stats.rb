@@ -1,5 +1,5 @@
 module Command
-  class MyStats
+  class Stats
     STATS = [
       ::Stat::Rank,
       ::Stat::Elo::Highest,
