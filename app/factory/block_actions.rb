@@ -1,6 +1,6 @@
 module Factory
   class BlockActions
-    include Concern::HasBlockAction
+    include Concern::HasPayloadParsing
 
     def initialize(params)
       @params = params
@@ -13,12 +13,6 @@ module Factory
       else
         raise 'Unsupported block actions id'
       end
-    end
-
-    private
-
-    def block_action_id
-      block_action['action_id']
     end
   end
 end

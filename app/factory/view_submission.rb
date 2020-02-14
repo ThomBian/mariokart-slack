@@ -1,6 +1,6 @@
 module Factory
   class ViewSubmission
-    include Concern::HasPayload
+    include Concern::HasPayloadParsing
 
     def initialize(params)
       @params = params
@@ -15,12 +15,6 @@ module Factory
       else
         raise 'Unsupported modal id'
       end
-    end
-
-    private
-
-    def view_callback_id
-      payload['view']['callback_id']
     end
   end
 end

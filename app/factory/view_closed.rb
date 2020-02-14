@@ -1,6 +1,6 @@
 module Factory
   class ViewClosed
-    include ::Concern::HasPayload
+    include ::Concern::HasPayloadParsing
 
     def initialize(params)
       @params = params
@@ -13,12 +13,6 @@ module Factory
       else
         raise "Unsupported close view callback id: #{view_callback_id}"
       end
-    end
-
-    private
-
-    def view_callback_id
-      payload['view']['callback_id']
     end
   end
 end

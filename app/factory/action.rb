@@ -1,6 +1,6 @@
 module Factory
   class Action
-    include Concern::HasPayload
+    include Concern::HasPayloadParsing
 
     def initialize(params)
       @params = params
@@ -17,12 +17,6 @@ module Factory
       else
         raise "Unsupported action type #{action_type}"
       end
-    end
-
-    private
-
-    def action_type
-      payload['type']
     end
   end
 end

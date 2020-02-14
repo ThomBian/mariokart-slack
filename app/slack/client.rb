@@ -42,13 +42,13 @@ module Slack
       response['ok']
     end
 
-    def self.post_ephemeral_message(blocks:, user:, channel_id:)
+    def self.post_ephemeral_message(text: '', blocks: nil, user:, channel_id:)
       client  = Slack::Client.new(ENV['BOT_ACCESS_TOKEN'])
       response = client.chat_postEphemeral({
         token: client.token,
         channel: channel_id,
         user: user,
-        blocks: blocks
+        blocks: blocks || default_blocks(text)
       })
       response['ok']
     end

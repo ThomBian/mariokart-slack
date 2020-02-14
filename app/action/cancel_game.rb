@@ -1,6 +1,6 @@
 module Action
   class CancelGame
-    include ::Concern::HasPayload
+    include ::Concern::HasPayloadParsing
 
     def initialize(params)
       @params = params
@@ -13,7 +13,7 @@ module Action
     private
 
     def game
-      @game ||=  Game.find(payload['view']['private_metadata'])
+      @game ||=  Game.find(private_metadata)
     end
   end
 end

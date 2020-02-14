@@ -1,6 +1,6 @@
 module Action
   class ShowSaveScoreModal
-    include Concern::HasBlockAction
+    include Concern::HasPayloadParsing
 
     CALLBACK_ID = 'save_score_submission'
 
@@ -22,14 +22,10 @@ module Action
       @game ||= Game.find(block_action['value'])
     end
 
-    def message_ts
-      payload['message']['ts']
-    end
-
     def view_payload
       {
           token: @client.token,
-          trigger_id: payload['trigger_id'],
+          trigger_id: trigger_id,
           view: view_content
       }
     end

@@ -1,6 +1,6 @@
 module Action
   class SaveScore
-    include ::Concern::HasPayload
+    include ::Concern::HasPayloadParsing
     include Lib::Elo
 
     def initialize(params)
@@ -16,11 +16,7 @@ module Action
     private
 
     def game
-      @game ||= Game.find(payload['view']['private_metadata'])
-    end
-
-    def values
-      @values ||= payload['view']['state']['values']
+      @game ||= Game.find(private_metadata)
     end
 
     def games_players_attributes
