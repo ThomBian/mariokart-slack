@@ -1,5 +1,7 @@
 module Command
   class New
+    include ::Concern::HasApiParsing
+
     CALLBACK_ID = 'create_game'
 
     attr_reader :nb_players
@@ -9,7 +11,7 @@ module Command
     end
 
     def process
-      return Slack::Client.post_message(text: "A game is already ongoing!") if Game.draft.count > 0
+      return post_game_ongoing_message if game_ongoing?
       raise 'Command new needs a trigger_id param' unless @params[:trigger_id]
 
       @client = Slack::Client.new(ENV['SLACK_API_TOKEN'])
@@ -18,6 +20,18 @@ module Command
     end
 
     private
+
+    def game_ongoing?
+      Game.draft.count > 0
+    end
+
+    def post_game_ongoing_message
+      Slack::Client.post_ephemeral_message(
+          text: "A game is already ongoing!",
+          user: user_id,
+          channel_id: channel_id
+      )
+    end
 
     def view_payload
       {
