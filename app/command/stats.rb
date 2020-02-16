@@ -7,7 +7,8 @@ module Command
       ::Stat::Elo::Lowest,
       ::Stat::Score::Avg,
       ::Stat::Score::Performances,
-      ::Stat::GamePlayed
+      ::Stat::GamePlayed,
+      ::Stat::Vote
     ]
 
     def initialize(params:)
