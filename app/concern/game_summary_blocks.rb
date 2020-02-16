@@ -6,8 +6,17 @@ module Concern
               "type": "section",
               "text": {
                   "type": "mrkdwn",
-                  "text": ":mario-luigi-dance: *NEW GAME* :mario-luigi-dance:\nsaved by #{game.created_by.slack_username}"
-              }
+                  "text": ":mario-luigi-dance: :checkered_flag: *NEW GAME* :checkered_flag: :mario-luigi-dance:"
+              },
+          },
+          {
+              "type": "context",
+              "elements": [
+                  {
+                      "type": "mrkdwn",
+                      "text": "saved by #{game.created_by.slack_username}"
+                  }
+              ]
           },
           {
               type: "section",
@@ -31,12 +40,19 @@ module Concern
     private
 
     def summary_text(game)
-      elo_rank_lookup = Player.with_rank.index_by(&:username)
-      game.games_players.with_rank_by_score.includes(:player).map do |game_play|
-        emoji = Command::Rank::RANK_TO_EMOJI[game_play.rank_value]
-        elo_rank = elo_rank_lookup[game_play.player.username].rank_value
-        "#{emoji} #{game_play.player.slack_username} #{score_to_emoji(game_play.score)} -  :fleur_de_lis: #{game_play.player.elo} (#{elo_rank})"
-      end.join("\n")
+      game.games_players.includes(:player).with_rank_by_score.map { |x| game_player_summary_line(x) }.join("\n")
+    end
+
+    def game_player_summary_line(game_player)
+      emoji = Command::Rank::RANK_TO_EMOJI[game_player.rank_value]
+      score_infos = "#{game_player.player.slack_username} #{score_to_emoji(game_player.score)}"
+      elo_rank = elo_rank_lookup[game_player.player.username].rank_value
+      elo_infos = ":fleur_de_lis: #{game_player.player.elo} (#{elo_rank})"
+      "#{emoji} #{score_infos} - #{elo_infos} - #{elo_diff_text(game_player.elo_diff)}"
+    end
+
+    def elo_rank_lookup
+      @elo_rank_lookup ||= Player.with_rank.index_by(&:username)
     end
 
     def score_to_emoji(score)
@@ -44,6 +60,12 @@ module Concern
       return ':ligue1:' if score >= 35
       return ':ligue2:' if score >= 30
       ':unacceptable:'
+    end
+
+    def elo_diff_text(elo_diff)
+      return ":arrow_up: #{elo_diff.abs} points" if elo_diff > 0
+      return ":arrow_down: #{elo_diff.abs} points" if elo_diff < 0
+      ":neutral_face: No elo changes"
     end
 
     def vote_text(game)

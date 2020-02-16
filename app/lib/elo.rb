@@ -3,18 +3,20 @@ module Lib
 
     # @param game_results Array<Hash> each hash should have a :player => the player who played and a :score the number
     #   of points during the game
-    # @return [Array] a[0] is the player, a[1] is the new elo of the player
-    def new_elos(game_results)
-      game_results.map do |game_result|
+    def new_elos_diff_player_id(game_results)
+      game_results.inject({}) do |res, game_result|
+
+        player = game_result[:player]
         diff = 0
         game_results.each do |other_game_result|
-          next if game_result[:player].id == other_game_result[:player].id
+          next if player.id == other_game_result[:player].id
 
           outcome = game_outcome(game_result[:score], other_game_result[:score])
-          diff += OneVsOne.new(game_result[:player].elo, other_game_result[:player].elo, outcome).compute_diff
+          diff += OneVsOne.new(player.elo, other_game_result[:player].elo, outcome).compute_diff
         end
 
-        [game_result[:player], game_result[:player].elo + round(diff)]
+        res[player.id] = round(diff)
+        res
       end
     end
 

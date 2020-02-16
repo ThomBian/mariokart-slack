@@ -62,10 +62,10 @@ module Concern
     def chance_to_win(game_player)
       player = game_player.player
       other_players = game_player.game.players - [player]
-      player.chance_to_win_against(other_players)*100.round(2)
+      player.chance_to_win_against(other_players)*100.0.to_i
     end
 
-    STATS = [::Stat::Rank, ::Stat::Elo::Current, ::Stat::Score::Avg, ::Stat::Score::Performances]
+    STATS = [::Stat::Rank, ::Stat::Elo::Current]
     def stats(game_player)
       STATS.map {|s| s.new(game_player.player).markdown}.join(' | ')
     end

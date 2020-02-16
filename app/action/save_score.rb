@@ -9,9 +9,9 @@ module Action
     end
 
     def process
-      save_new_elos(new_elos(game_results))
-
-      game.update! status: :saved, games_players_attributes: games_players_attributes
+      new_elos_diff_player_id = new_elos_diff_player_id(game_results)
+      save_new_elos!(new_elos_diff_player_id)
+      game.update! status: :saved, games_players_attributes: games_players_attributes(new_elos_diff_player_id)
       game.games_players.includes(:votes).winners.each {|gp| gp.votes.update_all correct: true }
 
       Slack::Client.post_message(blocks: summary_blocks(game))
@@ -23,9 +23,10 @@ module Action
       @game ||= Game.find(private_metadata)
     end
 
-    def games_players_attributes
+    def games_players_attributes(new_elos_diff)
       game.games_players.includes(:player).map do |gp|
-        {id: gp.id, score: score_from_input(gp.player.username)}
+        player = gp.player
+        {id: gp.id, score: score_from_input(player.username), elo_diff: new_elos_diff[player.id]}
       end
     end
 
@@ -33,8 +34,8 @@ module Action
       values[username]["p_#{username}"]['value'].to_i
     end
 
-    def save_new_elos(new_elos)
-      new_elos.each { |player, new_elo| player.save_elo!(new_elo) }
+    def save_new_elos!(new_elos_diff)
+      game.players.each { |player| player.save_elo!(player.elo + new_elos_diff[player.id]) }
     end
 
     def game_results
