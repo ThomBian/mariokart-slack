@@ -39,11 +39,12 @@ module Concern
 
     def vote_line(game_player)
       stats_line = game_player.player.is_new? ? ':new: New player' : stats(game_player)
+      chance_to_win_line = "Chance to win the game: #{chance_to_win(game_player)}"
       {
           "type": "section",
           "text": {
               "type": "mrkdwn",
-              "text": "*#{game_player.player.slack_username}*\n#{stats_line}"
+              "text": "*#{game_player.player.slack_username}*\n#{stats_line}\n#{chance_to_win_line}"
           },
           "accessory": {
               "type": "button",
@@ -56,6 +57,12 @@ module Concern
               "action_id": ::Factory::BlockActions::VOTE_ACTION_ID
           }
       }
+    end
+
+    def chance_to_win(game_player)
+      player = game_player.player
+      other_players = game_player.game.players - [player]
+      player.chance_to_win_against(other_players)*100.round(2)
     end
 
     STATS = [::Stat::Rank, ::Stat::Elo::Current, ::Stat::Score::Avg, ::Stat::Score::Performances]

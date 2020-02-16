@@ -34,7 +34,7 @@ module Action
     end
 
     def has_already_voted?(game, voted_by)
-      ::Vote.where(game: game, voted_by: voted_by).none?
+      ::Vote.where(game: game, voted_by: voted_by).any?
     end
 
     def post_has_voted(game_player)

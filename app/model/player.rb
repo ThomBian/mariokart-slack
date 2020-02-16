@@ -25,6 +25,15 @@ class Player < ActiveRecord::Base
     small_avatar_url
   end
 
+  # @see https://stats.stackexchange.com/a/66398
+  # @see "https://en.wikipedia.org/wiki/Elo_rating_system#Mathematical_details"
+  def chance_to_win_against(players)
+    qs = [self, players].flatten.map {|p| 10.pow(p.elo/400.0)}
+    (qs[0].to_f / qs.flatten.sum).round(3)
+  end
+
+  private
+
   def save_small_avatar(new_avatar)
     update! small_avatar_url: new_avatar, small_avatar_url_last_set_at: Time.now
   end
