@@ -1,7 +1,6 @@
 module Concern
   module OngoingBlocks
 
-    # TODO add text: rank + elo + chance to win
     def ongoing_blocks(game)
       [
           {

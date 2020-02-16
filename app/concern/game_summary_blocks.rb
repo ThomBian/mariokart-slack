@@ -6,7 +6,7 @@ module Concern
               "type": "section",
               "text": {
                   "type": "mrkdwn",
-                  "text": ":mario-luigi-dance: A game has just been saved by #{game.created_by.slack_username}"
+                  "text": ":mario-luigi-dance: *NEW GAME* :mario-luigi-dance:\nsaved by #{game.created_by.slack_username}"
               }
           },
           {
@@ -15,7 +15,16 @@ module Concern
                   type: "mrkdwn",
                   text: summary_text(game)
               }
-          }
+          },
+          {type: 'divider'},
+          {
+              type: "section",
+              text: {
+                  type: "mrkdwn",
+                  text: vote_text(game)
+              }
+          },
+          {type: 'divider'}
       ]
     end
 
@@ -35,6 +44,13 @@ module Concern
       return ':ligue1:' if score >= 35
       return ':ligue2:' if score >= 30
       ':unacceptable:'
+    end
+
+    def vote_text(game)
+      users_with_correct_vote = ::Vote.includes(:voted_by).winners.where(games_players: game.games_players).map do |vote|
+        vote.voted_by.slack_username
+      end
+      users_with_correct_vote.any? ? "List of correct voters: #{users_with_correct_vote.join(', ')}" : 'No voters were right on that one!'
     end
   end
 end

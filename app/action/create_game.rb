@@ -4,7 +4,6 @@ module Action
     include ::Concern::HasApiParsing
     include ::Concern::OngoingBlocks
 
-    # TODO: ensure a player is not entered multiple time
     MAX_PLAYERS = 4
     MIN_PLAYERS = 2
 

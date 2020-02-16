@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_15_235043) do
+ActiveRecord::Schema.define(version: 2020_02_16_005205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 2020_02_15_235043) do
     t.integer "voted_by_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "correct", default: false
     t.index ["game_id"], name: "index_votes_on_game_id"
     t.index ["games_players_id", "voted_by_id"], name: "index_votes_on_games_players_id_and_voted_by_id", unique: true
     t.index ["games_players_id"], name: "index_votes_on_games_players_id"

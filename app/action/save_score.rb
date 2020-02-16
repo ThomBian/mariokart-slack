@@ -10,7 +10,9 @@ module Action
 
     def process
       save_new_elos(new_elos(game_results))
+
       game.update! status: :saved, games_players_attributes: games_players_attributes
+      game.games_players.includes(:votes).winners.each {|gp| gp.votes.update_all correct: true }
 
       Slack::Client.post_message(blocks: summary_blocks(game))
     end
