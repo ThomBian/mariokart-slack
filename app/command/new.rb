@@ -2,8 +2,6 @@ module Command
   class New
     include ::Concern::HasApiParsing
 
-    CALLBACK_ID = 'create_game'
-
     attr_reader :nb_players
 
     def initialize(params:)
@@ -44,7 +42,7 @@ module Command
     def view_content
       {
         "type": "modal",
-        callback_id: CALLBACK_ID,
+        callback_id: ::Factory::ViewSubmission::NEW_CALLBACK_ID,
         "title": {
           "type": "plain_text",
           "text": "Start a game!",

@@ -25,6 +25,16 @@ module Concern
       block_action['action_id']
     end
 
+    def block_action_value
+      return nil unless block_action.present?
+      block_action['value']
+    end
+
+    def response_url
+      return nil unless has_payload?
+      payload['response_url']
+    end
+
     def view
       return nil unless has_payload?
       payload['view']

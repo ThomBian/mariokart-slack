@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_13_230016) do
+ActiveRecord::Schema.define(version: 2020_02_15_235043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,7 +39,20 @@ ActiveRecord::Schema.define(version: 2020_02_13_230016) do
     t.integer "elo", default: 1000
     t.integer "highest_elo"
     t.integer "lowest_elo"
+    t.text "small_avatar_url"
+    t.datetime "small_avatar_url_last_set_at"
     t.index ["username"], name: "index_players_on_username", unique: true
+  end
+
+  create_table "votes", force: :cascade do |t|
+    t.bigint "games_players_id"
+    t.bigint "game_id"
+    t.integer "voted_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["game_id"], name: "index_votes_on_game_id"
+    t.index ["games_players_id", "voted_by_id"], name: "index_votes_on_games_players_id_and_voted_by_id", unique: true
+    t.index ["games_players_id"], name: "index_votes_on_games_players_id"
   end
 
 end

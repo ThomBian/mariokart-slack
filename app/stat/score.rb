@@ -35,7 +35,7 @@ module Stat
       GROUP_BY_SCORE_EMOJI = "CASE WHEN score = 60 THEN ':star:' WHEN score >= 35 THEN ':ligue1:' WHEN score >= 30 THEN ':ligue2:' ELSE ':unacceptable:' END"
 
       def emojis
-        @player.games_players.group(Arel.sql(GROUP_BY_SCORE_EMOJI)).count.to_a.map { |x| "#{x[0]} x#{x[1]}" }.join(' | ')
+        @player.games_players.group(Arel.sql(GROUP_BY_SCORE_EMOJI)).count.to_a.map { |x| "#{x[0]} x#{x[1]}" }.join(' ')
       end
     end
   end

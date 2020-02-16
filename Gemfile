@@ -11,6 +11,7 @@ gem 'require_all'
 gem 'pry'
 gem 'logger'
 gem 'enumerize'
+gem 'httparty'
 
 group :test do
   gem 'rack-test'

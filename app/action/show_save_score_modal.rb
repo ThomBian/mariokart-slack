@@ -2,8 +2,6 @@ module Action
   class ShowSaveScoreModal
     include Concern::HasPayloadParsing
 
-    CALLBACK_ID = 'save_score_submission'
-
     def initialize(params)
       @params = params
     end
@@ -33,7 +31,7 @@ module Action
     def view_content
       {
           "type": "modal",
-          "callback_id": CALLBACK_ID,
+          "callback_id": ::Factory::ViewSubmission::SAVE_SCORE_CALLBACK_ID,
           "private_metadata": game.id.to_s,
           "notify_on_close": true,
           "title": {

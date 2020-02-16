@@ -2,6 +2,7 @@ module Action
   class SaveScore
     include ::Concern::HasPayloadParsing
     include Lib::Elo
+    include ::Concern::GameSummaryBlocks
 
     def initialize(params)
       @params = params
@@ -10,7 +11,8 @@ module Action
     def process
       save_new_elos(new_elos(game_results))
       game.update! status: :saved, games_players_attributes: games_players_attributes
-      game.post_summary
+
+      Slack::Client.post_message(blocks: summary_blocks(game))
     end
 
     private

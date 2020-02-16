@@ -1,6 +1,6 @@
 module Slack
   class Client
-    delegate :token, :views_open, :chat_postMessage, :conversations_open, :chat_postEphemeral, :chat_delete, to: :api
+    delegate :token, :views_open, :chat_postMessage, :conversations_open, :chat_postEphemeral, :chat_delete, :users_info, to: :api
 
     def initialize(token)
       @token = token

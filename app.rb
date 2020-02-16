@@ -1,9 +1,9 @@
+require_all 'app/stat'
 require_all 'app/concern'
 require_all 'app/lib'
 require_all 'app/slack'
 require_all 'app/factory'
 require_all 'app/model'
-require_all 'app/stat'
 require_all 'app/command'
 require_all 'app/action'
 
