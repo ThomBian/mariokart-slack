@@ -21,8 +21,16 @@ class Player < ActiveRecord::Base
   end
 
   def get_or_load_small_avatar
-    save_small_avatar(get_small_avatar_from_api) if need_to_save_small_avatar?
+    save_small_avatar(get_profile_from_api['image_24']) if need_to_save_small_avatar?
     small_avatar_url
+  end
+
+  def get_or_load_display_name
+    display_name unless need_to_save_display_name?
+    name = get_profile_from_api['display_name']
+    name = get_profile_from_api['real_name'] if name.blank?
+    save_display_name(name)
+    name
   end
 
   # @see https://stats.stackexchange.com/a/66398
@@ -38,14 +46,23 @@ class Player < ActiveRecord::Base
     update! small_avatar_url: new_avatar, small_avatar_url_last_set_at: Time.now
   end
 
-  def get_small_avatar_from_api
+  def save_display_name(new_display_name)
+    update! display_name: new_display_name, display_name_last_set_at: Time.now
+  end
+
+  def get_profile_from_api
+    return @response if defined? @response
     client = Slack::Client.new(ENV['BOT_ACCESS_TOKEN'])
     response = client.users_info(user: username)
     return nil unless response['ok']
-    response['user']['profile']['image_24']
+    @response = response['user']['profile']
   end
 
   def need_to_save_small_avatar?
     small_avatar_url.blank? || small_avatar_url_last_set_at > 1.months.ago
+  end
+
+  def need_to_save_display_name?
+    display_name.blank? || display_name_last_set_at > 1.months.ago
   end
 end

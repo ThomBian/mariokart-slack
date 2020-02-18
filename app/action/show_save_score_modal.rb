@@ -64,7 +64,7 @@ module Action
             },
             "label": {
                 "type": "plain_text",
-                "text": p.slack_username,
+                "text": p.get_or_load_display_name,
                 "emoji": true
             }
         }
