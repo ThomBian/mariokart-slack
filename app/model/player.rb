@@ -3,7 +3,9 @@ class Player < ActiveRecord::Base
   has_many :games, through: :games_players, class_name: '::Game'
 
   scope :ordered_by_elo, -> { order(elo: :desc) }
-  scope :with_rank, -> { select('*, RANK() OVER (ORDER BY elo DESC) rank_value') }
+  scope :with_rank, -> { active.select('*, RANK() OVER (ORDER BY elo DESC) rank_value') }
+  scope :active, -> { where(active: true) }
+  scope :inactive, -> { where(active: false) }
 
   def is_new?
     games.saved.none?
@@ -38,6 +40,22 @@ class Player < ActiveRecord::Base
   def chance_to_win_against(players)
     qs = [self, players].flatten.map {|p| 10.pow(p.elo/400.0)}
     (qs[0].to_f / qs.flatten.sum).round(3)
+  end
+
+  def last_game
+    games.order(created_at: :desc).first
+  end
+
+  def should_be_inactive?
+    last_game.created_at < 2.weeks.ago
+  end
+
+  def set_inactive!
+    update! active: false
+  end
+
+  def set_active!
+    update! active: true
   end
 
   private

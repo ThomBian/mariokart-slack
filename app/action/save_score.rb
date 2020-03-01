@@ -11,6 +11,7 @@ module Action
     def process
       new_elos_diff_player_id = new_elos_diff_player_id(game_results)
       save_new_elos!(new_elos_diff_player_id)
+      reactivate_players!
       game.update! status: :saved, games_players_attributes: games_players_attributes(new_elos_diff_player_id)
       game.games_players.includes(:votes).winners.each {|gp| gp.votes.update_all correct: true }
 
@@ -36,6 +37,10 @@ module Action
 
     def save_new_elos!(new_elos_diff)
       game.players.each { |player| player.save_elo!(player.elo + new_elos_diff[player.id]) }
+    end
+
+    def reactivate_players!
+      game.players.inactive.each {|p| p.set_active!}
     end
 
     def game_results

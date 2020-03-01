@@ -15,3 +15,7 @@ desc 'This task send a message in the #mariokart-elo channel with the current EL
 task :display_rank_in_channel do
   Command::Rank.new.rank_of_the_day
 end
+
+task :set_inactive_players do
+  Player.includes(:games).each { |p| p.set_inactive! if p.should_be_inactive? }
+end

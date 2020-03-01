@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_18_190556) do
+ActiveRecord::Schema.define(version: 2020_03_01_165732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 2020_02_18_190556) do
     t.datetime "small_avatar_url_last_set_at"
     t.text "display_name"
     t.datetime "display_name_last_set_at"
+    t.boolean "active", default: true
     t.index ["username"], name: "index_players_on_username", unique: true
   end
 
