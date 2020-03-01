@@ -2,7 +2,7 @@ class Game < ActiveRecord::Base
   extend Enumerize
 
   belongs_to :created_by, class_name: '::Player'
-  has_many :games_players, class_name: '::GamesPlayers'
+  has_many :games_players, class_name: '::GamesPlayers', dependent: :destroy
   has_many :players, through: :games_players, class_name: '::Player'
 
 

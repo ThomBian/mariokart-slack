@@ -24,6 +24,16 @@ module Concern
                                "style": "primary",
                                "value": game.id.to_s,
                                "action_id": ::Factory::BlockActions::BUTTON_ACTION_ID
+                           }, {
+                               "type": "button",
+                               "text": {
+                                   "type": "plain_text",
+                                   "text": "Cancel 💀",
+                                   "emoji": true
+                               },
+                               "style": "danger",
+                               "value": game.id.to_s,
+                               "action_id": ::Factory::BlockActions::CANCEL_BUTTON_ONGOING_GAME_ID
                            }]
           }
       ].flatten
@@ -62,12 +72,13 @@ module Concern
     def chance_to_win(game_player)
       player = game_player.player
       other_players = game_player.game.players - [player]
-      player.chance_to_win_against(other_players)*100.0.to_i
+      player.chance_to_win_against(other_players) * 100.0.to_i
     end
 
     STATS = [::Stat::Rank, ::Stat::Elo::Current]
+
     def stats(game_player)
-      STATS.map {|s| s.new(game_player.player).markdown}.join(' | ')
+      STATS.map { |s| s.new(game_player.player).markdown }.join(' | ')
     end
 
     def vote_line_context(game_player)
