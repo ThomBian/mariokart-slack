@@ -1,8 +1,8 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: mariokart
-  username: Thomas
+  database: mariokart-elo
+  username: thombian
   password:
   host: localhost
   port: 5432
