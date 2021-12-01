@@ -70,7 +70,7 @@ class Player < ActiveRecord::Base
 
   def get_profile_from_api
     return @response if defined? @response
-    client = Slack::Client.new(ENV['BOT_ACCESS_TOKEN'])
+    client = Slack::Client.new
     response = client.users_info(user: username)
     return nil unless response['ok']
     @response = response['user']['profile']

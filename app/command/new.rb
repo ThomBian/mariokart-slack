@@ -12,7 +12,7 @@ module Command
       return post_game_ongoing_message if game_ongoing?
       raise 'Command new needs a trigger_id param' unless @params[:trigger_id]
 
-      @client = Slack::Client.new(ENV['SLACK_API_TOKEN'])
+      @client = Slack::Client.new
       response = @client.views_open(view_payload)
       response['ok']
     end

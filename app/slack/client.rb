@@ -2,8 +2,8 @@ module Slack
   class Client
     delegate :token, :views_open, :chat_postMessage, :conversations_open, :chat_postEphemeral, :chat_delete, :users_info, to: :api
 
-    def initialize(token)
-      @token = token
+    def initialize
+      @token = ENV['BOT_ACCESS_TOKEN']
     end
 
     def api
@@ -13,7 +13,7 @@ module Slack
     def self.post_direct_message(text: nil, blocks: nil, users: nil)
       return false unless users.present?
 
-      client  = Slack::Client.new(ENV['BOT_ACCESS_TOKEN'])
+      client  = Slack::Client.new
       response = client.conversations_open({token: client.token, users: users})
       return false unless response['ok']
 
@@ -24,7 +24,7 @@ module Slack
     def self.post_message(text: nil, blocks: nil, channel_id: nil)
       return false unless text.present? || blocks.present?
 
-      client  = Slack::Client.new(ENV['BOT_ACCESS_TOKEN'])
+      client  = Slack::Client.new
       layout = blocks.present? ?  blocks : default_blocks(text)
       response = client.chat_postMessage({
         token:   client.token,
@@ -37,13 +37,13 @@ module Slack
     def self.delete_message(ts: nil)
       return false unless ts.present?
 
-      client  = Slack::Client.new(ENV['BOT_ACCESS_TOKEN'])
+      client  = Slack::Client.new
       response = client.chat_delete(ts: ts, channel: ENV['CHANNEL_ID'])
       response['ok']
     end
 
     def self.post_ephemeral_message(text: '', blocks: nil, user:, channel_id:)
-      client  = Slack::Client.new(ENV['BOT_ACCESS_TOKEN'])
+      client  = Slack::Client.new
       response = client.chat_postEphemeral({
         token: client.token,
         channel: channel_id,

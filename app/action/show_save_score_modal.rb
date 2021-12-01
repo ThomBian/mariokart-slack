@@ -7,7 +7,7 @@ module Action
     end
 
     def process
-      @client = Slack::Client.new(ENV['SLACK_API_TOKEN'])
+      @client = Slack::Client.new
       response = @client.views_open(view_payload)
       raise response unless response['ok']
 
