@@ -33,7 +33,7 @@ module Action
     end
 
     def created_by
-      @created_by ||= Player.find_by(username: command_sent_by_user_id || user_id)
+      @created_by ||= Player.find_or_create_by(username: command_sent_by_user_id || user_id)
     end
 
     # validations
