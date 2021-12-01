@@ -10,9 +10,9 @@ module Task
 
         def save_achievements
             # podium
-            @elo_top_five[1].achievements << Achievement.find_by(name: '1st place')
-            @elo_top_five[3].achievements << Achievement.find_by(name: '3rd place')
-            @elo_top_five[2].achievements << Achievement.find_by(name: '2nd place')
+            elo_top_five[0].achievements << Achievement.find_by(name: '1st place')
+            elo_top_five[1].achievements << Achievement.find_by(name: '2nd place')
+            elo_top_five[2].achievements << Achievement.find_by(name: '3rd place')
             
             # most game played
             most_game_achievement = Achievement.find_by(name: 'Most games')

@@ -40,12 +40,12 @@ module Concern
     private
 
     def summary_text(game)
-      game.games_players.includes(:player).with_rank_by_score.map { |x| game_player_summary_line(x) }.join("\n")
+      game.games_players.includes(player: :achievements).with_rank_by_score.map { |x| game_player_summary_line(x) }.join("\n")
     end
 
     def game_player_summary_line(game_player)
       emoji = Command::Rank::RANK_TO_EMOJI[game_player.rank_value]
-      score_infos = "#{game_player.player.slack_username} #{score_to_emoji(game_player.score)}"
+      score_infos = "#{game_player.player.displayed_name} #{score_to_emoji(game_player.score)}"
       elo_rank = elo_rank_lookup[game_player.player.username].rank_value
       elo_infos = ":fleur_de_lis: #{game_player.player.elo} (#{elo_rank})"
       "#{emoji} #{score_infos} - #{elo_infos} - #{elo_diff_text(game_player.elo_diff)}"
