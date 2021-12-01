@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_01_165732) do
+ActiveRecord::Schema.define(version: 2021_12_01_111504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "achievements", force: :cascade do |t|
+    t.string "name"
+    t.string "emoji"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "games", force: :cascade do |t|
     t.integer "created_by_id"
@@ -46,6 +53,15 @@ ActiveRecord::Schema.define(version: 2020_03_01_165732) do
     t.datetime "display_name_last_set_at"
     t.boolean "active", default: true
     t.index ["username"], name: "index_players_on_username", unique: true
+  end
+
+  create_table "players_achievements", force: :cascade do |t|
+    t.bigint "achievement_id"
+    t.bigint "player_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["achievement_id"], name: "index_players_achievements_on_achievement_id"
+    t.index ["player_id"], name: "index_players_achievements_on_player_id"
   end
 
   create_table "votes", force: :cascade do |t|

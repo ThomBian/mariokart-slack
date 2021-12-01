@@ -19,3 +19,7 @@ end
 task :set_inactive_players do
   Player.includes(:games).each { |p| p.set_inactive! if p.should_be_inactive? }
 end
+
+task :new_season do
+  Task::NewSeason.process
+end

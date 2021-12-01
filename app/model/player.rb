@@ -1,6 +1,8 @@
 class Player < ActiveRecord::Base
   has_many :games_players, class_name: '::GamesPlayers'
   has_many :games, through: :games_players, class_name: '::Game'
+  has_many :players_achievements, class_name: '::PlayersAchivements', dependent: :destroy
+  has_many :achievements, through: :players_achievements, class_name: '::Achievement'
 
   scope :ordered_by_elo, -> { order(elo: :desc) }
   scope :with_rank, -> { active.select('*, RANK() OVER (ORDER BY elo DESC) rank_value') }
