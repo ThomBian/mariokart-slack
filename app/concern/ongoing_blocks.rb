@@ -42,7 +42,7 @@ module Concern
     private
 
     def vote_lines(game)
-      game.games_players.includes(:player, :votes).map do |game_player|
+      game.games_players.includes(:votes, player: :achievements).map do |game_player|
         [vote_line(game_player), vote_line_context(game_player), {"type": "divider"}]
       end
     end
@@ -54,7 +54,7 @@ module Concern
           "type": "section",
           "text": {
               "type": "mrkdwn",
-              "text": "*#{game_player.player.slack_username}*\n#{stats_line}\n#{chance_to_win_line}"
+              "text": "#{game_player.player.display_name}\n#{stats_line}\n#{chance_to_win_line}"
           },
           "accessory": {
               "type": "button",

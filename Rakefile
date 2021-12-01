@@ -21,5 +21,5 @@ task :set_inactive_players do
 end
 
 task :new_season do
-  Task::NewSeason.process
+  Task::NewSeason.new.process
 end

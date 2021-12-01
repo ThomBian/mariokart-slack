@@ -6,6 +6,7 @@ require_all 'app/factory'
 require_all 'app/model'
 require_all 'app/command'
 require_all 'app/action'
+require_all 'app/task'
 
 class App < Sinatra::Base
   register Sinatra::ActiveRecordExtension

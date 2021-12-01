@@ -45,7 +45,7 @@ module Concern
 
     def game_player_summary_line(game_player)
       emoji = Command::Rank::RANK_TO_EMOJI[game_player.rank_value]
-      score_infos = "#{game_player.player.displayed_name} #{score_to_emoji(game_player.score)}"
+      score_infos = "#{game_player.player.display_name} #{score_to_emoji(game_player.score)}"
       elo_rank = elo_rank_lookup[game_player.player.username].rank_value
       elo_infos = ":fleur_de_lis: #{game_player.player.elo} (#{elo_rank})"
       "#{emoji} #{score_infos} - #{elo_infos} - #{elo_diff_text(game_player.elo_diff)}"

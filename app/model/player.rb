@@ -17,8 +17,8 @@ class Player < ActiveRecord::Base
     "<@#{username}>"
   end
 
-  def displayed_name
-    displayed_achievements = achievements.map {|a| a.emoji }.join('')
+  def display_name
+    displayed_achievements = achievements.map {|a| a.emoji }.join(' ')
     "#{slack_username} #{displayed_achievements}"
   end
 
