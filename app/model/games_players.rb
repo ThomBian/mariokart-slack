@@ -6,4 +6,5 @@ class GamesPlayers < ActiveRecord::Base
 
   scope :with_rank_by_score, -> { select('*, RANK() OVER (ORDER BY score DESC) rank_value') }
   scope :winners, -> { with_rank_by_score.select{|x| x.rank_value == 1} }
+  scope :current_season, -> { where(game: Game.current_season) }
 end

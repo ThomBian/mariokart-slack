@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_01_111504) do
+ActiveRecord::Schema.define(version: 2021_12_02_085006) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(version: 2021_12_01_111504) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "status", default: "draft", null: false
+    t.bigint "season_id"
+    t.index ["season_id"], name: "index_games_on_season_id"
     t.index ["status"], name: "index_games_on_status"
   end
 
@@ -60,8 +62,16 @@ ActiveRecord::Schema.define(version: 2021_12_01_111504) do
     t.bigint "player_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "season_id"
     t.index ["achievement_id"], name: "index_players_achievements_on_achievement_id"
     t.index ["player_id"], name: "index_players_achievements_on_player_id"
+    t.index ["season_id"], name: "index_players_achievements_on_season_id"
+  end
+
+  create_table "seasons", force: :cascade do |t|
+    t.boolean "is_current", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "votes", force: :cascade do |t|

@@ -1,75 +1,49 @@
 module Task
     class NewSeason
         def process
-            reset_achievements
-            save_achievements
-            reset_score
-            post_message
+            Season.transaction do
+                @current_season = Season.current
+
+                save_achievements
+                post_message
+                reset_score
+                create_new_season
+            end
         end
 
         private
 
-        def reset_achievements
-            PlayersAchievements.destroy_all
-        end
-
         def save_achievements
             # podium
-            # handle same rank
-            elo_top_five[0].achievements << Achievement.find_by(name: '1st place')
-            elo_top_five[1].achievements << Achievement.find_by(name: '2nd place')
-            elo_top_five[2].achievements << Achievement.find_by(name: '3rd place')
+            # TODO later: handle same rank
+            elo_top_five[0].players_achievements << PlayersAchievements.new(achievement: Achievement.find_by(name: '1st place'), season: @current_season)
+            elo_top_five[1].players_achievements << PlayersAchievements.new(achievement: Achievement.find_by(name: '2nd place'), season: @current_season)
+            elo_top_five[2].players_achievements << PlayersAchievements.new(achievement: Achievement.find_by(name: '3rd place'), season: @current_season)
             
-            # Todo: later
 
             # most game played
-            # most_game_achievement = Achievement.find_by(name: 'Most games')
-            # most_games_played_players.each {|p|  p.achievements << most_game_achievement}
+            most_games_played_players.each do |p|
+                p.players_achievements << PlayersAchievements.new(achievement: Achievement.find_by(name: 'Most games'), season: @current_season)
+            end
 
             # most correct votes
-            # most_correct_votes_achievement = Achievement.find_by(name: 'Most correct votes')
-            # most_correct_votes_players.each {|p|  p.achievements << most_correct_votes_achievement}
+            most_correct_votes_players.each do |p|
+                p.players_achievements << PlayersAchievements.new(achievement: Achievement.find_by(name: 'Most correct votes'), season: @current_season)
+            end
         end
 
         def elo_top_five
-            @elo_top_five ||= Player.with_rank.ordered_by_elo.select {|p| p.rank_value <= 5}
+            @elo_top_five ||= @current_season.top_players
         end
 
-        # Todo: later
+        def most_games_played_players
+            @most_games_played_players ||= @current_season.most_games_players
+        end
 
-        # def most_games_played_players
-        #     return @players_with_most_game if @players_with_most_game.defined?
-        #     @players_with_most_game = [] if GamesPlayers.count <= 0
 
-        #     players_ids = games_per_players.select {|k, v| v == max_game }.keys
-        #     @players_with_most_game = Player.where(id: player_ids)
-        #     @players_with_most_game
-        # end
-
-        # def games_per_players
-        #     @games_per_players ||= GamesPlayers.group(:player_id).count
-        # end
-
-        # def max_game_played
-        #     @max_game ||= games_per_players.values.max
-        # end
-
-        # def most_correct_votes_players
-        #     return @most_correct_votes_players if @most_correct_votes_players.deifned?
-        #     @most_correct_votes_players = [] if correct_votes_per_player.empty?
-
-        #     player_ids = correct_votes_per_players.select {|k, v| v == max_correct_votes }.keys
-        #     @most_correct_votes_players = Player.where(id: player_ids)
-        #     @most_correct_votes_players
-        # end
-
-        # def correct_votes_per_player
-        #     @correct_votes_per_player ||= Vote.winners.group(:voted_by).count
-        # end
-
-        # def max_correct_votes
-        #     @max_correct_votes ||= correct_votes_per_players.values.max
-        # end
+        def most_correct_votes_players
+            @most_correct_votes_players ||= @current_season.most_correct_votes_players
+        end
 
         def reset_score
             Player.update_all(elo: 1000)
@@ -98,13 +72,13 @@ module Task
                         }
                     ]
                 },
-                # {
-                #     "type": "section",
-                #     "text": {
-                #         "type": "mrkdwn",
-                #         "text": season_summary_text
-                #     }
-                # },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": season_summary_text
+                    }
+                },
                 {
                     "type": "divider"
                 },
@@ -126,24 +100,24 @@ module Task
                 {
                     "type": "divider"
                 },
-                # {
-                #     "type": "header",
-                #     "text": {
-                #         "type": "plain_text",
-                #         "text": ":eyes: Other awards",
-                #         "emoji": true
-                #     }
-                # },
-                # {
-                #     "type": "section",
-                #     "text": {
-                #         "type": "mrkdwn",
-                #         "text": other_awards_text
-                #     }
-                # },
-                # {
-                #     "type": "divider"
-                # },
+                {
+                    "type": "header",
+                    "text": {
+                        "type": "plain_text",
+                        "text": ":eyes: Other awards",
+                        "emoji": true
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": other_awards_text
+                    }
+                },
+                {
+                    "type": "divider"
+                },
                 {
                     "type": "context",
                     "elements": [
@@ -157,32 +131,42 @@ module Task
         end
 
         def season_summary_text
-            "Number of game played: 115 (~28h) \n Number of votes: 120 \n Number of players: 112"
+            nb_games = @current_season.number_of_games
+            nb_votes = @current_season.votes.count
+            nb_players = @current_season.number_of_players
+            "Number of games played: #{nb_games} (~#{(nb_games*0.25).round}h) \n Number of players: #{nb_players} \n Number of votes: #{nb_votes}"
         end
 
+        TEXTS = [':crown: 1st place:', ':dolphin: 2nd place:', ':wood: 3rd place:', '4th place:', '5th place:']
         def podium_text
-            ":crown: 1st place: #{elo_top_five[0].slack_username} \n :dolphin: 2nd place: #{elo_top_five[1].slack_username} \n :wood: 3rd place: #{elo_top_five[2].slack_username} \n \n 4th place: #{elo_top_five[3].slack_username} \n 5th place: #{elo_top_five[4].slack_username}"
+            elo_top_five.map.with_index {|p, i| [TEXTS[i], p.slack_username].join(' ')}.join("\n")
         end
-
-        # Todo for later;
 
         def other_awards_text
             texts = [most_played_text, most_correct_votes_text].compact
-            texts.count <= 0 ? 'No special award for this season...' : texts.join('\n \n')
+            texts.count <= 0 ? 'No special award for this season...' : texts.join("\n \n")
         end
 
         def most_played_text
-            return nil if most_games_played_players.count <= 0
+            return nil if @current_season.number_of_games <= 0
 
+            max_games = @current_season.max_games_played
             players_text = most_games_played_players.map{|p| p.slack_username}.join(', ')
-            "*:joystick: Player(s) who played the most with #{max_game_played} games (~#{(max_game_played * 0.25).round}h):* #{players_text}"
+            "*:joystick: Player(s) who played the most with #{max_games} games (~#{(max_games * 0.25).round}h):* #{players_text}"
         end
 
         def most_correct_votes_text
-            return nil if most_correct_votes_players.count <= 0
+            return nil if @current_season.max_correct_votes <= 0
 
             players_text = most_correct_votes_players.map{|p| p.slack_username}.join(', ')
-            "*:four_leaf_clover: Player(s) with the best guess on winners (#{max_correct_votes} correct votes):* #{players_text}"
+            "*:four_leaf_clover: Player(s) with the best guess on winners (#{@current_semax_correct_votes} correct votes):* #{players_text}"
+        end
+
+        def create_new_season
+            current = @current_season
+            current.update is_current: false
+
+            Season.new(is_current: true).save!
         end
     end
 end

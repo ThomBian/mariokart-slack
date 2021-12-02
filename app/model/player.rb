@@ -18,8 +18,12 @@ class Player < ActiveRecord::Base
   end
 
   def display_name
-    displayed_achievements = achievements.map {|a| a.emoji }.join(' ')
-    "#{slack_username} #{displayed_achievements}"
+    displayed_achievements = last_season_achievements.map {|a| a.emoji }.join(' ')
+    [slack_username, displayed_achievements].reject(&:empty?).join(' ')
+  end
+
+  def last_season_achievements
+    achievements.where(players_achievements: {season: Season.current.id - 1 })
   end
 
   def save_elo!(elo)

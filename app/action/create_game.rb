@@ -15,7 +15,7 @@ module Action
       return post_number_of_players_invalid_message unless number_of_players_valid?
       return post_game_ongoing_message if game_ongoing?
 
-      game = Game.create!({created_by: created_by, games_players_attributes: games_players_attributes})
+      game = Game.create!({created_by: created_by, games_players_attributes: games_players_attributes, season: Season.current})
 
       Slack::Client.post_message(blocks: ongoing_blocks(game))
     end

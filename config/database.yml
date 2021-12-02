@@ -1,8 +1,8 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: mariokart-elo
-  username: thombian
+  database: mariokart
+  username: biche
   password:
   host: localhost
   port: 5432
