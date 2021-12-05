@@ -28,7 +28,7 @@ class Season < ActiveRecord::Base
         return [] if games_players.count <= 0
 
         players_ids = games_per_players.select {|k, v| v == max_games_played }.keys
-        players.where(id: player_ids)
+        players.where(id: players_ids)
     end
 
     def max_games_played
@@ -38,8 +38,8 @@ class Season < ActiveRecord::Base
     def most_correct_votes_players
         return [] if correct_votes_per_players.empty?
 
-        player_ids = correct_votes_per_players.select {|k, v| v == max_correct_votes }.keys
-        players.where(id: player_ids)
+        players_ids = correct_votes_per_players.select {|k, v| v == max_correct_votes }.keys
+        players.where(id: players_ids)
     end
 
     def max_correct_votes

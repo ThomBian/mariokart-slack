@@ -134,7 +134,7 @@ module Task
             nb_games = @current_season.number_of_games
             nb_votes = @current_season.votes.count
             nb_players = @current_season.number_of_players
-            "Number of games played: #{nb_games} (~#{(nb_games*0.25).round}h) \n Number of players: #{nb_players} \n Number of votes: #{nb_votes}"
+            "Number of games played: #{nb_games} (~#{(nb_games*0.25).round}h) \n Number of players: #{nb_players} \n Number of correct votes (Number of votes): #{@current_season.number_of_correct_votes} (#{nb_votes})"
         end
 
         TEXTS = [':crown: 1st place:', ':dolphin: 2nd place:', ':wood: 3rd place:', '4th place:', '5th place:']
@@ -159,7 +159,7 @@ module Task
             return nil if @current_season.max_correct_votes <= 0
 
             players_text = most_correct_votes_players.map{|p| p.slack_username}.join(', ')
-            "*:four_leaf_clover: Player(s) with the best guess on winners (#{@current_semax_correct_votes} correct votes):* #{players_text}"
+            "*:four_leaf_clover: Player(s) with the best guess on winners (#{@current_season.max_correct_votes} correct votes):* #{players_text}"
         end
 
         def create_new_season
