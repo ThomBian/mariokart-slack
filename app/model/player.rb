@@ -88,7 +88,7 @@ class Player < ActiveRecord::Base
   end
 
   def need_to_save_small_avatar?
-    small_avatar_url.blank? || small_avatar_url_last_set_at > 1.months.ago
+    small_avatar_url.blank? || small_avatar_url_last_set_at.blank? || small_avatar_url_last_set_at > 1.months.ago
   end
 
   def need_to_save_display_name?
