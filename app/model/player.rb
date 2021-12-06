@@ -92,6 +92,6 @@ class Player < ActiveRecord::Base
   end
 
   def need_to_save_display_name?
-    display_name.blank? || display_name_last_set_at > 1.months.ago
+    display_name.blank? || display_name_last_set_at.blank? || display_name_last_set_at > 1.months.ago
   end
 end
