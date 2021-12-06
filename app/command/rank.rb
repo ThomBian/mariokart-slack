@@ -19,6 +19,7 @@ module Command
 
     def rank_of_the_day
       return if weekend?
+      return if Player.active.count <= 0
       ::Slack::Client.post_message(blocks: blocks(false))
     end
 

@@ -7,6 +7,7 @@ module Task
                 save_achievements
                 post_message
                 reset_score
+                set_all_players_inactive
                 create_new_season
             end
         end
@@ -160,6 +161,10 @@ module Task
 
             players_text = most_correct_votes_players.map{|p| p.slack_username}.join(', ')
             "*:four_leaf_clover: Player(s) with the best guess on winners (#{@current_season.max_correct_votes} correct votes):* #{players_text}"
+        end
+
+        def set_all_players_inactive
+            Player.includes(:games).each { |p| p.set_inactive! }
         end
 
         def create_new_season
