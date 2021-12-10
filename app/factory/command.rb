@@ -12,6 +12,8 @@ module Factory
         ::Command::Rank.new(params: @params)
       when 'stats'
         ::Command::Stats.new(params: @params)
+      when 'rematch'
+        ::Command::ReMatch.new(params: @params)
       else
         ::Command::Help.new(params: @params)
       end

@@ -7,7 +7,8 @@ module Action
     MAX_PLAYERS = 4
     MIN_PLAYERS = 2
 
-    def initialize(params)
+    def initialize(players: [], params: nil)
+      @players = players
       @params = params
     end
 
@@ -22,14 +23,8 @@ module Action
 
     private
 
-    def player_usernames_from_input
-      values["players_input"]["players_value"]["selected_users"]
-    end
-
     def games_players_attributes
-      player_usernames_from_input.map do |p_username|
-        {player: Player.find_or_create_by(username: p_username)}
-      end
+      @players.map {|player| {player: player}}
     end
 
     def created_by
@@ -42,7 +37,7 @@ module Action
     end
 
     def number_of_players_valid?
-      player_usernames_from_input.length >= MIN_PLAYERS && player_usernames_from_input.length <= MAX_PLAYERS
+      @players.length >= MIN_PLAYERS && @players.length <= MAX_PLAYERS
     end
 
     # post message

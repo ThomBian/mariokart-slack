@@ -16,8 +16,9 @@ module Command
           "type": "section",
           "text": {
             "type": "mrkdwn",
-            "text": "Here is how I work.\n" +
+            "text": "Huhoo, I did not get that... Here is how I work.\n" +
                       "Type `/mariokart new` to save a new game \n" +
+                      "Type `/mariokart rematch` to create a game with players from last game \n" +
                       "Type `/mariokart rank` to see the actual ranking \n" +
                       "Type `/mariokart stats` to see your in game stats"
           }
