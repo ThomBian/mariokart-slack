@@ -24,7 +24,11 @@ module Action
     private
 
     def games_players_attributes
-      @players.map {|player| {player: player}}
+      @players.map {|player| {player: player, odd: odds(player, @players - [player]) }}
+    end
+
+    def odds(player, other_players)
+      player.odds_to_win_against(other_players).round(2)
     end
 
     def created_by

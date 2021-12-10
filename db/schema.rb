@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_02_085006) do
+ActiveRecord::Schema.define(version: 2021_12_10_150748) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 2021_12_02_085006) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "elo_diff"
+    t.float "odd"
     t.index ["game_id", "player_id"], name: "index_games_players_on_game_id_and_player_id", unique: true
     t.index ["game_id"], name: "index_games_players_on_game_id"
     t.index ["player_id"], name: "index_games_players_on_player_id"
@@ -54,6 +55,7 @@ ActiveRecord::Schema.define(version: 2021_12_02_085006) do
     t.text "display_name"
     t.datetime "display_name_last_set_at"
     t.boolean "active", default: true
+    t.float "money", default: 50.0
     t.index ["username"], name: "index_players_on_username", unique: true
   end
 

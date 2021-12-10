@@ -46,11 +46,16 @@ class Player < ActiveRecord::Base
     name
   end
 
+  # @see https://www.aceodds.com/bet-calculator/odds-converter.html
+  def odds_to_win_against(players)
+    1 / chance_to_win_against(players)
+  end
+
   # @see https://stats.stackexchange.com/a/66398
   # @see "https://en.wikipedia.org/wiki/Elo_rating_system#Mathematical_details"
   def chance_to_win_against(players)
     qs = [self, players].flatten.map {|p| 10.pow(p.elo/400.0)}
-    (qs[0].to_f / qs.flatten.sum).round(3)
+    qs[0].to_f / qs.flatten.sum
   end
 
   def last_game
@@ -67,6 +72,13 @@ class Player < ActiveRecord::Base
 
   def set_active!
     update! active: true
+  end
+
+  def update_money(vote)
+    odd = vote.games_players.odd
+    bet = 1
+    new_amount = vote.correct ? odd * bet : -bet
+    update money: money + new_amount
   end
 
   private

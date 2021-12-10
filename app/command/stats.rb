@@ -8,7 +8,8 @@ module Command
       ::Stat::Score::Avg,
       ::Stat::Score::Performances,
       ::Stat::GamePlayed,
-      ::Stat::Vote
+      ::Stat::Vote,
+      ::Stat::Money
     ]
 
     def initialize(params:)

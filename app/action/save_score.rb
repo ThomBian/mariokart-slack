@@ -13,7 +13,9 @@ module Action
       save_new_elos!(new_elos_diff_player_id)
       reactivate_players!
       game.update! status: :saved, games_players_attributes: games_players_attributes(new_elos_diff_player_id)
+
       game.games_players.includes(:votes).winners.each {|gp| gp.votes.update_all correct: true }
+      game.games_players.map(&:votes).flatten.each {|v| v.voted_by.update_money(v) }
 
       Slack::Client.post_message(blocks: summary_blocks(game))
     end
