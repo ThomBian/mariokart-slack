@@ -15,7 +15,7 @@ module Factory
       when BUTTON_ACTION_ID
         ::Action::ShowSaveScoreModal.new(@params)
       when VOTE_ACTION_ID
-        ::Action::Vote.new(@params)
+        ::Action::ShowSaveVoteModal.new(@params)
       when CANCEL_BUTTON_ONGOING_GAME_ID
         ::Action::CancelOngoingGame.new(@params)
       else

@@ -10,6 +10,7 @@ require_all 'app/task'
 
 class App < Sinatra::Base
   register Sinatra::ActiveRecordExtension
+  include ::Concern::ServerResponse
 
   get '/' do
     'Hello world!'
@@ -25,7 +26,7 @@ class App < Sinatra::Base
       puts "Command received: #{command.class} with #{params}"
       command.process if command.present?
     end
-    ''
+    response_ok_basic
   rescue Slack::Web::Api::Errors::SlackError => e
     puts e.response.body
   end
@@ -34,7 +35,6 @@ class App < Sinatra::Base
   post '/actions' do
     action = Factory::Action.new(params).build
     action.process
-    ''
   rescue Slack::Web::Api::Errors::SlackError => e
     puts e.response.body
   end

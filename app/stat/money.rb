@@ -6,7 +6,7 @@ module Stat
           end
       
           def value
-            "#{@player.money} $Պ"
+            "#{@player.money.round(2)} $Պ"
           end
     end
 end

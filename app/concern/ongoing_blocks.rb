@@ -97,12 +97,17 @@ module Concern
 
     def avatars(votes)
       votes.map do |vote|
-        {
+        [{
             "type": "image",
             "image_url": vote.voted_by.get_or_load_small_avatar,
             "alt_text": "avatar of a player"
-        }
-      end
+        },
+        {
+					"type": "plain_text",
+					"text": "(#{vote.bet.round(2)} $Պ)",
+					"emoji": true
+				}]
+      end.flatten
     end
   end
 end

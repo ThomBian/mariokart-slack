@@ -1,6 +1,7 @@
 module Action
   class CancelOngoingGame
     include ::Concern::HasPayloadParsing
+    include ::Concern::ServerResponse
 
     def initialize(params)
       @params = params
@@ -11,6 +12,7 @@ module Action
       gp.destroy! unless gp.status == 'saved'
 
       ::Slack::Client.delete_message(ts: message_ts)
+      response_ok_basic
     end
   end
 end

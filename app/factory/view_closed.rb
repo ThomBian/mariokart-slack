@@ -11,7 +11,7 @@ module Factory
       when ::Factory::ViewSubmission::SAVE_SCORE_CALLBACK_ID
         ::Action::CancelGame.new(@params)
       else
-        raise "Unsupported close view callback id: #{view_callback_id}"
+        puts "Unsupported close view callback id: #{view_callback_id}"
       end
     end
   end

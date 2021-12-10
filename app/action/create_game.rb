@@ -3,6 +3,7 @@ module Action
     include ::Concern::HasPayloadParsing
     include ::Concern::HasApiParsing
     include ::Concern::OngoingBlocks
+    include ::Concern::ServerResponse
 
     MAX_PLAYERS = 4
     MIN_PLAYERS = 2
@@ -19,6 +20,7 @@ module Action
       game = Game.create!({created_by: created_by, games_players_attributes: games_players_attributes, season: Season.current})
 
       Slack::Client.post_message(blocks: ongoing_blocks(game))
+      response_ok_basic
     end
 
     private

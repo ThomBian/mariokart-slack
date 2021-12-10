@@ -41,7 +41,7 @@ module Concern
     end
 
     def private_metadata
-      view['private_metadata'] if view.present?
+      JSON.parse(view['private_metadata']) if view.present?
     end
 
     def view_callback_id

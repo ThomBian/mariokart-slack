@@ -3,6 +3,7 @@ class Player < ActiveRecord::Base
   has_many :games, through: :games_players, class_name: '::Game'
   has_many :players_achievements, class_name: '::PlayersAchievements', dependent: :destroy
   has_many :achievements, through: :players_achievements, class_name: '::Achievement'
+  has_many :votes, class_name: '::Vote', foreign_key: 'voted_by_id'
 
   scope :ordered_by_elo, -> { order(elo: :desc) }
   scope :with_rank, -> { active.select('*, RANK() OVER (ORDER BY elo DESC) rank_value') }
@@ -43,7 +44,7 @@ class Player < ActiveRecord::Base
     name = get_profile_from_api['display_name']
     name = get_profile_from_api['real_name'] if name.blank?
     save_display_name(name)
-    name
+    display_name
   end
 
   # @see https://www.aceodds.com/bet-calculator/odds-converter.html
@@ -74,11 +75,12 @@ class Player < ActiveRecord::Base
     update! active: true
   end
 
-  def update_money(vote)
-    odd = vote.games_players.odd
-    bet = 1
-    new_amount = vote.correct ? odd * bet : -bet
-    update money: money + new_amount
+  def update_money!(vote)
+    update money: money + vote.earnings
+  end
+
+  def has_already_voted?(game)
+    votes.where(game: game).any?
   end
 
   private

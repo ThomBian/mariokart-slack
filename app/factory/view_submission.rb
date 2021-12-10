@@ -3,6 +3,7 @@ module Factory
     include Concern::HasPayloadParsing
 
     SAVE_SCORE_CALLBACK_ID = 'save_score_submission'
+    SAVE_VOTE_CALLBACK_ID = 'save_vote_submission'
     NEW_CALLBACK_ID = 'create_game'
 
     def initialize(params)
@@ -15,6 +16,8 @@ module Factory
         ::Action::CreateGame.new(players: players, params: @params)
       when SAVE_SCORE_CALLBACK_ID
         ::Action::SaveScore.new(@params)
+      when SAVE_VOTE_CALLBACK_ID
+        ::Action::Vote.new(@params)
       else
         raise 'Unsupported modal id'
       end

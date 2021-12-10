@@ -70,7 +70,7 @@ module Concern
 
     def vote_text(game)
       users_with_correct_vote = ::Vote.includes(:voted_by).winners.where(games_players: game.games_players).map do |vote|
-        vote.voted_by.slack_username
+        [vote.voted_by.slack_username, "(#{vote.earnings.round(2)} $Պ)"].join(' ')
       end
       users_with_correct_vote.any? ? "List of correct voters: #{users_with_correct_vote.join(', ')}" : 'No voters were right on that one!'
     end

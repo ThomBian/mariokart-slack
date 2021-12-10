@@ -1,6 +1,7 @@
 module Action
   class ShowSaveScoreModal
     include Concern::HasPayloadParsing
+    include ::Concern::ServerResponse
 
     def initialize(params)
       @params = params
@@ -9,9 +10,9 @@ module Action
     def process
       @client = Slack::Client.new
       response = @client.views_open(view_payload)
-      raise response unless response['ok']
 
       ::Slack::Client.delete_message(ts: message_ts)
+      include ::Concern::ServerResponse
     end
 
     private
@@ -32,7 +33,7 @@ module Action
       {
           "type": "modal",
           "callback_id": ::Factory::ViewSubmission::SAVE_SCORE_CALLBACK_ID,
-          "private_metadata": game.id.to_s,
+          "private_metadata": {game_id: game.id}.to_json.to_s,
           "notify_on_close": true,
           "title": {
               "type": "plain_text",

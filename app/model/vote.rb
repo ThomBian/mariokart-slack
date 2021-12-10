@@ -4,4 +4,9 @@ class Vote < ActiveRecord::Base
   belongs_to :game, class_name: '::Game'
 
   scope :winners, -> { where(correct: true) }
+
+  def earnings
+    odd = games_players.odd
+    new_amount = correct ? odd * bet : -bet
+  end
 end
