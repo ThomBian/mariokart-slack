@@ -1,6 +1,6 @@
 module Factory
   class ViewClosed
-    include ::Concern::HasPayloadParsing
+    include Concern::HasPayloadParsing
 
     def initialize(params)
       @params = params

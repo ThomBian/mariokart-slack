@@ -1,9 +1,9 @@
 module Action
   class SaveScore
-    include ::Concern::HasPayloadParsing
+    include Concern::HasPayloadParsing
     include Lib::Elo
-    include ::Concern::GameSummaryBlocks
-    include ::Concern::ServerResponse
+    include Concern::GameSummaryBlocks
+    include Concern::ServerResponse
 
     def initialize(params)
       @params = params

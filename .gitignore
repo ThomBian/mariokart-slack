@@ -60,3 +60,7 @@ build-iPhoneSimulator/
 
 #env
 .env
+
+# Frontend
+node_modules/
+public/js/

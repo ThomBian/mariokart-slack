@@ -1,6 +1,5 @@
 require_relative './config/environment'
-require './app'
+require_relative './app.rb'
 
 $stdout.sync = true
-
 run App

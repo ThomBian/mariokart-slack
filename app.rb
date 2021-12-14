@@ -1,21 +1,25 @@
-require_all 'app/stat'
-require_all 'app/concern'
-require_all 'app/lib'
-require_all 'app/slack'
-require_all 'app/factory'
-require_all 'app/model'
-require_all 'app/command'
-require_all 'app/action'
-require_all 'app/task'
-
 class App < Sinatra::Base
   register Sinatra::ActiveRecordExtension
+
+  use Rack::JSONBodyParser
+  
+  set :root,  File.dirname(__FILE__)
+  set :views, Proc.new { File.join(root, 'app', 'views') }
+
   include ::Concern::ServerResponse
 
   get '/' do
-    'Hello world!'
+    @entry_point = File.join('js', 'index.js')
+    erb :template
   end
 
+  post '/data' do
+    query_string = params[:query]
+    result = GraphQl::AppSchema.execute(query_string)
+    response_ok_with_body(result)
+  end
+
+  # Slack 
   post '/' do
     return unless params[:token] == ENV['SLACK_TOKEN']
 

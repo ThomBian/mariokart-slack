@@ -1,6 +1,6 @@
 module Command
   class New
-    include ::Concern::HasApiParsing
+    include Concern::HasApiParsing
 
     attr_reader :nb_players
 

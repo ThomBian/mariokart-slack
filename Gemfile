@@ -14,6 +14,9 @@ gem 'pry'
 gem 'logger'
 gem 'enumerize'
 gem 'httparty'
+gem 'graphql'
+gem 'rack-contrib'
+gem 'zeitwerk'
 
 group :test do
   gem 'rack-test'

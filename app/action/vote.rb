@@ -1,8 +1,8 @@
 module Action
   class Vote
-    include ::Concern::HasPayloadParsing
-    include ::Concern::OngoingBlocks
-    include ::Concern::ServerResponse
+    include Concern::HasPayloadParsing
+    include Concern::OngoingBlocks
+    include Concern::ServerResponse
 
     def initialize(params)
       @params = params

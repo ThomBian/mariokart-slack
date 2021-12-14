@@ -1,7 +1,7 @@
 module Action
     class ShowSaveVoteModal
         include Concern::HasPayloadParsing
-        include ::Concern::ServerResponse
+        include Concern::ServerResponse
 
         def initialize(params)
             @params = params

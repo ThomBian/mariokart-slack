@@ -1,9 +1,9 @@
 module Action
   class CreateGame
-    include ::Concern::HasPayloadParsing
-    include ::Concern::HasApiParsing
-    include ::Concern::OngoingBlocks
-    include ::Concern::ServerResponse
+    include Concern::HasPayloadParsing
+    include Concern::HasApiParsing
+    include Concern::OngoingBlocks
+    include Concern::ServerResponse
 
     MAX_PLAYERS = 4
     MIN_PLAYERS = 2
