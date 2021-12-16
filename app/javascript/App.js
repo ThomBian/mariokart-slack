@@ -2,10 +2,12 @@ import React from 'react'
 import styled from 'styled-components';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 import { ThemeProvider } from 'styled-components'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
+
+import { cssQueries } from './basics/Media';
 
 import theme from './theme'
 
@@ -23,24 +25,27 @@ library.add(fas)
 
 const Container = styled.div`
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 0px;
-`
+    
+    @media ${cssQueries.desktop} {
+        flex-direction: row;
+    }
 
-const NavbarContainer = styled.div`
-    position: fixed;
-    width: 200px;
-    height: 100%; 
-    z-index: 1; 
-    top: 0; 
-    left: 0;
-    padding: 50px 16px 16px;
+    @media ${cssQueries.mobile} {
+        flex-direction: column;
+    }
+
+    height: 100%;
 `
 
 const ContentContainer = styled.div`
     width: 100%;
-    margin-left: 220px;
+    @media ${cssQueries.desktop} {
+        margin-left: 220px;
+    }
+
+    @media ${cssQueries.mobile} {
+        margin-top: 50px;
+    }
 `
 
 const App = () => (
@@ -48,13 +53,12 @@ const App = () => (
         <ThemeProvider theme={theme}>
             <BrowserRouter>
                 <Container>
-                    <NavbarContainer>
-                        <Navbar />
-                    </NavbarContainer>
+                    <Navbar />
 
                     <ContentContainer>
                         <Routes>
-                            <Route path="/" element={<Games />} />
+                            <Route path="/" element={<Navigate to="games" />} />
+                            <Route path="games" element={<Games />} />
                             <Route path="ranking" element={<Ranking />} />
                         </Routes>
                     </ContentContainer>

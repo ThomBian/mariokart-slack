@@ -46,7 +46,7 @@ const Ranking = () => {
             <Container>
                 {
                     data.players.map(({ id, currentRank, displayName, elo }) => (
-                        <PlayerLineContainer>
+                        <PlayerLineContainer key={id}>
                             <PlayerLine>
                                 <Rank>{currentRank}</Rank>
                                 <Player key={id} displayName={displayName} />
