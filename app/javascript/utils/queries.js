@@ -15,6 +15,7 @@ const GAMES = gql`
                     displayName
                     elo
                     currentRank
+                    smallAvatarUrl
                 }
                 votes {
                     correct
@@ -35,6 +36,7 @@ const PLAYERS = gql`
             displayName
             elo
             currentRank
+            smallAvatarUrl
         }
     }
 `

@@ -22,6 +22,8 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     flex-direction: column-reverse;
+    justify-content: center;
+    width: 30px;
 `
 
 const Label = styled.div`
