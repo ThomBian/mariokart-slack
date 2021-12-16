@@ -3,12 +3,21 @@ import styled from 'styled-components'
 import { useQuery } from '@apollo/client'
 
 import { GAMES } from 'utils/queries'
+import { cssQueries } from 'basics/Media';
 
 import Game from './Games/Game'
 
 const Container = styled.div`
-    & > :not(:last-child) {
-        margin-bottom: 12px;
+    @media ${cssQueries.desktop} {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    @media ${cssQueries.mobile} {
+        & > :not(:last-child) {
+            margin-bottom: 8px;
+        }
     }
 `
 
@@ -20,9 +29,9 @@ const Games = () => {
         <div>
             <h1>Games</h1>
             <Container>
-            {
-                data.games.map(({ id, ...props }) => <Game key={id} id={id} {...props} />)
-            }
+                {
+                    data.games.map(({ id, ...props }) => <Game key={id} id={id} {...props} />)
+                }
             </Container>
         </div>
     )

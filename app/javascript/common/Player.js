@@ -14,6 +14,8 @@ const Container = styled.div`
 
 const Name = styled.div`
     font-size: 20px;
+    display: flex;
+    align-items: center;
 `
 
 const parseName = (name) => name.replace(/[<|>|@]/gi, '');
@@ -21,10 +23,11 @@ const parseName = (name) => name.replace(/[<|>|@]/gi, '');
 
 const Player = ({ displayName, smallAvatarUrl }) => {
     const name = parseName(displayName)
+
     return (
         <Container>
-            <Name>{name}</Name>
             <Avatar src={smallAvatarUrl} name={name} />
+            <Name>{name}</Name>
         </Container>
     )
 }

@@ -2,28 +2,33 @@ import React from "react";
 import styled from "styled-components";
 
 const CustomImg = styled.img`
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     border-radius: 2px;
 `
 
-const NoSrcAvatarContainer = styled.div`
-    width: 12px;
-    height: 12px;
+const PlaceholderContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+
     border-radius: 2px;
     text-align: center;
-    padding: 4px;
 
     background: ${({ theme }) => theme.colors.black};
     color: ${({ theme }) => theme.colors.white};
 `
 
-const NoSrcAvatar = ({ name }) => {
+const Placeholder = ({ name }) => {
     const twoLetters = name.slice(0, 1).toUpperCase()
 
-    return (<NoSrcAvatarContainer>{twoLetters}</NoSrcAvatarContainer>)
+    return (<PlaceholderContainer>{twoLetters}</PlaceholderContainer>)
 }
 
-const Avatar = ({ src, name }) => (src ? <CustomImg src={src} /> : <NoSrcAvatar name={name} />)
+const Avatar = ({ src, name }) => (src ? <CustomImg src={src} /> : <Placeholder name={name} />)
 
 export default Avatar;
