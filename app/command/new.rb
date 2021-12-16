@@ -1,6 +1,7 @@
 module Command
   class New
     include Concern::HasApiParsing
+    include Concern::OngoingBlocks
 
     attr_reader :nb_players
 
@@ -24,11 +25,9 @@ module Command
     end
 
     def post_game_ongoing_message
-      Slack::Client.post_ephemeral_message(
-          text: "A game is already ongoing!",
-          user: user_id,
-          channel_id: channel_id
-      )
+      game = Game.draft.last
+      Slack::Client.post_message(blocks: ongoing_blocks(game))
+      response_ok_basic
     end
 
     def view_payload

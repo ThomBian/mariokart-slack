@@ -48,11 +48,9 @@ module Action
 
     # post message
     def post_game_ongoing_message
-      Slack::Client.post_ephemeral_message(
-          text: "A game is already ongoing!",
-          user: command_sent_by_user_id || user_id,
-          channel_id: channel_id
-      )
+      game = Game.draft.last
+      Slack::Client.post_message(blocks: ongoing_blocks(game))
+      response_ok_basic
     end
 
     def post_number_of_players_invalid_message
