@@ -11,6 +11,10 @@ module.exports = {
     filename: 'index.js',
     path: path.resolve(__dirname, "./public/js")
   },
+  resolve: {
+    extensions: [ '.ts', '.js', '*' ],
+    modules: [path.resolve(__dirname, "./app/javascript"), "node_modules"]
+  },
   module: {
     rules: [
       {
@@ -28,7 +32,7 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
-        test: /\.(png|jp(e*)g|svg|gif)$/,
+        test: /\.(png|jp(e*)g|gif)$/,
         use: ['file-loader'],
       },
       {

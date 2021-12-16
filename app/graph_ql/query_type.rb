@@ -2,19 +2,16 @@ module GraphQl
     class QueryType < GraphQL::Schema::Object
         description "The query root of this schema"
 
-        field :game, Types::GameType, "Find a game by id" do
-            argument :id, ID
-        end
-
-
         field :games, [Types::GameType], "Returns all games", null: false
 
-        def game(id:)
-            ::ModelsGame.find(id)
+        field :players, [Types::PlayerType], "Returns all players", null: false
+
+        def games(limit: 20)
+            query = ::Game.all.order('created_at DESC').limit(limit)
         end
 
-        def games
-            ::Game.all
+        def players
+            ::Player.with_rank.all
         end
     end
 end

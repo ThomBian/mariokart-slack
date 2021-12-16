@@ -54,7 +54,7 @@ module Concern
           "type": "section",
           "text": {
               "type": "mrkdwn",
-              "text": "#{game_player.player.display_name}\n#{stats_line}\n#{odds_line}"
+              "text": "#{game_player.player.name_with_achievements}\n#{stats_line}\n#{odds_line}"
           },
           "accessory": {
               "type": "button",

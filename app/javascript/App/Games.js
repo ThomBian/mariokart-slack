@@ -1,19 +1,14 @@
 import React from 'react'
-import { gql, useQuery } from '@apollo/client'
+import styled from 'styled-components'
+import { useQuery } from '@apollo/client'
+
+import { GAMES } from 'utils/queries'
 
 import Game from './Games/Game'
 
-const GAMES = gql`
-    query GetGames {
-        games {
-            status
-            id
-            players {
-                id
-                displayName
-                elo
-            }
-        }
+const Container = styled.div`
+    & > :not(:last-child) {
+        margin-bottom: 12px;
     }
 `
 
@@ -24,9 +19,11 @@ const Games = () => {
     return (
         <div>
             <h1>Games</h1>
+            <Container>
             {
                 data.games.map(({ id, ...props }) => <Game key={id} id={id} {...props} />)
             }
+            </Container>
         </div>
     )
 }

@@ -18,7 +18,7 @@ class Player < ActiveRecord::Base
     "<@#{username}>"
   end
 
-  def display_name
+  def name_with_achievements
     displayed_achievements = last_season_achievements.map {|a| a.emoji }.join(' ')
     [slack_username, displayed_achievements].reject(&:empty?).join(' ')
   end
@@ -81,6 +81,13 @@ class Player < ActiveRecord::Base
 
   def has_already_voted?(game)
     votes.where(game: game).any?
+  end
+
+  def current_rank
+    return -1 unless active?
+    hash = {}
+    Player.with_rank.each {|p| hash[p.id] = p.rank_value}
+    hash[id]
   end
 
   private

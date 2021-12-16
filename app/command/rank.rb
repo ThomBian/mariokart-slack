@@ -55,7 +55,7 @@ module Command
     def ranking_text
       Player.includes(:achievements).with_rank.ordered_by_elo.map do |player|
         rank_value = player.rank_value <= 4 ? "#{RANK_TO_EMOJI[player.rank_value]}": "#{player.rank_value}.  "
-         "#{rank_value} #{player.display_name} (#{player.elo})"
+         "#{rank_value} #{player.name_with_achievements} (#{player.elo})"
       end.join("\n")
     end
 
