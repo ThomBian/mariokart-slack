@@ -24,7 +24,7 @@ const Group = styled.div`
     }
 `
 
-const TabContainer = styled.div`
+const CustomLink = styled(Link)`
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -40,9 +40,6 @@ const TabContainer = styled.div`
     background: ${({ active, theme }) => active && theme.colors.primary1};
     & > * { color: ${({ active, theme }) => active ? theme.colors.primary4 : theme.colors.primary6}; }
     & > svg { fill: ${({ active, theme }) => active ? theme.colors.primary4 : theme.colors.primary6}; }
-`
-
-const CustomLink = styled(Link)`
     text-decoration: none;
 `
 
@@ -51,9 +48,9 @@ const Tab = ({ children, to, ...props }) => {
     const active = useMatch({ path: resolved.pathname, end: true });
 
     return (
-        <TabContainer active={active}>
-            <CustomLink to={to} {...props}>{children}</CustomLink>
-        </TabContainer>
+        <CustomLink to={to} {...props} active={active}>
+            {children}
+        </CustomLink>
     )
 }
 
