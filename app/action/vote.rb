@@ -11,6 +11,7 @@ module Action
     def process
       return post_already_voted_message if voter.has_already_voted?(games_players.game)
       return not_enough_money_error if voter.money < bet
+      return zero_money_vote if bet == 0
 
       ::Vote.create!({games_players: games_players, game: games_players.game, voted_by: voter, bet: bet})
 
@@ -46,6 +47,17 @@ module Action
         "response_action": "errors",
         "errors": {
           "#{ShowSaveVoteModal::INPUT_ID}": "You do not have enough money!"
+        }
+      }
+
+      response_ok_with_body(body)
+    end
+    
+    def zero_money_vote
+      body = {
+        "response_action": "errors",
+        "errors": {
+          "#{ShowSaveVoteModal::INPUT_ID}": "Take some risk, you cannot vote 0 $Պ!"
         }
       }
 
