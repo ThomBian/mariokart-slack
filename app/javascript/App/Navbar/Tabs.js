@@ -41,6 +41,10 @@ const CustomLink = styled(Link)`
     & > * { color: ${({ active, theme }) => active ? theme.colors.primary4 : theme.colors.primary6}; }
     & > svg { fill: ${({ active, theme }) => active ? theme.colors.primary4 : theme.colors.primary6}; }
     text-decoration: none;
+
+    &:hover {
+        background: ${({ active, theme }) => !active && theme.colors.default1};
+    }
 `
 
 const Tab = ({ children, to, ...props }) => {

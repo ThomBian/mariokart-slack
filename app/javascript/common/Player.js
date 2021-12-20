@@ -13,6 +13,10 @@ const Container = styled.div`
     & > :not(:last-child) {
         margin-right: 4px;
     }
+
+    &:hover {
+        color: ${({ theme }) => theme.colors.primary3}; 
+    }
 `
 
 const Name = styled.div`
