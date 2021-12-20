@@ -106,6 +106,14 @@ class Player < ActiveRecord::Base
     [Time.now, gps.pluck(:created_at)].flatten.map{|x| x.strftime("%Y-%m-%d %H:%M:%S")}.zip(elos).reverse()
   end
 
+  def score_history
+    games_players
+      .current_season.where('score IS NOT NULL')
+      .order('created_at')
+      .pluck(:created_at, :score)
+      .map {|current| [current[0].strftime("%Y-%m-%d %H:%M:%S"), current[1]]}
+  end
+
   private
 
   def save_small_avatar(new_avatar)

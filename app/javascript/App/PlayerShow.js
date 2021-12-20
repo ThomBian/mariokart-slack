@@ -12,7 +12,8 @@ import Avatar from "common/Avatar";
 
 import { color as eloColor, icon as eloIcon } from "./Games/Game/FinishedLines/EloDiff"
 import Achievement from "./PlayerShow/Achievement";
-import EloHistory from "./PlayerShow/EloHistory";
+import LineGraph from "./PlayerShow/LineGraph";
+import BarGraph from "./PlayerShow/BarGraph";
 
 
 const Container = styled.div`
@@ -108,6 +109,12 @@ const ProfileStatContainer = styled.div`
     }
 `
 
+const GraphsContainer = styled.div`
+    & > :not(:last-child) {
+        margin-bottom: 24px;
+    }
+`
+
 const GraphTitle = styled.div`
     font-weight: bold;
     font-size: 20px;
@@ -139,6 +146,21 @@ const Elo = ({ elo, elodiff }) => (
 
 const exist = (el, elements) => elements.indexOf(el) !== -1
 
+const scoreToLeague = (score) => {
+    if (score === 60) { return "perfect" }
+    if (score >= 35) { return "ligue1" }
+    if (score >= 30) { return "ligue2" }
+    else { return "unacceptable" }
+}
+
+const groupScoreByLeague = (scores) => {
+    return scores.reduce((memo, score) => {
+        const key = scoreToLeague(score)
+        memo[key] = memo[key] + 1
+        return memo
+    }, { "unacceptable": 0, "ligue2": 0, "ligue1": 0, "perfect": 0 })
+}
+
 const PlayerShow = () => {
     const params = useParams();
 
@@ -151,6 +173,7 @@ const PlayerShow = () => {
     const name = parseName(player.displayName)
     const achievementNames = player.achievements.map(({ name }) => name)
 
+    const scoresByLeagues = groupScoreByLeague(player.scoreHistory.map(({ y }) => parseInt(y)))
     return (
         <Container>
             <HeaderContainer>
@@ -180,12 +203,33 @@ const PlayerShow = () => {
             </Section>
             <Section>
                 <Title>Stats</Title>
-                <div>
-                    <GraphTitle>Elo</GraphTitle>
-                    <GraphContainer>
-                        <EloHistory points={player.eloHistory} />
-                    </GraphContainer>
-                </div>
+                <GraphsContainer>
+                    <div>
+                        <GraphTitle>Elo</GraphTitle>
+                        <GraphContainer>
+                            <LineGraph data={{ id: 'elo', points: player.eloHistory }} />
+                        </GraphContainer>
+                    </div>
+
+                    <div>
+                        <GraphTitle>Score per games</GraphTitle>
+                        <GraphContainer>
+                            <LineGraph data={{ id: 'score', points: player.scoreHistory }} />
+                        </GraphContainer>
+                    </div>
+
+                    <div>
+                        <GraphTitle>Leagues</GraphTitle>
+                        <GraphContainer>
+                            <BarGraph data={{
+                                id: 'leagues',
+                                series: Object.keys(scoresByLeagues).map((key) => ({ "league": key, "games": scoresByLeagues[key] })),
+                                keys: ['games'],
+                                indexBy: 'league',
+                            }} />
+                        </GraphContainer>
+                    </div>
+                </GraphsContainer>
             </Section>
         </Container>)
 }

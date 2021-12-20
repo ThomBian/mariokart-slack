@@ -57,6 +57,10 @@ query GetPlayer($id: String!) {
         x
         y
     }
+    scoreHistory {
+        x
+        y
+    }
     achievements {
         name
     }

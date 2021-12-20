@@ -10,6 +10,7 @@ module GraphQl
         field :last_elo_diff, Integer
         field :avg_score, Integer
         field :elo_history, [Types::DataPointType], null: false
+        field :score_history, [Types::DataPointType], null: false
 
         field :achievements, [Types::AchievementType], null: false
 
@@ -35,6 +36,10 @@ module GraphQl
 
         def elo_history
             object.elo_history.map{|p| {x: p[0].to_s, y: p[1].to_s}}
+        end
+
+        def score_history
+            object.score_history.map{|p| {x: p[0].to_s, y: p[1].to_s}}
         end
 
         private 

@@ -2,11 +2,10 @@ import React from "react";
 import { ResponsiveLine } from '@nivo/line'
 import theme from 'theme.js'
 
-const EloHistory = ({ points }) => {
-    const nivoPoints = points.map(({ x, y }) => ({ "x": x, "y": y }))
+const LineGraph = ({ data }) => {
     return (
         <ResponsiveLine
-            data={[{ id: 'elo', data: nivoPoints }]}
+            data={[{ id: data.id, data: data.points }]}
             margin={{ top: 50, right: 50, bottom: 68, left: 50 }}
             xScale={{ type: 'point' }}
             yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
@@ -27,7 +26,7 @@ const EloHistory = ({ points }) => {
                 tickSize: 5,
                 tickPadding: 5,
                 tickRotation: 0,
-                legend: 'elo',
+                legend: data.id,
                 legendOffset: -40,
                 legendPosition: 'middle'
             }}
@@ -42,4 +41,4 @@ const EloHistory = ({ points }) => {
     )
 }
 
-export default EloHistory
+export default LineGraph
