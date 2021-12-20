@@ -5,6 +5,7 @@ class App < Sinatra::Base
   
   set :root,  File.dirname(__FILE__)
   set :views, Proc.new { File.join(root, 'app', 'views') }
+  set :public_folder, 'public'
 
   include ::Concern::ServerResponse
 
@@ -14,7 +15,9 @@ class App < Sinatra::Base
   end
 
   get '/player/:id' do
-    redirect '/'
+    @entry_point = File.join('/js', 'index.js')
+    puts @entry_point
+    erb :template
   end
 
   post '/data' do

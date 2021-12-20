@@ -49,6 +49,7 @@ query GetPlayer($id: String!) {
     elo
     currentRank
     smallAvatarUrl
+    mediumAvatarUrl
     gamesPlayed
     lastEloDiff
     avgScore

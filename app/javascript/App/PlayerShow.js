@@ -155,7 +155,7 @@ const PlayerShow = () => {
         <Container>
             <HeaderContainer>
                 <Header>
-                    <Avatar size={88} name={name} src={player.smallAvatarUrl} />
+                    <Avatar size={88} name={name} src={player.mediumAvatarUrl} />
                     <Name>{name}</Name>
                 </Header>
                 <ProfileStats>
