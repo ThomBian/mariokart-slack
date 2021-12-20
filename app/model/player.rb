@@ -39,6 +39,11 @@ class Player < ActiveRecord::Base
     small_avatar_url
   end
 
+  def get_or_load_medium_avatar
+    save_medium_avatar(get_profile_from_api['image_192']) if need_to_save_medium_avatar?
+    medium_avatar_url
+  end
+
   def get_or_load_display_name
     display_name unless need_to_save_display_name?
     name = get_profile_from_api['display_name']
@@ -111,6 +116,10 @@ class Player < ActiveRecord::Base
     update! display_name: new_display_name, display_name_last_set_at: Time.now
   end
 
+  def save_medium_avatar(new_avatar)
+    update! medium_avatar_url: new_avatar, medium_avatar_url_last_set_at: Time.now
+  end
+
   def get_profile_from_api
     return @response if defined? @response
     client = Slack::Client.new
@@ -120,10 +129,14 @@ class Player < ActiveRecord::Base
   end
 
   def need_to_save_small_avatar?
-    small_avatar_url.blank? || small_avatar_url_last_set_at.blank? || small_avatar_url_last_set_at > 1.months.ago
+    small_avatar_url.blank? || small_avatar_url_last_set_at.blank? || small_avatar_url_last_set_at >= 1.day.ago
   end
 
   def need_to_save_display_name?
-    display_name.blank? || display_name_last_set_at.blank? || display_name_last_set_at > 1.months.ago
+    display_name.blank? || display_name_last_set_at.blank? || display_name_last_set_at >= 1.day.ago
+  end
+
+  def need_to_save_medium_avatar?
+    medium_avatar_url.blank? || medium_avatar_url_last_set_at.blank? || medium_avatar_url_last_set_at >= 1.day.ago
   end
 end

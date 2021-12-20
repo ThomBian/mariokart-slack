@@ -23,3 +23,7 @@ end
 task :new_season do
   Task::NewSeason.new.process
 end
+
+task :update_players do
+  Task::UpdatePlayersFromSlack.new.process
+end

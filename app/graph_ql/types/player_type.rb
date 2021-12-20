@@ -5,6 +5,7 @@ module GraphQl
         field :elo, Integer, null: false
         field :current_rank, Integer, null: false
         field :small_avatar_url, String
+        fiedl :medium_avatar_url, String
         field :games_played, Integer
         field :last_elo_diff, Integer
         field :avg_score, Integer
