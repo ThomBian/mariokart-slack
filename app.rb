@@ -13,9 +13,14 @@ class App < Sinatra::Base
     erb :template
   end
 
+  get '/player/:id' do
+    redirect '/'
+  end
+
   post '/data' do
     query_string = params[:query]
-    result = GraphQl::AppSchema.execute(query_string)
+    variables = params[:variables]
+    result = GraphQl::AppSchema.execute(query_string, variables: variables)
     response_ok_with_body(result)
   end
 

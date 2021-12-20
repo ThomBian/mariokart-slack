@@ -41,4 +41,30 @@ const PLAYERS = gql`
     }
 `
 
-export { GAMES, PLAYERS }
+const PLAYER = gql`
+query GetPlayer($id: String!) {
+  player(id: $id) {
+    id
+    displayName
+    elo
+    currentRank
+    smallAvatarUrl
+    gamesPlayed
+    lastEloDiff
+    avgScore
+    eloHistory {
+        x
+        y
+    }
+    achievements {
+        name
+    }
+  },
+  achievements {
+      name
+      emoji
+  }
+}
+`;
+
+export { GAMES, PLAYERS, PLAYER }

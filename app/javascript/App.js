@@ -15,6 +15,7 @@ import Navbar from './App/Navbar';
 
 import Games from './App/Games'
 import Ranking from './App/Ranking';
+import PlayerShow from './App/PlayerShow';
 
 const client = new ApolloClient({
     uri: '/data',
@@ -60,6 +61,7 @@ const App = () => (
                             <Route path="/" element={<Navigate to="games" />} />
                             <Route path="games" element={<Games />} />
                             <Route path="ranking" element={<Ranking />} />
+                            <Route path="player/:id" element={<PlayerShow />} />
                         </Routes>
                     </ContentContainer>
                 </Container>

@@ -40,3 +40,4 @@ const EloDiff = ({ elodiff }) => (
 
 
 export default EloDiff
+export { color, icon }

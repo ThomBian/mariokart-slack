@@ -49,7 +49,12 @@ const Ranking = () => {
                         <PlayerLineContainer key={id}>
                             <PlayerLine>
                                 <Rank>{currentRank}</Rank>
-                                <Player key={id} displayName={displayName} smallAvatarUrl={smallAvatarUrl} />
+                                <Player
+                                    key={id}
+                                    id={id}
+                                    displayName={displayName}
+                                    smallAvatarUrl={smallAvatarUrl}
+                                />
                             </PlayerLine>
                             <div>
                                 <Stats stats={[{ title: 'Elo', value: elo }]} />

@@ -12,4 +12,5 @@ class Game < ActiveRecord::Base
   enumerize :status, in: [:draft, :saved]
   scope :draft, -> { where(status: :draft) }
   scope :saved, -> { where(status: :saved) }
+  scope :current_season, -> { where(season: Season.current) }
 end

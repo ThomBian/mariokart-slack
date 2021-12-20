@@ -85,9 +85,20 @@ class Player < ActiveRecord::Base
 
   def current_rank
     return -1 unless active?
-    hash = {}
-    Player.with_rank.each {|p| hash[p.id] = p.rank_value}
-    hash[id]
+    Player.with_rank.index_by(&:id)[id].rank_value
+  end
+
+  def elo_history
+    gps = games_players.current_season.where('elo_diff IS NOT NULL').order('created_at DESC')
+    
+    elos = gps.pluck(:elo_diff).inject([elo]) do |memo, elo_diff|
+      previous_elo = memo[-1]
+      elo = previous_elo - elo_diff
+      memo << elo
+      memo
+    end
+
+    [Time.now, gps.pluck(:created_at)].flatten.map{|x| x.strftime("%Y-%m-%d %H:%M:%S")}.zip(elos).reverse()
   end
 
   private

@@ -1,5 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+
+import { parseName } from 'utils/text'
 
 import Avatar from "./Avatar";
 
@@ -16,19 +19,20 @@ const Name = styled.div`
     font-size: 20px;
     display: flex;
     align-items: center;
+    cursor: pointer;
 `
 
-const parseName = (name) => name.replace(/[<|>|@]/gi, '');
-
-
-const Player = ({ displayName, smallAvatarUrl }) => {
+const Player = ({ id, displayName, smallAvatarUrl }) => {
     const name = parseName(displayName)
+    const navigate = useNavigate();
 
     return (
-        <Container>
-            <Avatar src={smallAvatarUrl} name={name} />
-            <Name>{name}</Name>
-        </Container>
+        <>
+            <Container>
+                <Avatar src={smallAvatarUrl} name={name} />
+                <Name onClick={() => navigate(`/player/${id}`)}>{name}</Name>
+            </Container>
+        </>
     )
 }
 

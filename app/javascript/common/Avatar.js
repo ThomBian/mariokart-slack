@@ -1,9 +1,10 @@
 import React from "react";
+import PropTypes from 'prop-types'
 import styled from "styled-components";
 
 const CustomImg = styled.img`
-    width: 24px;
-    height: 24px;
+    width: ${({size}) => size}px;
+    height: ${({size}) => size}px;
     border-radius: 2px;
 `
 
@@ -12,9 +13,9 @@ const PlaceholderContainer = styled.div`
     justify-content: center;
     align-items: center;
 
-    width: 24px;
-    height: 24px;
-    font-size: 12px;
+    width: ${({size}) => size}px;
+    height: ${({size}) => size}px;
+    font-size: ${({size}) => size/2}px;
 
     border-radius: 2px;
     text-align: center;
@@ -23,12 +24,22 @@ const PlaceholderContainer = styled.div`
     color: ${({ theme }) => theme.colors.white};
 `
 
-const Placeholder = ({ name }) => {
+const Placeholder = ({ name, size }) => {
     const twoLetters = name.slice(0, 1).toUpperCase()
 
-    return (<PlaceholderContainer>{twoLetters}</PlaceholderContainer>)
+    return (<PlaceholderContainer size={size}>{twoLetters}</PlaceholderContainer>)
 }
 
-const Avatar = ({ src, name }) => (src ? <CustomImg src={src} /> : <Placeholder name={name} />)
+const Avatar = ({ size, src, name }) => (src ? <CustomImg src={src} size={size}/> : <Placeholder name={name} size={size}/>)
+
+Avatar.propTypes = {
+    size: PropTypes.number,
+    src: PropTypes.string,
+    name: PropTypes.string.isRequired,
+}
+
+Avatar.defaultProps = {
+    size: 24,
+}
 
 export default Avatar;
