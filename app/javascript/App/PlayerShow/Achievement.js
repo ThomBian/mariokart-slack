@@ -37,12 +37,15 @@ const Name = styled.div`
     font-size: 10px;
     text-align: center;
     width: 100%;
+
+    font-weight: ${({ active }) => active && 'bold'};
+    color: ${({ theme, active }) => active && theme.colors.primary3};
 `
 
 const Achievement = ({ active, name, emoji }) => (
     <Container>
         <EmojiContainer active={active}>{emoji}</EmojiContainer>
-        <Name>{name}</Name>
+        <Name active={active}>{name}</Name>
     </Container>
 )
 

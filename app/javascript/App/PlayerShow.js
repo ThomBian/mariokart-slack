@@ -186,6 +186,7 @@ const PlayerShow = () => {
                     <Elo elo={player.elo} elodiff={player.lastEloDiff} />
                     <ProfileStat icon={"gamepad"}>{`${player.gamesPlayed} games played`}</ProfileStat>
                     <ProfileStat icon={"calculator"}>{`${player.avgScore} Pts / game`}</ProfileStat>
+                    <ProfileStat icon={"money-bill-alt"}>{`${player.money} $Պ`}</ProfileStat>
                 </ProfileStats>
             </HeaderContainer>
             <Section>

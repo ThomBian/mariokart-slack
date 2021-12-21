@@ -42,34 +42,45 @@ const PLAYERS = gql`
 `
 
 const PLAYER = gql`
-query GetPlayer($id: String!) {
-  player(id: $id) {
-    id
-    displayName
-    elo
-    currentRank
-    smallAvatarUrl
-    mediumAvatarUrl
-    gamesPlayed
-    lastEloDiff
-    avgScore
-    eloHistory {
-        x
-        y
+    query GetPlayer($id: String!) {
+        player(id: $id) {
+            id
+            displayName
+            elo
+            currentRank
+            smallAvatarUrl
+            mediumAvatarUrl
+            gamesPlayed
+            lastEloDiff
+            avgScore
+            money
+            eloHistory {
+                x
+                y
+            }
+            scoreHistory {
+                x
+                y
+            }
+            achievements {
+                name
+            }
+        },
+        achievements {
+            name
+            emoji
+        }
     }
-    scoreHistory {
-        x
-        y
-    }
-    achievements {
-        name
-    }
-  },
-  achievements {
-      name
-      emoji
-  }
-}
 `;
 
-export { GAMES, PLAYERS, PLAYER }
+const ADD_MONEY = gql`
+    mutation AddMoney($value: ID!) {
+        addMoney(playerId: $value) {
+            money
+            errors
+        }
+    }
+`
+
+
+export { GAMES, PLAYERS, PLAYER, ADD_MONEY }

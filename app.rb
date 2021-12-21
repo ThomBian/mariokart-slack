@@ -9,7 +9,7 @@ class App < Sinatra::Base
 
   include ::Concern::ServerResponse
 
-  get ['/', '/games', '/ranking'] do
+  get ['/', '/games', '/ranking', '/add-money'] do
     @entry_point = File.join('js', 'index.js')
     erb :template
   end

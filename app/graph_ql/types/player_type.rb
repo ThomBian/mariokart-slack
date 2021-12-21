@@ -9,6 +9,7 @@ module GraphQl
         field :games_played, Integer
         field :last_elo_diff, Integer
         field :avg_score, Integer
+        field :money, Float, null: false
         field :elo_history, [Types::DataPointType], null: false
         field :score_history, [Types::DataPointType], null: false
 

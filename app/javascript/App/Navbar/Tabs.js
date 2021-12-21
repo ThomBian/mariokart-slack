@@ -90,6 +90,15 @@ const Tabs = ({ closeModal }) => (
                 <span>Ranking</span>
             </Tab>
         </Group>
+
+        <Group>
+            <Title>Money</Title>
+            <Tab to="/add-money" onClick={() => closeModal && closeModal()} >
+                <FontAwesomeIcon icon="money-bill-alt" size="sm" />
+                &nbsp;&nbsp;
+                <span>Add Money</span>
+            </Tab>
+        </Group>
     </Container>
 )
 

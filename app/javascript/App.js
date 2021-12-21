@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 
-import { cssQueries } from './basics/Media';
+import { cssQueries } from 'basics/Media';
 
 import theme from './theme'
 
@@ -16,6 +16,7 @@ import Navbar from './App/Navbar';
 import Games from './App/Games'
 import Ranking from './App/Ranking';
 import PlayerShow from './App/PlayerShow';
+import AddMoney from './App/AddMoney';
 
 const client = new ApolloClient({
     uri: '/data',
@@ -62,6 +63,7 @@ const App = () => (
                             <Route path="games" element={<Games />} />
                             <Route path="ranking" element={<Ranking />} />
                             <Route path="player/:id" element={<PlayerShow />} />
+                            <Route path="add-money" element={<AddMoney />} />
                         </Routes>
                     </ContentContainer>
                 </Container>
