@@ -7,8 +7,8 @@ const StyledButton = styled.button`
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: flex-start;
-    padding: 8px 12px;
+    align-items: center;
+    padding: 8px 12px 6px 12px;
 
     background: ${({ theme }) => theme.colors.primary3};
     border-radius: 2px;
@@ -26,6 +26,7 @@ const StyledButton = styled.button`
         cursor: not-allowed;
         pointer-events: all !important;
         background: ${({ theme }) => theme.colors.primary2}; 
+        color: ${({ theme }) => theme.colors.white}; 
     }
 
     @media ${cssQueries.mobile} {

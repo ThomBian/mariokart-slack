@@ -3,6 +3,10 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
 
+import SlackButton from "common/SlackButton";
+
+import useCurrentUser from "context/CurrentUser"
+
 const Title = styled.div`
     font-weight: bold;
     font-size: 18px;
@@ -75,31 +79,48 @@ const Container = styled.div`
     }
 `
 
-const Tabs = ({ closeModal }) => (
-    <Container>
-        <Group>
-            <Title>History</Title>
-            <Tab to="/games" onClick={() => closeModal && closeModal()} >
-                <FontAwesomeIcon icon="flag-checkered" size="sm" />
-                &nbsp;&nbsp;
-                <span>Games</span>
-            </Tab>
-            <Tab to="ranking" onClick={() => closeModal && closeModal()}>
-                <FontAwesomeIcon icon="crown" size="sm" />
-                &nbsp;&nbsp;
-                <span>Ranking</span>
-            </Tab>
-        </Group>
+const Tabs = ({ closeModal }) => {
+    const { currentUser: { authenticated } } = useCurrentUser()
 
-        <Group>
-            <Title>Money</Title>
-            <Tab to="/add-money" onClick={() => closeModal && closeModal()} >
-                <FontAwesomeIcon icon="money-bill-alt" size="sm" />
-                &nbsp;&nbsp;
-                <span>Add Money</span>
-            </Tab>
-        </Group>
-    </Container>
-)
+    return (
+        <Container>
+            {!authenticated && (
+                < Group >
+                    <SlackButton />
+                </Group>
+            )}
+
+            {authenticated && (
+                <Group>
+                    <Title>My profile</Title>
+                    <Tab to="/me" onClick={() => closeModal && closeModal()} >
+                        <FontAwesomeIcon icon="laugh" size="sm" />
+                        &nbsp;&nbsp;
+                        <span>My stats</span>
+                    </Tab>
+                    <Tab to="/add-money" onClick={() => closeModal && closeModal()} >
+                        <FontAwesomeIcon icon="money-bill-alt" size="sm" />
+                        &nbsp;&nbsp;
+                        <span>Add Money</span>
+                    </Tab>
+                </Group>
+            )}
+
+            <Group>
+                <Title>History</Title>
+                <Tab to="/games" onClick={() => closeModal && closeModal()} >
+                    <FontAwesomeIcon icon="flag-checkered" size="sm" />
+                    &nbsp;&nbsp;
+                    <span>Games</span>
+                </Tab>
+                <Tab to="ranking" onClick={() => closeModal && closeModal()}>
+                    <FontAwesomeIcon icon="crown" size="sm" />
+                    &nbsp;&nbsp;
+                    <span>Ranking</span>
+                </Tab>
+            </Group>
+        </Container >
+    )
+}
 
 export default Tabs;

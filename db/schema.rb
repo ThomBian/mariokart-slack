@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_20_175348) do
+ActiveRecord::Schema.define(version: 2021_12_22_014048) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,9 @@ ActiveRecord::Schema.define(version: 2021_12_20_175348) do
     t.text "medium_avatar_url"
     t.datetime "medium_avatar_url_last_set_at"
     t.datetime "money_last_added_at"
+    t.bigint "user_id"
+    t.text "real_name"
+    t.index ["user_id"], name: "index_players_on_user_id"
     t.index ["username"], name: "index_players_on_username", unique: true
   end
 
@@ -75,6 +78,13 @@ ActiveRecord::Schema.define(version: 2021_12_20_175348) do
 
   create_table "seasons", force: :cascade do |t|
     t.boolean "is_current", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email"
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

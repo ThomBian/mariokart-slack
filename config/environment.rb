@@ -1,11 +1,13 @@
-require 'dotenv'
-Dotenv.load
+ENV['RACK_ENV'] ||= 'development'
 
 require 'bundler'
-Bundler.require(:default, ENV['RACK_ENV'] || 'development')
+Bundler.require(:default, ENV['RACK_ENV'].to_sym)
 
 if ENV['RACK_ENV'] == 'development'
   ActiveRecord::Base.logger = Logger.new(STDOUT)
+
+  require 'dotenv'
+  Dotenv.load
 end
 
 require 'rack'

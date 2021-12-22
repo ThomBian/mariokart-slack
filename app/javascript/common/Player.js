@@ -3,8 +3,10 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 import { parseName } from 'utils/text'
+import useCurrentUser from "context/CurrentUser";
 
-import Avatar from "./Avatar";
+
+import Avatar from "basics/Avatar";
 
 const Container = styled.div`
     display: flex;
@@ -24,17 +26,25 @@ const Name = styled.div`
     display: flex;
     align-items: center;
     cursor: pointer;
+
+    font-weight: ${({ isCurrent }) => isCurrent && 'bold'};
 `
 
 const Player = ({ id, displayName, smallAvatarUrl }) => {
-    const name = parseName(displayName)
     const navigate = useNavigate();
+    const { loading, currentUser } = useCurrentUser()
+
+    const parsedName = parseName(displayName)
+    const isCurrent = !loading && currentUser && currentUser.player && currentUser.player.id == id
+    const name = isCurrent ? `${parsedName} (me)` : parsedName
+
+    const redirectUrl = isCurrent ? '/me' : `/player/${id}`
 
     return (
         <>
             <Container>
                 <Avatar src={smallAvatarUrl} name={name} />
-                <Name onClick={() => navigate(`/player/${id}`)}>{name}</Name>
+                <Name isCurrent={isCurrent} onClick={() => navigate(redirectUrl)}>{name}</Name>
             </Container>
         </>
     )

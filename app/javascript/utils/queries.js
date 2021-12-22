@@ -82,5 +82,18 @@ const ADD_MONEY = gql`
     }
 `
 
+const CURRENT_USER = gql`
+    query GetCurrentUser {
+        currentUser {
+            id
+            name
+            authenticated
+            player {
+                id
+            }
+        }
+    }
+`
 
-export { GAMES, PLAYERS, PLAYER, ADD_MONEY }
+
+export { GAMES, PLAYERS, PLAYER, ADD_MONEY, CURRENT_USER }

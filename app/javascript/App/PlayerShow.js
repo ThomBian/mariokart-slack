@@ -8,7 +8,7 @@ import { parseName, getNumberWithOrdinal } from 'utils/text'
 import { PLAYER } from "utils/queries";
 import { cssQueries } from "basics/Media"
 
-import Avatar from "common/Avatar";
+import Avatar from "basics/Avatar";
 
 import { color as eloColor, icon as eloIcon } from "./Games/Game/FinishedLines/EloDiff"
 import Achievement from "./PlayerShow/Achievement";
@@ -161,8 +161,8 @@ const groupScoreByLeague = (scores) => {
     }, { "unacceptable": 0, "ligue2": 0, "ligue1": 0, "perfect": 0 })
 }
 
-const PlayerShow = () => {
-    const params = useParams();
+const PlayerShow = ({ id }) => {
+    const params = id ? { id } : useParams()
 
     const { loading, error, data } = useQuery(PLAYER, { variables: params });
     if (loading) return <p>Loading...</p>;

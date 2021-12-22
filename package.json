@@ -29,6 +29,7 @@
     "@nivo/line": "^0.75.0",
     "@svgr/webpack": "^6.1.2",
     "babel-loader": "^8.2.3",
+    "dotenv-webpack": "^7.0.3",
     "file-loader": "^6.2.0",
     "graphql": "^16.1.0",
     "html-webpack-plugin": "^5.5.0",
@@ -40,6 +41,7 @@
     "react-router-dom": "^6.1.1",
     "react-select": "^5.2.1",
     "reactjs-popup": "^2.0.5",
+    "regenerator-runtime": "^0.13.9",
     "styled-components": "^5.3.3"
   }
 }

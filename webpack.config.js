@@ -3,16 +3,16 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
-  entry: path.join(__dirname, "app", "javascript", "index.js"),
+  entry: ["regenerator-runtime/runtime.js", path.join(__dirname, "app", "javascript", "index.js")],
   plugins: [
-    new CaseSensitivePathsPlugin()
+    new CaseSensitivePathsPlugin(),
   ],
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, "./public/js")
   },
   resolve: {
-    extensions: [ '.ts', '.js', '*' ],
+    extensions: ['.ts', '.js', '*'],
     modules: [path.resolve(__dirname, "./app/javascript"), "node_modules"]
   },
   module: {
@@ -23,7 +23,10 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react']
+            presets: [
+              '@babel/preset-env',
+              '@babel/preset-react',
+            ]
           }
         }
       },

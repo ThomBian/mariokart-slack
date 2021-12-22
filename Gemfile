@@ -17,6 +17,7 @@ gem 'httparty'
 gem 'graphql'
 gem 'rack-contrib'
 gem 'zeitwerk'
+gem 'openid_connect'
 
 group :test do
   gem 'rack-test'

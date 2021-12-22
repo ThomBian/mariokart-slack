@@ -16,7 +16,9 @@ module GraphQl
         field :achievements, [Types::AchievementType], null: false
 
         def display_name
-            object.display_name || 'No name'
+            return object.display_name unless object.display_name.nil? || object.display_name.empty?
+            return object.real_name unless object.real_name.nil? || object.real_name.empty?
+            'No name'
         end
 
         def games_played

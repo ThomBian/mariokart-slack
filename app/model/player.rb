@@ -4,6 +4,7 @@ class Player < ActiveRecord::Base
   has_many :players_achievements, class_name: '::PlayersAchievements', dependent: :destroy
   has_many :achievements, through: :players_achievements, class_name: '::Achievement'
   has_many :votes, class_name: '::Vote', foreign_key: 'voted_by_id'
+  belongs_to :user, class_name: '::Player'
 
   scope :ordered_by_elo, -> { order(elo: :desc) }
   scope :with_rank, -> { active.select('*, RANK() OVER (ORDER BY elo DESC) rank_value') }
@@ -46,10 +47,10 @@ class Player < ActiveRecord::Base
 
   def get_or_load_display_name
     display_name unless need_to_save_display_name?
-    name = get_profile_from_api['display_name']
-    name = get_profile_from_api['real_name'] if name.blank?
-    save_display_name(name)
-    display_name
+    display_name = get_profile_from_api['display_name']
+    real_name = get_profile_from_api['real_name']
+    save_display_names(display_name, real_name)
+    display_name || real_name
   end
 
   # @see https://www.aceodds.com/bet-calculator/odds-converter.html
@@ -90,7 +91,7 @@ class Player < ActiveRecord::Base
 
   def current_rank
     return -1 unless active?
-    Player.with_rank.index_by(&:id)[id].rank_value
+    Player.players_rank[id].rank_value
   end
 
   def elo_history
@@ -114,14 +115,18 @@ class Player < ActiveRecord::Base
       .map {|current| [current[0].strftime("%Y-%m-%d %H:%M:%S"), current[1]]}
   end
 
+  def self.players_rank
+    @players_rank ||= Player.with_rank.index_by(&:id)
+  end
+
   private
 
   def save_small_avatar(new_avatar)
     update! small_avatar_url: new_avatar, small_avatar_url_last_set_at: Time.now
   end
 
-  def save_display_name(new_display_name)
-    update! display_name: new_display_name, display_name_last_set_at: Time.now
+  def save_display_names(new_display_name, new_real_name)
+    update! display_name: new_display_name, real_name: new_real_name, display_name_last_set_at: Time.now
   end
 
   def save_medium_avatar(new_avatar)
