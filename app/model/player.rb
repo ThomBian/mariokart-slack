@@ -142,14 +142,14 @@ class Player < ActiveRecord::Base
   end
 
   def need_to_save_small_avatar?
-    small_avatar_url.blank? || small_avatar_url_last_set_at.blank? || small_avatar_url_last_set_at >= 1.day.ago
+    small_avatar_url.blank? || small_avatar_url_last_set_at.blank? || small_avatar_url_last_set_at <= 1.day.ago
   end
 
   def need_to_save_display_name?
-    display_name.blank? || display_name_last_set_at.blank? || display_name_last_set_at >= 1.day.ago
+    display_name.blank? || display_name_last_set_at.blank? || display_name_last_set_at <= 1.day.ago
   end
 
   def need_to_save_medium_avatar?
-    medium_avatar_url.blank? || medium_avatar_url_last_set_at.blank? || medium_avatar_url_last_set_at >= 1.day.ago
+    medium_avatar_url.blank? || medium_avatar_url_last_set_at.blank? || medium_avatar_url_last_set_at <= 1.day.ago
   end
 end
