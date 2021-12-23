@@ -10,8 +10,8 @@ const icon = (elodiff) => {
 }
 
 const color = (elodiff, theme) => {
-    if (elodiff > 0) { return theme.colors.success1 }
-    if (elodiff < 0) { return theme.colors.danger1 }
+    if (elodiff > 0) { return theme.colors.success2 }
+    if (elodiff < 0) { return theme.colors.danger2 }
     return theme.colors.black
 }
 

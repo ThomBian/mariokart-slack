@@ -30,14 +30,14 @@ const Errors = styled.div`
 `
 
 const Error = styled.div`
-    color: ${({ theme }) => theme.colors.danger1}
+    color: ${({ theme }) => theme.colors.danger3}
 `
 
 const customStyles = {
     control: (provided, state) => {
         const customProps = state.selectProps
         const { hasErrors, colors } = customProps
-        const borderColor = hasErrors ? colors.danger1 : provided.borderColor
+        const borderColor = hasErrors ? colors.danger3 : provided.borderColor
 
         return { ...provided, borderColor: borderColor, borderRadius: '2px' }
     }

@@ -17,7 +17,7 @@ class App < Sinatra::Base
     erb :template
   end
 
-  get ['/add-money', '/me'] do
+  get ['/add-money', '/me', '/login-success'] do
     load_current_user
     if @current_user.nil?
       redirect '/'
@@ -88,7 +88,7 @@ class App < Sinatra::Base
     @current_user.player = Player.find_by(real_name: @current_user.name)
 
     session[:user_id] = @current_user.id
-    redirect '/'
+    redirect '/login-success'
   end
 
   private 

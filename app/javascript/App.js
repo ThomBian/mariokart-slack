@@ -8,10 +8,11 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 
 import { cssQueries } from 'basics/Media';
+import FlashAlerts from 'basics/FlashAlerts'
 import ErrorBoundary from 'common/ErrorBoundary';
 
 import { Provider as CurrentUserProvider } from 'context/CurrentUser'
-
+import { Provider as FlashAlertProvider } from 'context/FlashAlerts'
 
 import theme from './theme'
 
@@ -21,6 +22,7 @@ import Ranking from './App/Ranking';
 import PlayerShow from './App/PlayerShow';
 import AddMoney from './App/AddMoney';
 import MyProfile from './App/MyProfile'
+import LoginSuccess from './App/LoginSuccess';
 
 const client = new ApolloClient({
     uri: '/data',
@@ -61,26 +63,31 @@ const App = () => (
                 <BrowserRouter>
 
                     <CurrentUserProvider>
-                        <Container>
-                            <Navbar />
+                        <FlashAlertProvider>
+                            <Container>
+                                <Navbar />
 
-                            <ContentContainer>
-                                <Routes>
-                                    <Route path="/" element={<Navigate to="games" />} />
-                                    <Route path="games" element={<Games />} />
-                                    <Route path="ranking" element={<Ranking />} />
-                                    <Route path="player/:id" element={<PlayerShow />} />
-                                    <Route path="add-money" element={<AddMoney />} />
-                                    <Route path="me" element={<MyProfile />} />
-                                </Routes>
-                            </ContentContainer>
-                        </Container>
+                                <ContentContainer>
+                                    <Routes>
+                                        <Route path="/" element={<Navigate to="games" />} />
+                                        <Route path="games" element={<Games />} />
+                                        <Route path="ranking" element={<Ranking />} />
+                                        <Route path="player/:id" element={<PlayerShow />} />
+                                        <Route path="add-money" element={<AddMoney />} />
+                                        <Route path="me" element={<MyProfile />} />
+                                        <Route path="login-success" element={<LoginSuccess />} />
+                                    </Routes>
+                                </ContentContainer>
+
+                                <FlashAlerts />
+                            </Container>
+                        </FlashAlertProvider>
                     </CurrentUserProvider>
 
                 </BrowserRouter>
             </ThemeProvider>
         </ApolloProvider>
-    </ErrorBoundary>
+    </ErrorBoundary >
 )
 
 export default App

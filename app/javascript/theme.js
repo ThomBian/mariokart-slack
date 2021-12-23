@@ -17,9 +17,13 @@ const theme = {
         primary5: "#003e80",
         primary6: "#00152a",
 
-        danger1: "#d40000",
+        danger1: "#FFD4D4",
+        danger2: "#D40000",
+        danger3: "#9A0000",
 
-        success1: "#03A400",
+        success1: "#57D743",
+        success2: "#03A400",
+        success3: "#007400",
     }
 }
 
