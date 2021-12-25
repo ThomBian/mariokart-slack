@@ -12,7 +12,7 @@ const GAMES = gql`
                 odd
                 player {
                     id
-                    displayName
+                    name
                     elo
                     currentRank
                     smallAvatarUrl
@@ -21,7 +21,7 @@ const GAMES = gql`
                     correct
                     bet
                     votedBy {
-                        displayName
+                        name
                     }
                 }
             }
@@ -33,7 +33,7 @@ const PLAYERS = gql`
     query GetPlayers {
         players {
             id
-            displayName
+            name
             elo
             currentRank
             smallAvatarUrl
@@ -45,7 +45,7 @@ const PLAYER = gql`
     query GetPlayer($id: String!) {
         player(id: $id) {
             id
-            displayName
+            name
             elo
             currentRank
             smallAvatarUrl

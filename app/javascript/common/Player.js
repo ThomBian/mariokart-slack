@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { parseName } from 'utils/text'
 import useCurrentUser from "context/CurrentUser";
 
-
 import Avatar from "basics/Avatar";
 
 const Container = styled.div`
@@ -30,13 +29,13 @@ const Name = styled.div`
     font-weight: ${({ isCurrent }) => isCurrent && 'bold'};
 `
 
-const Player = ({ id, displayName, smallAvatarUrl }) => {
+const Player = ({ id, name, smallAvatarUrl }) => {
     const navigate = useNavigate();
     const { loading, currentUser } = useCurrentUser()
 
-    const parsedName = parseName(displayName)
+    const parsedName = parseName(name)
     const isCurrent = !loading && currentUser && currentUser.player && currentUser.player.id == id
-    const name = isCurrent ? `${parsedName} (me)` : parsedName
+    const displayName = isCurrent ? `${parsedName} (me)` : parsedName
 
     const redirectUrl = isCurrent ? '/me' : `/player/${id}`
 
@@ -44,7 +43,7 @@ const Player = ({ id, displayName, smallAvatarUrl }) => {
         <>
             <Container>
                 <Avatar src={smallAvatarUrl} name={name} />
-                <Name isCurrent={isCurrent} onClick={() => navigate(redirectUrl)}>{name}</Name>
+                <Name isCurrent={isCurrent} onClick={() => navigate(redirectUrl)}>{displayName}</Name>
             </Container>
         </>
     )

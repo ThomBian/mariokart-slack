@@ -30,6 +30,24 @@ module Concern
                     .pluck(:created_at, :score)
                     .map {|current| [current[0].strftime("%Y-%m-%d %H:%M:%S"), current[1]]}
             end
+
+            def games_played
+                played.count
+            end
+    
+            def last_elo_diff
+                played.last.elo_diff
+            end
+    
+            def avg_score
+                (played.sum(:score) / played.count.to_f).round(2)
+            end
+
+            private 
+
+            def played
+                @played ||= games_players.joins(:game).where(game: {status: :saved})
+            end
         end
     end
 end

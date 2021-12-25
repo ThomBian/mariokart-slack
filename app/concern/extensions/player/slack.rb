@@ -12,11 +12,12 @@ module Concern
             end
             
             def get_or_load_display_name
-                display_name unless need_to_save_display_name?
-                display_name = get_profile_from_api['display_name']
-                real_name = get_profile_from_api['real_name']
+                name unless need_to_save_display_name?
+                api_profile = get_profile_from_api
+                display_name = api_profile['display_name']
+                real_name = api_profile['real_name']
                 save_display_names(display_name, real_name)
-                display_name || real_name
+                name
             end
 
             private
@@ -42,7 +43,7 @@ module Concern
             end
 
             def need_to_save_small_avatar?
-                small_avatar_url.blank? || small_avatar_url_last_set_at.blank? || small_avatar_url_last_set_at <= 1.day.ago
+                small_avatar_url.blank? || small_avatar_url_last_set_at.blank? || small_avatar_url_last_set_at <= 1.day.ago.utc
             end
 
             def need_to_save_display_name?

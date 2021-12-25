@@ -171,7 +171,7 @@ const PlayerShow = ({ id }) => {
 
     const { player } = data
     const { achievements } = data
-    const name = parseName(player.displayName)
+    const name = parseName(player.name)
     const achievementNames = player.achievements.map(({ name }) => name)
 
     const scoresByLeagues = groupScoreByLeague(player.scoreHistory.map(({ y }) => parseInt(y)))

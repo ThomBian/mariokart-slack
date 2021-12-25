@@ -21,6 +21,12 @@ class Player < ActiveRecord::Base
     games.saved.none?
   end
 
+  def name
+    return display_name unless display_name.nil? || display_name.empty?
+    return real_name unless real_name.nil? || real_name.empty?
+    'No name'
+  end
+
   def slack_username
     "<@#{username}>"
   end
