@@ -21,9 +21,9 @@ const theme = {
         danger2: "#D40000",
         danger3: "#9A0000",
 
-        success1: "#57D743",
-        success2: "#03A400",
-        success3: "#007400",
+        success1: "#7BE893",
+        success2: "#0CD246",
+        success3: "#00873B",
     }
 }
 

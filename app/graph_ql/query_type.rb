@@ -12,14 +12,16 @@ module GraphQl
         
         field :achievements, [Types::AchievementType], "Return all achievements", null: false
 
-        field :current_user, Types::UserType, null: false
+        field :current_user, Types::UserType, "Return the current user", null: false
+
+        field :money_options, [Types::MoneyOptionType], "Return all options", null: false
 
         def games(limit: 20)
             query = ::Game.includes(games_players: [:player, votes: :voted_by]).all.order('created_at DESC').limit(limit)
         end
 
         def players
-            ::Player.includes(:achievements).with_rank.all
+            Player.includes(:achievements).with_rank.all
         end
 
         def player(id:)
@@ -34,5 +36,9 @@ module GraphQl
             return {} unless context[:current_user].present?
             context[:current_user]
         end
+
+        def money_options
+            MoneyOption.active.all.order(:value)
+        end 
     end
 end

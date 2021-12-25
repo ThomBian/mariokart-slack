@@ -1,9 +1,15 @@
 class Player < ActiveRecord::Base
+  include Concern::Extensions::Player::Slack
+  include Concern::Extensions::Player::Stats
+  include Concern::Extensions::Player::Money
+
   has_many :games_players, class_name: '::GamesPlayers'
   has_many :games, through: :games_players, class_name: '::Game'
   has_many :players_achievements, class_name: '::PlayersAchievements', dependent: :destroy
   has_many :achievements, through: :players_achievements, class_name: '::Achievement'
   has_many :votes, class_name: '::Vote', foreign_key: 'voted_by_id'
+  has_many :players_money_options, class_name: '::PlayersMoneyOptions'
+  has_many :money_options, through: :players_money_options, class_name: '::MoneyOption'
   belongs_to :user, class_name: '::Player'
 
   scope :ordered_by_elo, -> { order(elo: :desc) }
@@ -35,24 +41,6 @@ class Player < ActiveRecord::Base
     save!
   end
 
-  def get_or_load_small_avatar
-    save_small_avatar(get_profile_from_api['image_24']) if need_to_save_small_avatar?
-    small_avatar_url
-  end
-
-  def get_or_load_medium_avatar
-    save_medium_avatar(get_profile_from_api['image_192']) if need_to_save_medium_avatar?
-    medium_avatar_url
-  end
-
-  def get_or_load_display_name
-    display_name unless need_to_save_display_name?
-    display_name = get_profile_from_api['display_name']
-    real_name = get_profile_from_api['real_name']
-    save_display_names(display_name, real_name)
-    display_name || real_name
-  end
-
   # @see https://www.aceodds.com/bet-calculator/odds-converter.html
   def odds_to_win_against(players)
     1 / chance_to_win_against(players)
@@ -81,75 +69,7 @@ class Player < ActiveRecord::Base
     update! active: true
   end
 
-  def update_money!(vote)
-    update money: money + vote.earnings
-  end
-
-  def has_already_voted?(game)
-    votes.where(game: game).any?
-  end
-
-  def current_rank
-    return -1 unless active?
-    Player.players_rank[id].rank_value
-  end
-
-  def elo_history
-    gps = games_players.current_season.where('elo_diff IS NOT NULL').order('created_at DESC')
-    
-    elos = gps.pluck(:elo_diff).inject([elo]) do |memo, elo_diff|
-      previous_elo = memo[-1]
-      elo = previous_elo - elo_diff
-      memo << elo
-      memo
-    end
-
-    [Time.now, gps.pluck(:created_at)].flatten.map{|x| x.strftime("%Y-%m-%d %H:%M:%S")}.zip(elos).reverse()
-  end
-
-  def score_history
-    games_players
-      .current_season.where('score IS NOT NULL')
-      .order('created_at')
-      .pluck(:created_at, :score)
-      .map {|current| [current[0].strftime("%Y-%m-%d %H:%M:%S"), current[1]]}
-  end
-
   def self.players_rank
     @players_rank ||= Player.with_rank.index_by(&:id)
-  end
-
-  private
-
-  def save_small_avatar(new_avatar)
-    update! small_avatar_url: new_avatar, small_avatar_url_last_set_at: Time.now
-  end
-
-  def save_display_names(new_display_name, new_real_name)
-    update! display_name: new_display_name, real_name: new_real_name, display_name_last_set_at: Time.now
-  end
-
-  def save_medium_avatar(new_avatar)
-    update! medium_avatar_url: new_avatar, medium_avatar_url_last_set_at: Time.now
-  end
-
-  def get_profile_from_api
-    return @response if defined? @response
-    client = Slack::Client.new
-    response = client.users_info(user: username)
-    return nil unless response['ok']
-    @response = response['user']['profile']
-  end
-
-  def need_to_save_small_avatar?
-    small_avatar_url.blank? || small_avatar_url_last_set_at.blank? || small_avatar_url_last_set_at <= 1.day.ago
-  end
-
-  def need_to_save_display_name?
-    display_name.blank? || display_name_last_set_at.blank? || display_name_last_set_at <= 1.day.ago
-  end
-
-  def need_to_save_medium_avatar?
-    medium_avatar_url.blank? || medium_avatar_url_last_set_at.blank? || medium_avatar_url_last_set_at <= 1.day.ago
   end
 end

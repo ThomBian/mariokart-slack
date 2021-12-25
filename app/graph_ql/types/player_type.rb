@@ -12,6 +12,7 @@ module GraphQl
         field :money, Float, null: false
         field :elo_history, [Types::DataPointType], null: false
         field :score_history, [Types::DataPointType], null: false
+        field :got_free, Boolean
 
         field :achievements, [Types::AchievementType], null: false
 
@@ -43,6 +44,10 @@ module GraphQl
 
         def score_history
             object.score_history.map{|p| {x: p[0].to_s, y: p[1].to_s}}
+        end
+
+        def got_free
+            object.already_got_free_option_today?
         end
 
         private 

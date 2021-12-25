@@ -74,9 +74,12 @@ const PLAYER = gql`
 `;
 
 const ADD_MONEY = gql`
-    mutation AddMoney($value: ID!) {
-        addMoney(playerId: $value) {
-            money
+    mutation AddMoney($id: ID!) {
+        addMoney(moneyOptionId: $id) {
+            moneyOption {
+                value
+                price
+            }
             errors
         }
     }
@@ -90,10 +93,22 @@ const CURRENT_USER = gql`
             authenticated
             player {
                 id
+                gotFree
             }
         }
     }
 `
 
+const MONEY_OPTIONS = gql`
+    query GetMoneyOptions {
+        moneyOptions {
+            id
+            title
+            value
+            price
+        }
+    }
+`
 
-export { GAMES, PLAYERS, PLAYER, ADD_MONEY, CURRENT_USER }
+
+export { GAMES, PLAYERS, PLAYER, ADD_MONEY, CURRENT_USER, MONEY_OPTIONS }

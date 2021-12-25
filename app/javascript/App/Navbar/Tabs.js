@@ -84,6 +84,7 @@ const Tabs = ({ closeModal }) => {
 
     return (
         <Container>
+
             {!authenticated && (
                 < Group >
                     <SlackButton />
@@ -94,14 +95,9 @@ const Tabs = ({ closeModal }) => {
                 <Group>
                     <Title>My profile</Title>
                     <Tab to="/me" onClick={() => closeModal && closeModal()} >
-                        <FontAwesomeIcon icon="laugh" size="sm" />
+                        <FontAwesomeIcon icon="database" size="sm" />
                         &nbsp;&nbsp;
                         <span>My stats</span>
-                    </Tab>
-                    <Tab to="/add-money" onClick={() => closeModal && closeModal()} >
-                        <FontAwesomeIcon icon="money-bill-alt" size="sm" />
-                        &nbsp;&nbsp;
-                        <span>Add Money</span>
                     </Tab>
                 </Group>
             )}
@@ -117,6 +113,15 @@ const Tabs = ({ closeModal }) => {
                     <FontAwesomeIcon icon="crown" size="sm" />
                     &nbsp;&nbsp;
                     <span>Ranking</span>
+                </Tab>
+            </Group>
+
+            <Group>
+                <Title>Shop</Title>
+                <Tab to="/money" onClick={() => closeModal && closeModal()} >
+                    <FontAwesomeIcon icon="money-bill-alt" size="sm" />
+                    &nbsp;&nbsp;
+                    <span>Money</span>
                 </Tab>
             </Group>
         </Container >

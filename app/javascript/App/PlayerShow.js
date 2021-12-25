@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/client'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { parseName, getNumberWithOrdinal } from 'utils/text'
+import { round } from 'utils/number'
 import { PLAYER } from "utils/queries";
 import { cssQueries } from "basics/Media"
 
@@ -186,7 +187,7 @@ const PlayerShow = ({ id }) => {
                     <Elo elo={player.elo} elodiff={player.lastEloDiff} />
                     <ProfileStat icon={"gamepad"}>{`${player.gamesPlayed} games played`}</ProfileStat>
                     <ProfileStat icon={"calculator"}>{`${player.avgScore} Pts / game`}</ProfileStat>
-                    <ProfileStat icon={"money-bill-alt"}>{`${player.money} $Պ`}</ProfileStat>
+                    <ProfileStat icon={"money-bill-alt"}>{`${round(player.money)} $Պ`}</ProfileStat>
                 </ProfileStats>
             </HeaderContainer>
             <Section>

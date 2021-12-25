@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_22_014048) do
+ActiveRecord::Schema.define(version: 2021_12_23_143313) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,15 @@ ActiveRecord::Schema.define(version: 2021_12_22_014048) do
     t.index ["player_id"], name: "index_games_players_on_player_id"
   end
 
+  create_table "money_options", force: :cascade do |t|
+    t.text "title"
+    t.integer "value"
+    t.float "price"
+    t.boolean "active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "players", force: :cascade do |t|
     t.text "username", null: false
     t.integer "elo", default: 1000
@@ -58,7 +67,7 @@ ActiveRecord::Schema.define(version: 2021_12_22_014048) do
     t.float "money", default: 50.0
     t.text "medium_avatar_url"
     t.datetime "medium_avatar_url_last_set_at"
-    t.datetime "money_last_added_at"
+    t.datetime "last_free_money_added_at"
     t.bigint "user_id"
     t.text "real_name"
     t.index ["user_id"], name: "index_players_on_user_id"
@@ -74,6 +83,15 @@ ActiveRecord::Schema.define(version: 2021_12_22_014048) do
     t.index ["achievement_id"], name: "index_players_achievements_on_achievement_id"
     t.index ["player_id"], name: "index_players_achievements_on_player_id"
     t.index ["season_id"], name: "index_players_achievements_on_season_id"
+  end
+
+  create_table "players_money_options", force: :cascade do |t|
+    t.bigint "player_id"
+    t.bigint "money_option_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["money_option_id"], name: "index_players_money_options_on_money_option_id"
+    t.index ["player_id"], name: "index_players_money_options_on_player_id"
   end
 
   create_table "seasons", force: :cascade do |t|

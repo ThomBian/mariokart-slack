@@ -20,7 +20,7 @@ import Navbar from './App/Navbar';
 import Games from './App/Games'
 import Ranking from './App/Ranking';
 import PlayerShow from './App/PlayerShow';
-import AddMoney from './App/AddMoney';
+import Money from './App/Money';
 import MyProfile from './App/MyProfile'
 import LoginSuccess from './App/LoginSuccess';
 
@@ -73,7 +73,7 @@ const App = () => (
                                         <Route path="games" element={<Games />} />
                                         <Route path="ranking" element={<Ranking />} />
                                         <Route path="player/:id" element={<PlayerShow />} />
-                                        <Route path="add-money" element={<AddMoney />} />
+                                        <Route path="money" element={<Money />} />
                                         <Route path="me" element={<MyProfile />} />
                                         <Route path="login-success" element={<LoginSuccess />} />
                                     </Routes>

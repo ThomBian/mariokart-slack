@@ -17,7 +17,7 @@ const backgroundColor = (type, theme) => {
     switch (type) {
         case ALERT_TYPES.success:
         case ALERT_TYPES.notice:
-            return theme.colors.success1
+            return theme.colors.success3
         case ALERT_TYPES.error:
         case ALERT_TYPES.alert:
         case ALERT_TYPES.danger:

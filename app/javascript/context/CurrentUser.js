@@ -1,4 +1,4 @@
-import React, { useContext, createContext } from "react";
+import React, { useContext, createContext, useState } from "react";
 import { useQuery } from '@apollo/client'
 
 import { CURRENT_USER } from 'utils/queries'
@@ -9,14 +9,20 @@ const useCurrentUser = () => useContext(CurrentUserContext);
 
 const Provider = (props) => {
     const { loading, error, data } = useQuery(CURRENT_USER);
+    const [currentUser, setCurrentUser] = useState({ authenticated: false })
+    const [loaded, setLoaded] = useState(false)
 
-    const currentUser = !loading && !error && data.currentUser || { authenticated: false }
-    const loaded = !loading && !!currentUser
+    if (loading) {
+        return <div>Loading...</div>
+    }
 
-    return <CurrentUserContext.Provider value={{ loaded, loading, error, currentUser }} {...props} />
+    if (!loading && !loaded) {
+        setCurrentUser(data.currentUser)
+        setLoaded(true)
+    }
+
+    return <CurrentUserContext.Provider value={{ loaded, loading, error, currentUser, setCurrentUser }} {...props} />
 }
 
 export default useCurrentUser
-export {
-    Provider
-}
+export { Provider }

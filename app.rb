@@ -12,12 +12,12 @@ class App < Sinatra::Base
 
   include ::Concern::ServerResponse
 
-  get ['/', '/games', '/ranking'] do
+  get ['/', '/games', '/ranking', '/money'] do
     @entry_point = File.join('js', 'index.js')
     erb :template
   end
 
-  get ['/add-money', '/me', '/login-success'] do
+  get ['/me', '/login-success'] do
     load_current_user
     if @current_user.nil?
       redirect '/'

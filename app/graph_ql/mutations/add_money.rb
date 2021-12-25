@@ -1,20 +1,27 @@
 module GraphQl
     class Mutations::AddMoney < Mutations::BaseMutation
         null true
-        argument :player_id, ID
+        argument :money_option_id, ID
 
         field :errors, [String], null: false
-        field :money, Float, null: false
+        field :money_option, Types::MoneyOptionType
     
-        def resolve(player_id:)
-            Player.transaction do
-                player = Player.find(player_id)
-                return {money: player.money, errors: ['Player has plenty of money, no need to top it up!']} if player.money > 1 
-                return {money: player.money, errors: ['Player has already got today\'s money!']} if player.money_last_added_at && player.money_last_added_at > 1.day.ago
+        def resolve(money_option_id:)
+            return {money_option: nil, errors: ['Oops, something went wrong... (not signed in)']} if current_user.nil?
+            return {money_option: nil, errors: ['Oops, something went wrong... (never played)']} if current_user.player.nil?
 
-                player.update! money: player.money + 5, money_last_added_at: Time.now
-                {money: player.money, errors: []}
+            player = current_user.player
+            option = MoneyOption.find(money_option_id)
+            return {money_option: nil, errors: ['Oops, something went wrong... (option not available)']} if !option.active
+
+            return {money_option: nil, errors: ['Oops, something went wrong... (option free already got)']} if option.free? && player.already_got_free_option_today?
+            
+            MoneyOption.transaction do
+                player.money_options << option
+                player.update money: player.money + option.value
             end
+
+            return { money_option: option, errors: [] }
         end
     end
 end
