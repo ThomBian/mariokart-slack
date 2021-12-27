@@ -1,4 +1,4 @@
-ENV['RACK_ENV'] = 'test'
+ENV['RACK_ENV'] ||= 'test'
 require_relative '../config/environment'
 require_relative '../app'
 
@@ -14,3 +14,5 @@ RSpec.configure do |conf|
   conf.include RspecMixin
 end
 require 'support/database_cleaner'
+
+# run rake db:test:prepare to prepare db

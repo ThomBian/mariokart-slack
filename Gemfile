@@ -23,4 +23,5 @@ group :test do
   gem 'rack-test'
   gem 'rspec'
   gem 'database_cleaner'
+  gem 'timecop'
 end

@@ -10,7 +10,7 @@ module Concern
             end
 
             def last_paid_free_option
-                @option ||= paid_free_options.order(created_at: :desc).last
+                @option ||= paid_free_options.order(created_at: :desc).first
             end
 
             def paid_free_options

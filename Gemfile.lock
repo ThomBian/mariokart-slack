@@ -137,6 +137,7 @@ GEM
       attr_required (>= 0.0.5)
       httpclient (>= 2.4)
     tilt (2.0.10)
+    timecop (0.9.4)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     validate_email (0.1.6)
@@ -174,6 +175,7 @@ DEPENDENCIES
   sinatra
   sinatra-activerecord
   slack-ruby-client
+  timecop
   zeitwerk
 
 RUBY VERSION
