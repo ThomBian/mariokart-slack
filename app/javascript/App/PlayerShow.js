@@ -170,6 +170,7 @@ const PlayerShow = ({ id }) => {
     if (error) return <p>Error :(</p>;
 
     const { player } = data
+
     const { achievements } = data
     const name = parseName(player.name)
     const achievementNames = player.achievements.map(({ name }) => name)

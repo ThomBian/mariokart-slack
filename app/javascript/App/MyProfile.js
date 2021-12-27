@@ -13,8 +13,9 @@ const MyProfile = () => {
         window.location.replace('/')
         return null
     } else {
-        const { player: { id } } = currentUser
-        return (<PlayerShow id={id.toString()} />)
+        const { player } = currentUser
+        if (!player) { return 'You have never played a game or we could not find the player' }
+        return (<PlayerShow id={player.id.toString()} />)
     }
 }
 
