@@ -13,7 +13,10 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.js', '*'],
-    modules: [path.resolve(__dirname, "./app/javascript"), "node_modules"]
+    modules: [path.resolve(__dirname, "./app/javascript"), "node_modules"],
+    alias: {
+      '~': path.resolve('./node_modules')
+    }
   },
   module: {
     rules: [

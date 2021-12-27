@@ -1,5 +1,6 @@
 module GraphQl
     class Types::GamesPlayersType < Types::BaseObject
+        field :id, ID
         field :score, Integer
         field :elo_diff, Integer
         field :odd, Float

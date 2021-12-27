@@ -35,10 +35,10 @@ const StyledButton = styled.button`
     }
 `
 
-const Button = ({ children, ...props }) => (
-    <StyledButton {...props}>
+const Button = React.forwardRef(({ children, ...props }, ref) => (
+    <StyledButton {...props} ref={ref}>
         {children}
     </StyledButton>
-)
+))
 
 export default Button;

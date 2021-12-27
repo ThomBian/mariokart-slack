@@ -2,6 +2,7 @@ class Player < ActiveRecord::Base
   include Concern::Extensions::Player::Slack
   include Concern::Extensions::Player::Stats
   include Concern::Extensions::Player::Money
+  include Concern::Extensions::Player::Vote
 
   has_many :games_players, class_name: '::GamesPlayers'
   has_many :games, through: :games_players, class_name: '::Game'

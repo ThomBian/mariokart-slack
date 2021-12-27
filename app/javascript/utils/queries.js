@@ -7,6 +7,7 @@ const GAMES = gql`
             id
             createdAt
             gamesPlayers {
+                id
                 score
                 eloDiff
                 odd
@@ -94,6 +95,7 @@ const CURRENT_USER = gql`
             player {
                 id
                 gotFree
+                money
             }
         }
     }
@@ -110,5 +112,15 @@ const MONEY_OPTIONS = gql`
     }
 `
 
+const VOTE = gql`
+    mutation Vote($gamePlayerId: ID!, $bet: Float!) {
+        vote(gamePlayerId: $gamePlayerId, bet: $bet) {
+            vote {
+                bet
+            }
+            errors
+        }
+    }
+`
 
-export { GAMES, PLAYERS, PLAYER, ADD_MONEY, CURRENT_USER, MONEY_OPTIONS }
+export { GAMES, PLAYERS, PLAYER, ADD_MONEY, CURRENT_USER, MONEY_OPTIONS, VOTE }
