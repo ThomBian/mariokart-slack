@@ -38,12 +38,12 @@ const FinishedLines = ({ gamesPlayers }) => {
 
     return (
         <>
-            {withRank.map(({ score, player, eloDiff: elodiff, rank, ...props }) => (
+            {withRank.map(({ score, player, eloDiff: elodiff, rank }) => (
                 <PlayerLineContainer key={player.id}>
                     <PlayerLine>
                         <Rank>{rank}</Rank>
                         <EloDiff elodiff={elodiff} />
-                        <Player {...player} {...props} />
+                        <Player {...player} />
                     </PlayerLine>
                     <div>
                         <Stats

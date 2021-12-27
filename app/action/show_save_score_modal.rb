@@ -12,7 +12,6 @@ module Action
       response = @client.views_open(view_payload)
 
       ::Slack::Client.delete_message(ts: message_ts)
-      include ::Concern::ServerResponse
     end
 
     private
