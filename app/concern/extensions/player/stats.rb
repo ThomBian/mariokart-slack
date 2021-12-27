@@ -36,10 +36,12 @@ module Concern
             end
     
             def last_elo_diff
+                return -1 unless played.last.present?
                 played.last.elo_diff
             end
     
             def avg_score
+                return -1 unless played.count > 0
                 (played.sum(:score) / played.count.to_f).round(2)
             end
 

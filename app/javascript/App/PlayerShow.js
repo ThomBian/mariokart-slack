@@ -186,7 +186,7 @@ const PlayerShow = ({ id }) => {
                     <ProfileStat icon={"crown"}>{getNumberWithOrdinal(player.currentRank)}</ProfileStat>
                     <Elo elo={player.elo} elodiff={player.lastEloDiff} />
                     <ProfileStat icon={"gamepad"}>{`${player.gamesPlayed} games played`}</ProfileStat>
-                    <ProfileStat icon={"calculator"}>{`${player.avgScore} Pts / game`}</ProfileStat>
+                    {player.avgScore > 0 && <ProfileStat icon={"calculator"}>{`${player.avgScore} Pts / game`}</ProfileStat>}
                     <ProfileStat icon={"money-bill-alt"}>{`${round(player.money)} $Պ`}</ProfileStat>
                 </ProfileStats>
             </HeaderContainer>
@@ -203,36 +203,44 @@ const PlayerShow = ({ id }) => {
                     )}
                 </Achievements>
             </Section>
-            <Section>
-                <Title>Stats</Title>
-                <GraphsContainer>
-                    <div>
-                        <GraphTitle>Elo</GraphTitle>
-                        <GraphContainer>
-                            <LineGraph data={{ id: 'elo', points: player.eloHistory }} />
-                        </GraphContainer>
-                    </div>
+            {player && (player.eloHistory.length > 1 || player.scoreHistory.length > 0) &&
+                <Section>
+                    <Title>Stats</Title>
+                    <GraphsContainer>
+                        {player.eloHistory.length > 1 &&
+                            <div>
+                                <GraphTitle>Elo</GraphTitle>
+                                <GraphContainer>
+                                    <LineGraph data={{ id: 'elo', points: player.eloHistory }} />
+                                </GraphContainer>
+                            </div>
+                        }
 
-                    <div>
-                        <GraphTitle>Score per games</GraphTitle>
-                        <GraphContainer>
-                            <LineGraph data={{ id: 'score', points: player.scoreHistory }} />
-                        </GraphContainer>
-                    </div>
+                        {player.scoreHistory.length > 0 &&
+                            <div>
+                                <GraphTitle>Score per games</GraphTitle>
+                                <GraphContainer>
+                                    <LineGraph data={{ id: 'score', points: player.scoreHistory }} />
+                                </GraphContainer>
+                            </div>
+                        }
 
-                    <div>
-                        <GraphTitle>Leagues</GraphTitle>
-                        <GraphContainer>
-                            <BarGraph data={{
-                                id: 'leagues',
-                                series: Object.keys(scoresByLeagues).map((key) => ({ "league": key, "games": scoresByLeagues[key] })),
-                                keys: ['games'],
-                                indexBy: 'league',
-                            }} />
-                        </GraphContainer>
-                    </div>
-                </GraphsContainer>
-            </Section>
+                        {player.scoreHistory.length > 0 &&
+                            <div>
+                                <GraphTitle>Leagues</GraphTitle>
+                                <GraphContainer>
+                                    <BarGraph data={{
+                                        id: 'leagues',
+                                        series: Object.keys(scoresByLeagues).map((key) => ({ "league": key, "games": scoresByLeagues[key] })),
+                                        keys: ['games'],
+                                        indexBy: 'league',
+                                    }} />
+                                </GraphContainer>
+                            </div>
+                        }
+                    </GraphsContainer>
+                </Section>
+            }
         </Container>)
 }
 
