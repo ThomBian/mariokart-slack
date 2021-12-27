@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Stats from 'common/Stats'
 import Player from 'common/Player'
 
+import BetLink from "./BetLink";
 import EloDiff from './FinishedLines/EloDiff'
 
 const PlayerLineContainer = styled.div`
@@ -38,7 +39,7 @@ const FinishedLines = ({ gamesPlayers }) => {
 
     return (
         <>
-            {withRank.map(({ score, player, eloDiff: elodiff, rank }) => (
+            {withRank.map(({ score, player, eloDiff: elodiff, rank, votes, odd }) => (
                 <PlayerLineContainer key={player.id}>
                     <PlayerLine>
                         <Rank>{rank}</Rank>
@@ -50,7 +51,8 @@ const FinishedLines = ({ gamesPlayers }) => {
                             stats={[
                                 { title: 'GPts', value: score },
                                 { title: 'Elo', value: player.elo },
-                                { title: 'Rank', value: player.currentRank }
+                                { title: 'Rank', value: player.currentRank },
+                                { title: 'Bets', value: (<BetLink odd={odd} votes={votes} correct={rank == 1} live={false} />) }
                             ]}
                         />
                     </div>

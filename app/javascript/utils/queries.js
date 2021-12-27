@@ -19,9 +19,11 @@ const GAMES = gql`
                     smallAvatarUrl
                 }
                 votes {
+                    id
                     correct
                     bet
                     votedBy {
+                        id
                         name
                     }
                 }
@@ -116,7 +118,13 @@ const VOTE = gql`
     mutation Vote($gamePlayerId: ID!, $bet: Float!) {
         vote(gamePlayerId: $gamePlayerId, bet: $bet) {
             vote {
+                id
+                correct
                 bet
+                votedBy {
+                    id
+                    name
+                }
             }
             errors
         }

@@ -1,34 +1,16 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import Popup from 'reactjs-popup'
 import { useMutation } from "@apollo/client";
 
 import useCurrentUser from 'context/CurrentUser'
 import useFlashAlerts from 'context/FlashAlerts'
+
 import { ALERT_TYPES } from 'basics/Alert'
+import Popup from 'basics/Popup';
 import Button from 'basics/Button';
 
 import { VOTE } from 'utils/queries'
 import { round } from 'utils/number'
-
-const StyledPopup = styled(Popup)`
-    // use your custom style for ".popup-overlay"  
-    &-overlay {
-    }  
-    
-    // use your custom style for ".popup-content"      
-    &-content {
-        width: 300px;
-        border-radius: 2px;
-        padding: 0;
-        border: none;
-
-        background: ${({ theme }) => theme.colors.white};
-
-        margin-top: 4px;
-        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
-    }
-`
 
 const Container = styled.form`
     display: flex;
@@ -107,7 +89,7 @@ const Trigger = styled(Button)`
     width: 100px;
 `
 
-const VoteButton = ({ id, odd, player }) => {
+const VoteButton = ({ id, odd, player, onVote }) => {
     const { currentUser: { authenticated, player: currentPlayer } } = useCurrentUser()
     const { add } = useFlashAlerts()
     const [vote, { errors, loading }] = useMutation(VOTE)
@@ -118,9 +100,9 @@ const VoteButton = ({ id, odd, player }) => {
 
     if (!authenticated || !currentPlayer) { return trigger({ open: false }) }
     return (
-        <StyledPopup
+        <Popup
             trigger={open => trigger({ open })}
-            position="bottom left"
+            position="left center"
             closeOnDocumentClick
             arrow={false}
         >
@@ -134,6 +116,7 @@ const VoteButton = ({ id, odd, player }) => {
                                 close()
                                 setBet(0)
                                 add({ type: ALERT_TYPES.success, text: `You have bet ${vote.bet}$Պ on ${player.name}!` })
+                                onVote(id, vote)
                             }
                         }
                     })
@@ -167,7 +150,7 @@ const VoteButton = ({ id, odd, player }) => {
                     </Body>
                 </Container>
             )}
-        </StyledPopup>
+        </Popup>
     )
 }
 

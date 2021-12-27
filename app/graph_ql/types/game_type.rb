@@ -6,5 +6,6 @@ module GraphQl
         field :created_at, GraphQL::Types::ISO8601DateTime, null: false
 
         field :games_players, [Types::GamesPlayersType], null: false
+        field :votes, [Types::VoteType], null: false
     end
 end

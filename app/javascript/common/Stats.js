@@ -5,6 +5,9 @@ import Stat from "./Stat";
 
 const Container = styled.div`
     display: flex;
+    justify-content: space-between;
+
+    width: 100%;
 `
 
 const Stats = ({ stats }) => {
