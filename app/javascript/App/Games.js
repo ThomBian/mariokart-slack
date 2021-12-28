@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useQuery } from '@apollo/client'
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { GAMES } from 'utils/queries'
 import { cssQueries } from 'basics/Media';
@@ -22,17 +23,36 @@ const Container = styled.div`
 `
 
 const Games = () => {
-    const { loading, error, data } = useQuery(GAMES);
+    const { loading, error, data, fetchMore } = useQuery(GAMES);
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
+
+    const nodes = data.games.edges.map((edge) => edge.node);
+    const pageInfo = data.games.pageInfo
+    const hasNextPage = pageInfo.hasNextPage
+
+    const handleNextPage = () => {
+        if (!hasNextPage) { return }
+        fetchMore({
+            variables: {
+                cursor: pageInfo.startCursor
+            },
+        })
+    }
+
     return (
         <div>
             <h1>Games</h1>
-            <Container>
-                {
-                    data.games.map(({ id, ...props }) => <Game key={id} id={id} {...props} />)
-                }
-            </Container>
+            <InfiniteScroll
+                dataLength={nodes.length} //This is important field to render the next data
+                next={handleNextPage}
+                hasMore={hasNextPage}
+                loader={<h4>Loading...</h4>}
+            >
+                <Container>
+                    {nodes.map(({ id, ...props }) => <Game key={id} id={id} {...props} />)}
+                </Container>
+            </InfiniteScroll>
         </div>
     )
 }

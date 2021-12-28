@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 
+import cache from './utils/appCache';
+
 import { cssQueries } from 'basics/Media';
 import FlashAlerts from 'basics/FlashAlerts'
 import ErrorBoundary from 'common/ErrorBoundary';
@@ -26,7 +28,7 @@ import LoginSuccess from './App/LoginSuccess';
 
 const client = new ApolloClient({
     uri: '/data',
-    cache: new InMemoryCache()
+    cache
 });
 
 library.add(fas)

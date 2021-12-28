@@ -1,32 +1,42 @@
 import { gql } from "@apollo/client"
 
 const GAMES = gql`
-    query GetGames {
-        games {
-            status
-            id
-            createdAt
-            gamesPlayers {
-                id
-                score
-                eloDiff
-                odd
-                player {
+    query GetGames($cursor: String) {
+        games(cursor: $cursor) {
+            totalCount
+            edges {
+                node {
+                    status
                     id
-                    name
-                    elo
-                    currentRank
-                    smallAvatarUrl
-                }
-                votes {
-                    id
-                    correct
-                    bet
-                    votedBy {
+                    createdAt
+                    gamesPlayers {
                         id
-                        name
+                        score
+                        eloDiff
+                        odd
+                        player {
+                            id
+                            name
+                            elo
+                            currentRank
+                            smallAvatarUrl
+                        }
+                        votes {
+                            id
+                            correct
+                            bet
+                            votedBy {
+                                id
+                                name
+                            }
+                        }
                     }
                 }
+                cursor
+            }
+            pageInfo {
+                hasNextPage
+                startCursor
             }
         }
     }
