@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { round } from 'utils/number'
+import { round, format } from 'utils/number'
 
 import Popup from 'basics/Popup';
 
@@ -70,6 +70,7 @@ const Link = styled.div`
     color: ${({ theme, correct, live }) => colorLink(theme, correct, live)};
     cursor: pointer;
 `
+
 const Bet = ({ bet, odd, full }) => {
     if (full) {
         return <div>{`${round(odd)} * ${round(bet)} = ${round(odd * bet)}$Պ`}</div>
@@ -84,7 +85,7 @@ const BetLink = ({ votes, correct, live, odd }) => {
 
     return (
         <Popup
-            trigger={(<Link correct={correct} live={live}>{`${round(allBets)}$Պ`}</Link>)}
+            trigger={(<Link correct={correct} live={live}>{`${format(allBets)}$Պ`}</Link>)}
             position={["left center", "bottom center"]}
             closeOnDocumentClick
             arrow={false}
