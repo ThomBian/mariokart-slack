@@ -6,10 +6,12 @@ import { parseName } from 'utils/text'
 import useCurrentUser from "context/CurrentUser";
 
 import Avatar from "basics/Avatar";
+import { SmallAchievement } from "App/PlayerShow/Achievement";
 
 const Container = styled.div`
     display: flex;
     align-items: center;
+    cursor: pointer;
 
     & > :not(:last-child) {
         margin-right: 4px;
@@ -24,12 +26,11 @@ const Name = styled.div`
     font-size: 20px;
     display: flex;
     align-items: center;
-    cursor: pointer;
 
     font-weight: ${({ isCurrent }) => isCurrent && 'bold'};
 `
 
-const Player = ({ id, name, smallAvatarUrl }) => {
+const Player = ({ id, name, smallAvatarUrl, achievements }) => {
     const navigate = useNavigate();
     const { loading, currentUser } = useCurrentUser()
 
@@ -41,9 +42,14 @@ const Player = ({ id, name, smallAvatarUrl }) => {
 
     return (
         <>
-            <Container>
+            <Container onClick={() => navigate(redirectUrl)}>
                 <Avatar src={smallAvatarUrl} name={name} />
-                <Name isCurrent={isCurrent} onClick={() => navigate(redirectUrl)}>{displayName}</Name>
+                <Name isCurrent={isCurrent}>{displayName}</Name>
+                {achievements && achievements.length > 0 && (
+                    <div>
+                        {achievements.map((achievement) => <SmallAchievement key={achievement.name} {...achievement} />)}
+                    </div>
+                )}
             </Container>
         </>
     )

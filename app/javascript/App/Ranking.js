@@ -45,15 +45,14 @@ const Ranking = () => {
             <h1>Ranking</h1>
             <Container>
                 {
-                    data.players.map(({ id, currentRank, name, smallAvatarUrl, elo }) => (
+                    data.players.map(({ id, currentRank, elo, ...props }) => (
                         <PlayerLineContainer key={id}>
                             <PlayerLine>
                                 <Rank>{currentRank}</Rank>
                                 <Player
                                     key={id}
                                     id={id}
-                                    name={name}
-                                    smallAvatarUrl={smallAvatarUrl}
+                                    {...props}
                                 />
                             </PlayerLine>
                             <div>

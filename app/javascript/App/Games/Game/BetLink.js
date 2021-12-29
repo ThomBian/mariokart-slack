@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { round, format } from 'utils/number'
 
-import Popup from 'basics/Popup';
+import Modal from 'basics/Modal';
 
 
 const Container = styled.div`
@@ -84,7 +84,7 @@ const BetLink = ({ votes, correct, live, odd }) => {
     const allBets = live || correct ? sum * odd : sum
 
     return (
-        <Popup
+        <Modal
             trigger={(<Link correct={correct} live={live}>{`${format(allBets)}$Պ`}</Link>)}
             position={["left center", "bottom center"]}
             closeOnDocumentClick
@@ -103,7 +103,7 @@ const BetLink = ({ votes, correct, live, odd }) => {
                     <Addition><Bet bet={sum} odd={odd} full={correct || live} /></Addition>
                 </Body>
             </Container>
-        </Popup >
+        </Modal >
     )
 }
 

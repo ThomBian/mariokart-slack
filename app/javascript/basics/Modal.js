@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Popup from "reactjs-popup";
 
-const StyledPopup = styled(Popup)`
+const Modal = styled(Popup)`
     // use your custom style for ".popup-overlay"  
     &-overlay {
     }  
@@ -20,4 +20,4 @@ const StyledPopup = styled(Popup)`
     }
 `
 
-export default StyledPopup
+export default Modal

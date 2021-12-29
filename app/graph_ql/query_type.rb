@@ -18,9 +18,9 @@ module GraphQl
 
         field :money_options, [Types::MoneyOptionType], "Return all options", null: false
 
-        def games(first: 5, cursor:)
+        def games(first: 10, cursor:)
             cursor ||= Time.now
-            games = ::Game.includes(games_players: [:player, votes: :voted_by])
+            games = ::Game.includes(games_players: [player: :achievements, votes: :voted_by])
                 .where('created_at < ?', cursor)
                 .order('created_at DESC')
                 .limit(first)

@@ -6,7 +6,7 @@ import useCurrentUser from 'context/CurrentUser'
 import useFlashAlerts from 'context/FlashAlerts'
 
 import { ALERT_TYPES } from 'basics/Alert'
-import Popup from 'basics/Popup';
+import Modal from 'basics/Modal';
 import Button from 'basics/Button';
 
 import { VOTE } from 'utils/queries'
@@ -100,7 +100,7 @@ const VoteButton = ({ id, odd, player, onVote }) => {
 
     if (!authenticated || !currentPlayer) { return trigger({ open: false }) }
     return (
-        <Popup
+        <Modal
             trigger={open => trigger({ open })}
             position="left center"
             closeOnDocumentClick
@@ -150,7 +150,7 @@ const VoteButton = ({ id, odd, player, onVote }) => {
                     </Body>
                 </Container>
             )}
-        </Popup>
+        </Modal>
     )
 }
 

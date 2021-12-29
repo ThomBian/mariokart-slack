@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
+
+import Tooltip from 'basics/Tooltip';
+
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -42,6 +45,20 @@ const Name = styled.div`
     color: ${({ theme, active }) => active && theme.colors.primary3};
 `
 
+const SmallEmoji = styled.span`
+    cursor: pointer;
+`
+
+const SmallAchievement = ({ name, emoji }) => (
+    <Tooltip
+        trigger={(<SmallEmoji>{emoji}</SmallEmoji>)}
+        on={['hover', 'focus']}
+        position={['top left', 'left center']}
+    >
+        {name}
+    </Tooltip>
+)
+
 const Achievement = ({ active, name, emoji }) => (
     <Container>
         <EmojiContainer active={active}>{emoji}</EmojiContainer>
@@ -50,3 +67,6 @@ const Achievement = ({ active, name, emoji }) => (
 )
 
 export default Achievement;
+export {
+    SmallAchievement
+}

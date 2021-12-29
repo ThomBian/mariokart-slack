@@ -20,6 +20,10 @@ const GAMES = gql`
                             elo
                             currentRank
                             smallAvatarUrl
+                            achievements {
+                                emoji
+                                name
+                            }
                         }
                         votes {
                             id
@@ -50,6 +54,10 @@ const PLAYERS = gql`
             elo
             currentRank
             smallAvatarUrl
+            achievements {
+                name
+                emoji
+            }
         }
     }
 `
