@@ -18,6 +18,7 @@ gem 'graphql'
 gem 'rack-contrib'
 gem 'zeitwerk'
 gem 'openid_connect'
+gem 'irb', require: false
 
 group :test do
   gem 'rack-test'
