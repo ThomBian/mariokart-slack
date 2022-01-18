@@ -40,7 +40,7 @@ module GraphQl
         end
 
         def players
-            Player.includes(:achievements).with_rank.all
+            Player.active.order(elo: :desc).all
         end
 
         def player(id:)

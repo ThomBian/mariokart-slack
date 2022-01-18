@@ -52,7 +52,6 @@ const PLAYERS = gql`
             id
             name
             elo
-            currentRank
             smallAvatarUrl
             achievements {
                 name

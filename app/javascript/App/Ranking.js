@@ -40,12 +40,19 @@ const Ranking = () => {
     const { loading, error, data } = useQuery(PLAYERS);
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
+
+    const { players } = data
+    const sortedElos = players.map(({ elo }) => elo).sort((a, b) => b - a)
+    const withRank = players.map((player) => {
+        const rank = sortedElos.indexOf(player.elo) + 1
+        return { currentRank: rank, ...player }
+    })
     return (
         <div>
             <h1>Ranking</h1>
             <Container>
                 {
-                    data.players.map(({ id, currentRank, elo, ...props }) => (
+                    withRank.map(({ id, currentRank, elo, ...props }) => (
                         <PlayerLineContainer key={id}>
                             <PlayerLine>
                                 <Rank>{currentRank}</Rank>
