@@ -77,6 +77,6 @@ class Player < ActiveRecord::Base
   end
 
   def self.players_rank
-    @players_rank ||= Player.with_rank.index_by(&:id)
+    Player.with_rank.index_by(&:id)
   end
 end
