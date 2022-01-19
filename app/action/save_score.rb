@@ -1,7 +1,7 @@
 module Action
   class SaveScore
-    include Concern::HasPayloadParsing
     include Lib::Elo
+    include Concern::HasPayloadParsing
     include Concern::GameSummaryBlocks
     include Concern::ServerResponse
 
@@ -10,6 +10,7 @@ module Action
     end
 
     def process
+      return response_ok_basic if game.status == :saved
       ::Vote.transaction do
         save_new_elos!
         reactivate_players!
