@@ -1,5 +1,5 @@
 module Command
-    class ReMatch
+    class Rematch
         def initialize(params: nil)
             @params = params
         end

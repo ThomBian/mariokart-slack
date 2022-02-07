@@ -13,7 +13,7 @@ module Factory
       when 'stats'
         ::Command::Stats.new(params: @params)
       when 'rematch'
-        ::Command::ReMatch.new(params: @params)
+        ::Command::Rematch.new(params: @params)
       else
         ::Command::Help.new(params: @params)
       end
