@@ -8,6 +8,8 @@ module Concern
 
                 vote = ::Vote.create!({games_players: games_players, game: games_players.game, bet: bet})
                 votes << vote
+
+                update money: money - bet
                 
                 {error: false, message: nil, vote: vote}
             end

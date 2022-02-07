@@ -7,6 +7,7 @@ class Vote < ActiveRecord::Base
 
   def earnings
     odd = games_players.odd
-    new_amount = correct ? odd * bet : -bet
+    return 0 unless correct
+    odd * bet
   end
 end
