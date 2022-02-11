@@ -30,7 +30,7 @@ module Action
     end
 
     def odds(player, other_players)
-      return 1 if player.games.current_season.count > 10 
+      return 1 unless player.games.current_season.count > 10 
       player.odds_to_win_against(other_players).round(2)
     end
 
