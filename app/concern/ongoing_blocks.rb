@@ -96,7 +96,7 @@ module Concern
     end
 
     def avatars(votes)
-      votes.map do |vote|
+      votes.order(bet: :desc).limit(5).map do |vote|
         [{
             "type": "image",
             "image_url": vote.voted_by.get_or_load_small_avatar,
