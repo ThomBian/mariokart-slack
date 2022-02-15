@@ -14,7 +14,7 @@
     "webpack-dev-server": "^4.6.0"
   },
   "scripts": {
-    "dev": "webpack",
+    "dev": "webpack --watch --mode=development",
     "heroku-postbuild": "webpack --mode=production"
   },
   "dependencies": {

@@ -31,7 +31,7 @@ const Status = styled.div`
 
 const Players = styled.div`
     & > :not(:last-child) {
-        margin-bottom: 8px;
+        margin-bottom: 16px;
     }
 `
 

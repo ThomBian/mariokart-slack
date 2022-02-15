@@ -1,13 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 
+import { cssQueries } from "basics/Media";
 import Stat from "./Stat";
 
 const Container = styled.div`
     display: flex;
     justify-content: space-between;
-
     width: 100%;
+
+    @media ${cssQueries.mobile} {
+        justify-content: space-around;
+    }
 `
 
 const Stats = ({ stats }) => {

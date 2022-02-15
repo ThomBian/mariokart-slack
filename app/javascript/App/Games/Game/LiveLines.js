@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
+import { cssQueries } from "basics/Media";
+
 import Player from 'common/Player'
 import Stats from 'common/Stats'
 
@@ -15,6 +17,10 @@ const PlayerLineContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
+
+    @media ${cssQueries.mobile} {
+        flex-direction: column;
+    }
 `
 const Line = styled.div`
     display: flex;

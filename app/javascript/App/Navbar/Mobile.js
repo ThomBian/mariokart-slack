@@ -21,6 +21,8 @@ const Container = styled.div`
     border-bottom: 1px solid ${({ theme }) => theme.colors.default1};
 
     padding: 4px 24px;
+
+    z-index: 999;
 `
 const overlayStyle = { background: 'rgba(0,0,0,0.5)' };
 const contentStyle = { background: '#fff', position: 'fixed', top: '0', right: '0', bottom: '0', width: "250px", padding: "16px" };

@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import { cssQueries } from "basics/Media";
+
 import Stats from 'common/Stats'
 import Player from 'common/Player'
 
@@ -12,12 +14,18 @@ const PlayerLineContainer = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    width: 100%; 
+
+    @media ${cssQueries.mobile} {
+        flex-direction: column;
+    }
 `
 
-const PlayerLine = styled.div`
+const Line = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 100%;
 
     & > :not(:last-child) {
         margin-right: 12px;
@@ -41,12 +49,12 @@ const FinishedLines = ({ gamesPlayers }) => {
         <>
             {withRank.map(({ score, player, eloDiff: elodiff, rank, votes, odd }) => (
                 <PlayerLineContainer key={player.id}>
-                    <PlayerLine>
+                    <Line>
                         <Rank>{rank}</Rank>
                         <EloDiff elodiff={elodiff} />
                         <Player {...player} />
-                    </PlayerLine>
-                    <div>
+                    </Line>
+                    <Line>
                         <Stats
                             stats={[
                                 { title: 'GPts', value: score },
@@ -55,7 +63,7 @@ const FinishedLines = ({ gamesPlayers }) => {
                                 { title: 'Bets', value: (<BetLink odd={odd} votes={votes} correct={rank == 1} live={false} />) }
                             ]}
                         />
-                    </div>
+                    </Line>
                 </PlayerLineContainer>
             ))}
         </>
