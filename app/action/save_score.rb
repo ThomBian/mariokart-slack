@@ -23,21 +23,17 @@ module Action
 
     private
 
-    # def save_new_elos!
-    #   game.players.each { |player| player.save_elo!(player.elo + new_elos_diff[player.id]) }
-    # end
-
     def save_new_elos!
-      game.games_players.includes(:player).each do |game_player|
-        player = game_player.player
-        score = score_from_input(player.player.username)
-        other_players = game.players - [player]
+      game_results.each do |result|
+        player = result.player
+        score = result.score
+        other_results = game_results - [result]
 
-        one_ones = other_players.map { |other_player| { elo: other_player.elo, outcome: game_outcome(score, score_from_input(other_player.username)) } }
+        one_ones = other_results.map { |other_result| { elo: other_result.player.elo, outcome: game_outcome(score, other_result.score) } }
         new_elo_diff = new_elo(player.elo, one_ones)
         player.update! elo: player.elo + new_elo_diff
 
-        one_ones = other_players.map { |other_player| { elo: other_player.private_elo, outcome: game_outcome(score, score_from_input(other_player.username)) } }
+        one_ones = other_results.map { |other_result| { elo: other_result.player.private_elo, outcome: game_outcome(score, other_result.score) } }
         new_private_elo_diff = new_elo(player.private_elo, one_ones)
         player.update! private_elo: player.private_elo + new_private_elo_diff
         
@@ -45,17 +41,13 @@ module Action
       end
     end
 
+    def game_results
+      game.players.map { |player| {player: player, score: score_from_input(player.username)} }
+    end
+
     def game
       @game ||= Game.find(private_metadata["game_id"])
     end
-
-    # def new_elos_diff
-    #   @new_elos_diff ||= new_elos_diff_player_id(game_results)
-    # end
-
-    # def game_results
-    #   game.players.map { |player| {player: player, score: score_from_input(player.username)} }
-    # end
 
     def reactivate_players!
       game.players.inactive.each {|p| p.set_active!}
@@ -64,13 +56,6 @@ module Action
     def save_game!
       game.update! status: :saved
     end
-
-    # def games_players_attributes(new_elos_diff)
-    #   game.games_players.includes(:player).map do |gp|
-    #     player = gp.player
-    #     {id: gp.id, score: score_from_input(player.username), elo_diff: new_elos_diff[player.id]}
-    #   end
-    # end
 
     def score_from_input(username)
       values[username]["p_#{username}"]['value'].to_i
