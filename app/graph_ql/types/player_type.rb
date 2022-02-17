@@ -13,6 +13,9 @@ module GraphQl
         field :elo_history, [Types::DataPointType], null: false
         field :score_history, [Types::DataPointType], null: false
         field :got_free, Boolean
+        field :one_ones, [Types::OneOneType], null: false do
+            argument :other_player_ids, [String]
+        end
 
         field :achievements, [Types::AchievementType], null: false
 
@@ -30,6 +33,18 @@ module GraphQl
 
         def got_free
             object.already_got_free_option_today?
+        end
+
+        def one_ones(other_player_ids:)
+            puts other_player_ids
+            other_player_ids.map do |other_player_id|
+                other_player = Player.find(other_player_id)
+                {
+                    other_player: other_player,
+                    chance_to_win: object.chance_to_win_against([other_player]),
+                    game_outcomes: object.game_outcomes_against(other_player)
+                }
+            end
         end
     end
 end

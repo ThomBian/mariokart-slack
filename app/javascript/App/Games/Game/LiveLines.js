@@ -9,6 +9,7 @@ import Stats from 'common/Stats'
 import useCurrentUser from 'context/CurrentUser'
 
 import VoteButton from "./LiveLines/VoteButton";
+import OddLink from './LiveLines/OddLink';
 import BetLink from './BetLink';
 
 const PlayerLineContainer = styled.div`
@@ -34,8 +35,11 @@ const Line = styled.div`
     width: 100%;
 `
 
-const playerStats = ({ elo, odd, votes }, authenticated, hasVoted) => {
-    const stats = [{ title: 'Elo', value: elo }, { title: 'Odd', value: odd },]
+const playerStats = ({ elo, odd, votes }, playerId, otherPlayerIds, authenticated, hasVoted) => {
+    const stats = [
+        { title: 'Elo', value: elo },
+        { title: 'Odd', value: <OddLink odd={odd} otherPlayerIds={otherPlayerIds} playerId={playerId} /> },
+    ]
     if (!authenticated || hasVoted) {
         stats.push({ title: 'Bets', value: <BetLink votes={votes} correct={false} live={true} odd={odd} /> })
     }
@@ -58,17 +62,20 @@ const LiveLines = ({ gamesPlayers: gPlayers }) => {
     return (
         <>
             {
-                sortedGps.map(({ id, player, odd, votes }) => (
-                    <PlayerLineContainer key={player.id}>
-                        <Line>
-                            <Player key={player.id} {...player} />
-                        </Line>
-                        <Line>
-                            <Stats stats={playerStats({ elo: player.elo, odd, votes }, authenticated, hasVoted)} />
-                            {authenticated && !hasVoted && <VoteButton id={id} odd={odd} player={player} onVote={handleOnVote} />}
-                        </Line>
-                    </PlayerLineContainer>
-                ))
+                sortedGps.map(({ id, player, odd, votes }) => {
+                    const otherPlayerIds = sortedGps.filter(({ player: p }) => p.id !== player.id).map(({ player: { id } }) => id)
+                    return (
+                        <PlayerLineContainer key={player.id}>
+                            <Line>
+                                <Player key={player.id} {...player} />
+                            </Line>
+                            <Line>
+                                <Stats stats={playerStats({ elo: player.elo, odd, votes }, player.id, otherPlayerIds, authenticated, hasVoted)} />
+                                {authenticated && !hasVoted && <VoteButton id={id} odd={odd} player={player} onVote={handleOnVote} />}
+                            </Line>
+                        </PlayerLineContainer>
+                    )
+                })
             }
         </>
     )

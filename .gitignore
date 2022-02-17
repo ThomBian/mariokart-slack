@@ -64,3 +64,6 @@ build-iPhoneSimulator/
 # Frontend
 node_modules/
 public/js/
+
+
+config/database.yml

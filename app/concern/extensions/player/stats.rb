@@ -1,6 +1,8 @@
 module Concern
     module Extensions
         module Player::Stats
+            include Lib::Elo
+
             def has_already_voted?(game)
                 votes.where(game: game).any?
             end
@@ -43,6 +45,30 @@ module Concern
             def avg_score
                 return -1 unless played.count > 0
                 (played.sum(:score) / played.count.to_f).round(2)
+            end
+
+            def game_outcomes_against(other_player, limit = 5)
+                games_in_common = Game.saved.where(id: GamesPlayers.where(player_id: [id, other_player.id]).
+                    group(:game_id).
+                    having("count(*) >= 2").
+                    select(:game_id))
+                games_in_common.order(created_at: :desc).limit(limit).map do |game|
+                    my_score = GamesPlayers.find_by(player_id: id).score
+                    other_score = GamesPlayers.find_by(player: other_player).score
+                    game_outcome(my_score, other_score)
+                end
+            end
+
+            # @see https://www.aceodds.com/bet-calculator/odds-converter.html
+            def odds_to_win_against(players)
+                1 / chance_to_win_against(players)
+            end
+
+            # @see https://stats.stackexchange.com/a/66398
+            # @see "https://en.wikipedia.org/wiki/Elo_rating_system#Mathematical_details"
+            def chance_to_win_against(players)
+                qs = [self, players].flatten.map {|p| 10.pow(p.private_elo/400.0)}
+                qs[0].to_f / qs.flatten.sum
             end
 
             private 

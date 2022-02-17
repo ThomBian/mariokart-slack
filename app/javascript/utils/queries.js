@@ -89,9 +89,26 @@ const PLAYER = gql`
         achievements {
             name
             emoji
-        }
+        },
     }
 `;
+
+const ONE_ONES = gql`
+    query GetOneOnes($playerId: String!, $otherPlayerIds: [String!]!) {
+        player(id: $playerId) {
+            name
+            oneOnes(otherPlayerIds: $otherPlayerIds) {
+                otherPlayer {
+                    id
+                    name
+                }
+                chanceToWin,
+                gameOutcomes
+            }
+        }
+    }
+`
+
 
 const ADD_MONEY = gql`
     mutation AddMoney($id: ID!) {
@@ -148,4 +165,4 @@ const VOTE = gql`
     }
 `
 
-export { GAMES, PLAYERS, PLAYER, ADD_MONEY, CURRENT_USER, MONEY_OPTIONS, VOTE }
+export { GAMES, PLAYERS, PLAYER, ADD_MONEY, CURRENT_USER, MONEY_OPTIONS, VOTE, ONE_ONES }

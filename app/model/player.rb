@@ -48,18 +48,6 @@ class Player < ActiveRecord::Base
     save!
   end
 
-  # @see https://www.aceodds.com/bet-calculator/odds-converter.html
-  def odds_to_win_against(players)
-    1 / chance_to_win_against(players)
-  end
-
-  # @see https://stats.stackexchange.com/a/66398
-  # @see "https://en.wikipedia.org/wiki/Elo_rating_system#Mathematical_details"
-  def chance_to_win_against(players)
-    qs = [self, players].flatten.map {|p| 10.pow(p.private_elo/400.0)}
-    qs[0].to_f / qs.flatten.sum
-  end
-
   def last_game
     games.order(created_at: :desc).first
   end

@@ -8,7 +8,7 @@ const Modal = styled(Popup)`
     
     // use your custom style for ".popup-content"      
     &-content {
-        width: 300px;
+        width: ${({width}) => width || 300 }px;
         border-radius: 2px;
         padding: 0;
         border: none;

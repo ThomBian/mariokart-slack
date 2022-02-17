@@ -10,6 +10,7 @@ module Lib
     end
 
     def game_outcome(score_a, score_b)
+      return :unknown unless score_a.present? && score_b.present?
       return :draw if score_a == score_b
       return :win if score_a > score_b
       :loose
