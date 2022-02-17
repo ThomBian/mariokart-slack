@@ -65,6 +65,7 @@ class Player < ActiveRecord::Base
   end
 
   def should_be_inactive?
+    return true if last_game.nil?
     last_game.created_at < 2.weeks.ago
   end
 
