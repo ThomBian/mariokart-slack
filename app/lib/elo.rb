@@ -1,32 +1,13 @@
 module Lib
   module Elo
 
-    def new_elo(player_elo, one_ones)
-      new_player_elo = player_elo
+    def elo_diff(player_elo, one_ones)
+      diff = 0
       one_ones.each do |one_one|
-        new_player_elo += OneVsOne.new(player_elo, one_one.elo, one_one.outcome).compute_diff
+        diff += OneVsOne.new(player_elo, one_one[:elo], one_one[:outcome]).compute_diff
       end
-      new_player_elo
+      diff
     end
-
-    # @param game_results Array<Hash> each hash should have a :player => the player who played and a :score the number
-    #   of points during the game
-    # def new_elos_diff_player_id(game_results)
-    #   game_results.inject({}) do |res, game_result|
-
-    #     player = game_result[:player]
-    #     diff = 0
-    #     game_results.each do |other_game_result|
-    #       next if player.id == other_game_result[:player].id
-
-    #       outcome = game_outcome(game_result[:score], other_game_result[:score])
-    #       diff += OneVsOne.new(player.elo, other_game_result[:player].elo, outcome).compute_diff
-    #     end
-
-    #     res[player.id] = round(diff)
-    #     res
-    #   end
-    # end
 
     def game_outcome(score_a, score_b)
       return :draw if score_a == score_b

@@ -25,19 +25,19 @@ module Action
 
     def save_new_elos!
       game_results.each do |result|
-        player = result.player
-        score = result.score
+        player = result[:player]
+        score = result[:score]
         other_results = game_results - [result]
 
-        one_ones = other_results.map { |other_result| { elo: other_result.player.elo, outcome: game_outcome(score, other_result.score) } }
-        new_elo_diff = new_elo(player.elo, one_ones)
+        one_ones = other_results.map { |other_result| { elo: other_result[:player].elo, outcome: game_outcome(score, other_result[:score]) } }
+        new_elo_diff = elo_diff(player.elo, one_ones)
         player.update! elo: player.elo + new_elo_diff
 
-        one_ones = other_results.map { |other_result| { elo: other_result.player.private_elo, outcome: game_outcome(score, other_result.score) } }
-        new_private_elo_diff = new_elo(player.private_elo, one_ones)
+        one_ones = other_results.map { |other_result| { elo: other_result[:player].private_elo, outcome: game_outcome(score, other_result[:score]) } }
+        new_private_elo_diff = elo_diff(player.private_elo, one_ones)
         player.update! private_elo: player.private_elo + new_private_elo_diff
         
-        game_player.update! score: score, elo_diff: new_elo_diff
+        GamesPlayers.find_by(player: player, game: game).update! score: score, elo_diff: new_elo_diff
       end
     end
 
