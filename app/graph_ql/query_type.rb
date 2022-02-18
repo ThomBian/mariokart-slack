@@ -4,9 +4,12 @@ module GraphQl
 
         field :games, Types::GamePagination::ResultType, "Returns a page of games" do
             argument :cursor, String, required: false, default_value: Time.now
+            argument :player_id, String, required: false, default_value: ''
         end
 
-        field :players, [Types::PlayerType], "Returns all players", null: false
+        field :players, [Types::PlayerType], "Returns all players", null: false do
+            argument :term, String, required: false, default_value: ''
+        end
 
         field :player, Types::PlayerType, "Returns a player" do
             argument :id, String
@@ -18,17 +21,20 @@ module GraphQl
 
         field :money_options, [Types::MoneyOptionType], "Return all options", null: false
 
-        def games(first: 10, cursor:)
+        def games(first: 10, cursor:, player_id:)
             cursor ||= Time.now
-            games = ::Game.includes(games_players: [player: :achievements, votes: :voted_by])
-                .where('created_at < ?', cursor)
-                .order('created_at DESC')
-                .limit(first)
-                .all
+
+            puts "PLAYER_ID: #{player_id} / #{player_id.present?}"
+
+            query = ::Game.includes(games_players: [player: :achievements, votes: :voted_by])
+            query = query.where(id: GamesPlayers.select(:game_id).where(player_id: player_id)) if player_id.present?
+            games = query.where('created_at < ?', cursor).order('created_at DESC').limit(first).all
+
             start_cursor = games.last.created_at
-            has_next_page = ::Game.where('created_at < ?', start_cursor).count > 0
+            has_next_page = query.where('created_at < ?', start_cursor).count > 0
             edges = games.map {|g| { node: g, cursor: g.created_at }}
-            total_count = ::Game.all.count
+            total_count = query.all.count
+            
             return {
                 total_count: total_count,
                 edges: edges,
@@ -39,8 +45,10 @@ module GraphQl
             }
         end
 
-        def players
-            Player.active.order(elo: :desc).all
+        def players(term:)
+            query = Player.active.order(elo: :desc)
+            query = query.where("display_name ILIKE ?", "%#{term}%").limit(5) if term.present?
+            query.all
         end
 
         def player(id:)

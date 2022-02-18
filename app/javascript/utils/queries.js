@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client"
 
 const GAMES = gql`
-    query GetGames($cursor: String) {
-        games(cursor: $cursor) {
+    query GetGames($cursor: String, $playerId: String) {
+        games(cursor: $cursor, playerId: $playerId) {
             totalCount
             edges {
                 node {
@@ -47,8 +47,8 @@ const GAMES = gql`
 `
 
 const PLAYERS = gql`
-    query GetPlayers {
-        players {
+    query GetPlayers($term: String) {
+        players(term: $term) {
             id
             name
             elo

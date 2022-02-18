@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useQuery } from '@apollo/client'
+import { useQuery, NetworkStatus } from '@apollo/client'
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { GAMES } from 'utils/queries'
 import { cssQueries } from 'basics/Media';
 
 import Game from './Games/Game'
+import PlayerSelector from './Games/PlayerSelector';
 
 const Container = styled.div`
     @media ${cssQueries.desktop} {
@@ -22,9 +23,17 @@ const Container = styled.div`
     }
 `
 
+const Header = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
+
 const Games = () => {
-    const { loading, error, data, fetchMore } = useQuery(GAMES);
-    if (loading) return <p>Loading...</p>;
+    const { loading, error, data, fetchMore, refetch, networkStatus } = useQuery(GAMES);
+    const [player, setPlayer] = useState()
+
+    if (loading || networkStatus == NetworkStatus.refetch) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
 
     const nodes = data.games.edges.map((edge) => edge.node);
@@ -40,9 +49,17 @@ const Games = () => {
         })
     }
 
+    const onPlayerSelected = (option) => {
+        setPlayer(option)
+        refetch({ playerId: option && option.value })
+    }
+
     return (
         <div>
-            <h1>Games</h1>
+            <Header>
+                <h1>Games</h1>
+                <PlayerSelector onChange={onPlayerSelected} selectedValue={player} />
+            </Header>
             <InfiniteScroll
                 dataLength={nodes.length} //This is important field to render the next data
                 next={handleNextPage}
