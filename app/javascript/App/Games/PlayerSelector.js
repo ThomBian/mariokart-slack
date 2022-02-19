@@ -14,7 +14,7 @@ const PlayerSelector = ({ selectedValue, onChange, isDesktop }) => {
     const client = useApolloClient()
 
     const fetchPlayers = (term, callback) => {
-        if (term && term.trim().length < 4) {
+        if (term && term.trim().length < 3) {
             return [];
         }
 
