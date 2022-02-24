@@ -32,6 +32,7 @@ const GAMES = gql`
                             votedBy {
                                 id
                                 name
+                                smallAvatarUrl
                             }
                         }
                     }

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { round, format } from 'utils/number'
 
 import Modal from 'basics/Modal';
+import Player from "common/Player";
 
 
 const Container = styled.div`
@@ -89,13 +90,14 @@ const BetLink = ({ votes, correct, live, odd }) => {
             position={["left center", "bottom center"]}
             closeOnDocumentClick
             arrow={false}
+            width={400}
         >
             <Container>
                 <Title>Voters</Title>
                 <Body>
-                    {votes.map(({ id, bet, votedBy: { name } }) => (
+                    {votes.map(({ id, bet, votedBy }) => (
                         <VoteLine key={id}>
-                            <div>{name}</div>
+                            <Player {...votedBy} />
                             <Bet bet={bet} odd={odd} full={correct || live} />
                         </VoteLine>
                     ))}
