@@ -43,6 +43,8 @@ const PlayerSelector = ({ selectedValue, onChange, isDesktop }) => {
             value={selectedValue}
             cacheOptions
             styles={customStyles}
+            blurInputOnSelect
+            escapeClearsValue
             onFocus={() => isDesktop && setWidth((prev) => prev * 2)}
             onBlur={() => isDesktop && setWidth((prev) => prev / 2)}
         />
