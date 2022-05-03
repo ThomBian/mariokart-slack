@@ -27,3 +27,8 @@ end
 task :update_players do
   Task::UpdatePlayersFromSlack.new.process
 end
+
+task :delete_game, [:game_id] do |task, args|
+  id = args[:game_id]
+  Task::DeleteGame.new.process(id)
+end 

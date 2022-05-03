@@ -31,13 +31,14 @@ module Action
 
         one_ones = other_results.map { |other_result| { elo: other_result[:player].elo, outcome: game_outcome(score, other_result[:score]) } }
         new_elo_diff = elo_diff(player.elo, one_ones)
-        player.save_elo! player.elo + new_elo_diff
+        new_elo = player.elo + new_elo_diff
+        player.save_elo! new_elo
 
         one_ones = other_results.map { |other_result| { elo: other_result[:player].private_elo, outcome: game_outcome(score, other_result[:score]) } }
         new_private_elo_diff = elo_diff(player.private_elo, one_ones)
         player.update! private_elo: player.private_elo + new_private_elo_diff
         
-        GamesPlayers.find_by(player: player, game: game).update! score: score, elo_diff: new_elo_diff
+        GamesPlayers.find_by(player: player, game: game).update! score: score, elo_diff: new_elo_diff, elo: new_elo
       end
     end
 
