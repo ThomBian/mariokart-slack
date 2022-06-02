@@ -99,7 +99,7 @@ module Concern
       votes.order(bet: :desc).limit(4).map do |vote|
         [{
             "type": "image",
-            "image_url": vote.voted_by.get_or_load_small_avatar,
+            "image_url": vote.voted_by.get_or_update_small_avatar,
             "alt_text": "avatar of a player"
         },
         {

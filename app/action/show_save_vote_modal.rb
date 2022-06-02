@@ -77,7 +77,7 @@ module Action
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "You are voting for #{in_game_player.get_or_load_display_name}.\nThe odd is *#{games_players.odd}*.",
+                        "text": "You are voting for #{in_game_player.get_or_update_display_name}.\nThe odd is *#{games_players.odd}*.",
                     }
                 },
                 {
